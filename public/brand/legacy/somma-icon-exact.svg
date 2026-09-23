@@ -1,0 +1,33 @@
+<svg viewBox="0 0 980 820" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Clip path to restrict diagonal shadow precisely to the left circle -->
+    <clipPath id="leftCircleClip">
+      <circle cx="340" cy="410" r="280" />
+    </clipPath>
+  </defs>
+
+  <!-- 1. Left solid light-blue circle -->
+  <circle cx="340" cy="410" r="280" fill="#1371cb" />
+
+  <!-- 2. Darker diagonal shadow cast across the bottom-left -->
+  <!-- The shadow edge runs diagonally from top-left intersection down towards bottom-left -->
+  <path
+    d="M 175 625 L 340 410 L 515 230 L 620 410 L 530 650 L 280 690 Z"
+    fill="#084f9b"
+    clipPath="url(#leftCircleClip)"
+  />
+
+  <!-- 3. Right dark-blue open ring -->
+  <!-- Outer circle radius ~280, inner hole ~196 (stroke width ~84) -->
+  <circle
+    cx="615"
+    cy="410"
+    r="238"
+    fill="none"
+    stroke="#0658af"
+    stroke-width="84"
+  />
+
+  <!-- 4. Pure white focal dot perfectly placed in the overlapping zone -->
+  <circle cx="490" cy="425" r="38" fill="#ffffff" />
+</svg>

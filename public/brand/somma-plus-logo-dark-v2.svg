@@ -1,0 +1,50 @@
+<svg viewBox="0 0 1200 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="dk-f" x1="55" y1="60" x2="175" y2="180" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#007dfc" />
+      <stop offset="40%" stop-color="#0063d8" />
+      <stop offset="100%" stop-color="#0046b0" />
+    </linearGradient>
+    <radialGradient id="dk-a" cx="100" cy="105" r="70" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#248eff" stop-opacity="0.9" />
+      <stop offset="65%" stop-color="#005ecb" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#003588" stop-opacity="0.85" />
+    </radialGradient>
+    <linearGradient id="dk-s" x1="50" y1="55" x2="130" y2="185" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#002b6e" stop-opacity="0.9" />
+      <stop offset="55%" stop-color="#00439f" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#005ecb" stop-opacity="0" />
+    </linearGradient>
+    <clipPath id="dk-c">
+      <circle cx="115" cy="120" r="66" />
+    </clipPath>
+    <filter id="dk-p" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#001438" flood-opacity="0.5" />
+    </filter>
+  </defs>
+
+  <!-- Left Symbol -->
+  <g>
+    <circle cx="115" cy="120" r="66" fill="url(#dk-f)" />
+    <circle cx="115" cy="120" r="66" fill="url(#dk-a)" />
+    <path d="M 115 54 A 66 66 0 0 0 115 186 L 49 120 Z" fill="url(#dk-s)" clip-path="url(#dk-c)" />
+    <circle cx="204" cy="120" r="54" fill="none" stroke="#0056ba" stroke-width="17.5" />
+    <g filter="url(#dk-p)">
+      <path d="M 153 105 L 163 105 L 163 115 L 173 115 L 173 125 L 163 125 L 163 135 L 153 135 L 153 125 L 143 125 L 143 115 L 153 115 Z" fill="#ffffff" />
+    </g>
+  </g>
+
+  <!-- SOMMA Wordmark (Dark) -->
+  <g fill="#0b0e14">
+    <path d="M 330 89 C 330 75 342 65 358 65 L 406 65 C 420 65 430 74 430 87 L 430 98 C 430 110 420 118 406 118 L 360 118 C 354 118 352 121 352 125 L 352 132 C 352 136 355 138 360 138 L 410 138 C 424 138 431 146 431 158 L 431 166 C 431 176 422 185 408 185 L 354 185 C 340 185 330 176 330 162 L 330 151 C 330 148 332 146 335 146 L 350 146 C 353 146 354 148 354 151 L 354 160 C 354 163 356 165 360 165 L 404 165 C 407 165 409 163 409 160 L 409 155 C 409 152 407 150 404 150 L 356 150 C 342 150 330 141 330 128 L 330 119 C 330 108 340 99 352 99 L 402 99 C 406 99 408 97 408 94 L 408 88 C 408 85 406 83 402 83 L 358 83 C 354 83 352 85 352 88 L 352 96 C 352 99 350 101 347 101 L 335 101 C 332 101 330 99 330 96 Z" />
+    <path d="M 470 65 C 450 65 442 77 442 97 L 442 153 C 442 173 450 185 470 185 L 536 185 C 556 185 564 173 564 153 L 564 97 C 564 77 556 65 536 65 Z M 474 85 L 532 85 C 538 85 541 90 541 99 L 541 151 C 541 160 538 165 532 165 L 474 165 C 468 165 465 160 465 151 L 465 99 C 465 90 468 85 474 85 Z" />
+    <path d="M 580 67 C 580 65.5 581.2 65 582.5 65 L 602 65 C 604 65 605.5 66 606.5 68 L 642 135 L 677.5 68 C 678.5 66 680 65 682 65 L 701.5 65 C 702.8 65 704 65.5 704 67 L 704 183 C 704 184.5 702.8 185 701.5 185 L 684 185 C 682.7 185 681.5 184.5 681.5 183 L 681.5 104 L 650.5 161 C 649.5 163 647.5 164 645 164 L 639 164 C 636.5 164 634.5 163 633.5 161 L 602.5 104 L 602.5 183 C 602.5 184.5 601.3 185 600 185 L 582.5 185 C 581.2 185 580 184.5 580 183 Z" />
+    <path d="M 720 67 C 720 65.5 721.2 65 722.5 65 L 742 65 C 744 65 745.5 66 746.5 68 L 782 135 L 817.5 68 C 818.5 66 820 65 822 65 L 841.5 65 C 842.8 65 844 65.5 844 67 L 844 183 C 844 184.5 842.8 185 841.5 185 L 824 185 C 822.7 185 821.5 184.5 821.5 183 L 821.5 104 L 790.5 161 C 789.5 163 787.5 164 785 164 L 779 164 C 776.5 164 774.5 163 773.5 161 L 742.5 104 L 742.5 183 C 742.5 184.5 741.3 185 740 185 L 722.5 185 C 721.2 185 720 184.5 720 183 Z" />
+    <path d="M 922 66 C 923.5 65 926.5 65 928 66 L 989 181 C 989.8 182.5 989.3 185 987.5 185 L 968 185 C 966.5 185 965 184 964 182 L 925 107 L 886 182 C 885 184 883.5 185 882 185 L 862.5 185 C 860.7 185 860.2 182.5 861 181 Z" />
+  </g>
+
+  <!-- Clean Symmetrical Plus Sign (Dark) -->
+  <g fill="#0b0e14">
+    <path d="M 1074 84 L 1104 84 L 1104 114 L 1134 114 L 1134 144 L 1104 144 L 1104 174 L 1074 174 L 1074 144 L 1044 144 L 1044 114 L 1074 114 Z" />
+  </g>
+</svg>

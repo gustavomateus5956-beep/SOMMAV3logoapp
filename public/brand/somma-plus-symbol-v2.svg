@@ -1,0 +1,37 @@
+<svg viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sym-sph-fill" x1="280" y1="220" x2="640" y2="580" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#007dfc" />
+      <stop offset="40%" stop-color="#0063d8" />
+      <stop offset="100%" stop-color="#0046b0" />
+    </linearGradient>
+    <radialGradient id="sym-sph-amb" cx="420" cy="360" r="220" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#248eff" stop-opacity="0.9" />
+      <stop offset="65%" stop-color="#005ecb" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#003588" stop-opacity="0.85" />
+    </radialGradient>
+    <linearGradient id="sym-sph-shd" x1="260" y1="200" x2="500" y2="600" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#002b6e" stop-opacity="0.9" />
+      <stop offset="55%" stop-color="#00439f" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#005ecb" stop-opacity="0" />
+    </linearGradient>
+    <clipPath id="sym-sph-clip">
+      <circle cx="460" cy="400" r="210" />
+    </clipPath>
+    <filter id="sym-pls-shd" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#001438" flood-opacity="0.5" />
+    </filter>
+  </defs>
+
+  <g>
+    <circle cx="460" cy="400" r="210" fill="url(#sym-sph-fill)" />
+    <circle cx="460" cy="400" r="210" fill="url(#sym-sph-amb)" />
+    <path d="M 460 190 A 210 210 0 0 0 460 610 L 250 400 Z" fill="url(#sym-sph-shd)" clip-path="url(#sym-sph-clip)" />
+  </g>
+
+  <circle cx="740" cy="400" r="172" fill="none" stroke="#0056ba" stroke-width="56" />
+
+  <g filter="url(#sym-pls-shd)">
+    <path d="M 580 340 L 620 340 L 620 380 L 660 380 L 660 420 L 620 420 L 620 460 L 580 460 L 580 420 L 540 420 L 540 380 L 580 380 Z" fill="#ffffff" />
+  </g>
+</svg>

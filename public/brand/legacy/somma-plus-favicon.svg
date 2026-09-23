@@ -1,0 +1,33 @@
+<svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="somma-fav-clip">
+      <circle cx="36" cy="48" r="32" />
+    </clipPath>
+    <linearGradient id="somma-fav-sphere-grad" x1="4" y1="22" x2="68" y2="74" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1954b8" />
+      <stop offset="42%" stop-color="#1e6cd9" />
+      <stop offset="100%" stop-color="#2575ea" />
+    </linearGradient>
+    <linearGradient id="somma-fav-sphere-shadow" x1="4" y1="16" x2="40" y2="80" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0d3f94" stop-opacity="0.85" />
+      <stop offset="60%" stop-color="#124ba8" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#1b63cc" stop-opacity="0" />
+    </linearGradient>
+    <filter id="fav-plus-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#001844" flood-opacity="0.5" />
+    </filter>
+  </defs>
+
+  <!-- Left solid sphere -->
+  <circle cx="36" cy="48" r="32" fill="url(#somma-fav-sphere-grad)" />
+  <path d="M 36 16 A 32 32 0 0 0 36 80 L 4 48 Z" fill="url(#somma-fav-sphere-shadow)" clip-path="url(#somma-fav-clip)" />
+
+  <!-- Right open ring -->
+  <circle cx="63" cy="48" r="27.5" fill="none" stroke="#1e6cd9" stroke-width="8" />
+
+  <!-- Center white plus symbol -->
+  <g filter="url(#fav-plus-shadow)">
+    <rect x="43.5" y="45" width="13" height="6" rx="2" fill="#ffffff" />
+    <rect x="47" y="41.5" width="6" height="13" rx="2" fill="#ffffff" />
+  </g>
+</svg>

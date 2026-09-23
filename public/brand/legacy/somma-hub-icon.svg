@@ -1,0 +1,22 @@
+<svg viewBox="0 0 98 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="somma-icon-clip">
+      <circle cx="38" cy="40" r="28" />
+    </clipPath>
+    <linearGradient id="somma-icon-grad" x1="10" y1="20" x2="66" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1954b8" />
+      <stop offset="42%" stop-color="#1e6cd9" />
+      <stop offset="100%" stop-color="#2575ea" />
+    </linearGradient>
+    <linearGradient id="somma-icon-shadow" x1="10" y1="12" x2="42" y2="68" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0d3f94" stop-opacity="0.85" />
+      <stop offset="60%" stop-color="#124ba8" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#1b63cc" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+
+  <circle cx="38" cy="40" r="28" fill="url(#somma-icon-grad)" />
+  <path d="M 38 12 A 28 28 0 0 0 38 68 L 10 40 Z" fill="url(#somma-icon-shadow)" clip-path="url(#somma-icon-clip)" />
+  <circle cx="62" cy="40" r="24" fill="none" stroke="#1e6cd9" stroke-width="7" />
+  <circle cx="49.5" cy="40" r="3.8" fill="#ffffff" />
+</svg>

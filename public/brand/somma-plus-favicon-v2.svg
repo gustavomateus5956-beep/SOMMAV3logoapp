@@ -1,0 +1,37 @@
+<svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="fav-f" x1="120" y1="120" x2="300" y2="300" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#007dfc" />
+      <stop offset="40%" stop-color="#0063d8" />
+      <stop offset="100%" stop-color="#0046b0" />
+    </linearGradient>
+    <radialGradient id="fav-a" cx="190" cy="190" r="110" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#248eff" stop-opacity="0.9" />
+      <stop offset="65%" stop-color="#005ecb" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#003588" stop-opacity="0.85" />
+    </radialGradient>
+    <linearGradient id="fav-s" x1="110" y1="110" x2="230" y2="310" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#002b6e" stop-opacity="0.9" />
+      <stop offset="55%" stop-color="#00439f" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#005ecb" stop-opacity="0" />
+    </linearGradient>
+    <clipPath id="fav-c">
+      <circle cx="210" cy="250" r="110" />
+    </clipPath>
+    <filter id="fav-p" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="2.5" stdDeviation="2.5" flood-color="#001438" flood-opacity="0.55" />
+    </filter>
+  </defs>
+
+  <g>
+    <circle cx="210" cy="250" r="110" fill="url(#fav-f)" />
+    <circle cx="210" cy="250" r="110" fill="url(#fav-a)" />
+    <path d="M 210 140 A 110 110 0 0 0 210 360 L 100 250 Z" fill="url(#fav-s)" clip-path="url(#fav-c)" />
+  </g>
+
+  <circle cx="355" cy="250" r="90" fill="none" stroke="#0056ba" stroke-width="29" />
+
+  <g filter="url(#fav-p)">
+    <path d="M 273 218 L 293 218 L 293 238 L 313 238 L 313 258 L 293 258 L 293 278 L 273 278 L 273 258 L 253 258 L 253 238 L 273 238 Z" fill="#ffffff" />
+  </g>
+</svg>
