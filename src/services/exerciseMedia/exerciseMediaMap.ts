@@ -44,5 +44,21 @@ export const SOMMA_EXERCISE_MEDIA_MAP: Record<string, ExerciseMedia> = {
   // Core
   'lib-core-1': { provider: 'exercisedb', externalId: '0175' }, // Abdominal no Cabo (Cable Crunch)
   'lib-core-2': { provider: 'exercisedb', externalId: '0472' }, // Elevação de Pernas na Barra Fixa
-  'lib-core-3': { provider: 'exercisedb', externalId: '0464' }  // Prancha Isométrica
+  'lib-core-3': { provider: 'exercisedb', externalId: '0464' },  // Prancha Isométrica
+
+  // Mapeamentos diretos para rotinas ativas padrão (Rotinas A, B, C...)
+  'ex-1': { provider: 'exercisedb', externalId: '0025' }, // Supino Reto com Barra
+  'ex-2': { provider: 'exercisedb', externalId: '0314' }, // Supino Inclinado com Halteres
+  'ex-3': { provider: 'exercisedb', externalId: '0405' }, // Desenvolvimento Militar com Halteres
+  'ex-4': { provider: 'exercisedb', externalId: '0200' }, // Tríceps Corda no Pulley
+  'ex-b1': { provider: 'exercisedb', externalId: '0198' }, // Puxador Alto Frente
+  'ex-b2': { provider: 'exercisedb', externalId: '0027' }, // Remada Curvada com Barra
+  'ex-b3': { provider: 'exercisedb', externalId: '0861' }, // Remada Baixa no Triângulo
+  'ex-b4': { provider: 'exercisedb', externalId: '0447' }, // Rosca Direta Barra W
+  'ex-b5': { provider: 'exercisedb', externalId: '0313' }, // Rosca Martelo com Halteres
+  'ex-c1': { provider: 'exercisedb', externalId: '0043' }, // Agachamento Livre com Barra
+  'ex-c2': { provider: 'exercisedb', externalId: '1425' }, // Leg Press 45°
+  'ex-c3': { provider: 'exercisedb', externalId: '0585' }, // Cadeira Extensora
+  'ex-c4': { provider: 'exercisedb', externalId: '0586' }, // Mesa Flexora Deitada
+  'ex-c5': { provider: 'exercisedb', externalId: '0088' }  // Gêmeos Sentado na Máquina
 };

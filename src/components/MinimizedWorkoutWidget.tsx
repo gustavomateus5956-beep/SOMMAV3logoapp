@@ -49,9 +49,9 @@ export const MinimizedWorkoutWidget: React.FC<MinimizedWorkoutWidgetProps> = ({
     return `${mins.toString().padStart(2, '0')}:${remainderSecs.toString().padStart(2, '0')}`;
   };
 
-  const handleConfirmFinish = () => {
+  const handleConfirmFinish = async () => {
     setShowConfirmModal(false);
-    const session = finishWorkout();
+    const session = await finishWorkout();
     if (session && onWorkoutFinished) {
       onWorkoutFinished({
         name: session.routineName,
@@ -67,9 +67,9 @@ export const MinimizedWorkoutWidget: React.FC<MinimizedWorkoutWidgetProps> = ({
       {/* Floating Bottom Minimized Bar */}
       <div
         id="minimized-workout-widget"
-        className="fixed z-40 left-3 right-3 bottom-[72px] md:bottom-5 md:left-auto md:right-8 md:w-[420px] max-w-lg mx-auto animate-in slide-in-from-bottom-4 fade-in duration-200"
+        className="fixed z-45 left-3.5 right-3.5 bottom-[calc(5.75rem+env(safe-area-inset-bottom,0px))] md:bottom-6 md:left-auto md:right-8 md:w-[420px] max-w-[460px] mx-auto animate-in slide-in-from-bottom-4 fade-in duration-200 pointer-events-auto"
       >
-        <div className="bg-[#12161b]/95 backdrop-blur-xl border border-[#262a30] hover:border-[#0066ff]/50 rounded-2xl p-3 shadow-2xl shadow-black/80 flex flex-col gap-2 transition-all">
+        <div className="bg-[#12161b]/95 backdrop-blur-xl border border-[#262a30] hover:border-[#0066ff]/50 rounded-2xl p-3 sm:p-3.5 shadow-[0_8px_32px_rgba(0,0,0,0.8)] flex flex-col gap-2 transition-all ring-1 ring-white/5">
           {/* Top Line: Workout Info + Timer & Buttons */}
           <div className="flex items-center justify-between gap-2">
             {/* Clickable Area to Expand */}

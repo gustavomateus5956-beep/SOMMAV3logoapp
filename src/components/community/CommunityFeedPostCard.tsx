@@ -108,28 +108,34 @@ export const CommunityFeedPostCard: React.FC<CommunityFeedPostCardProps> = ({
       <div className="grid grid-cols-4 gap-2 bg-[#181c21] p-3 rounded-xl border border-[#262a30]/70 text-center">
         <div>
           <span className="text-[10px] font-bold text-[#8c90a1] uppercase block">Duração</span>
-          <span className="text-xs font-extrabold text-white">{post.duration}</span>
+          <span className="text-xs font-extrabold text-white">
+            {post.duration || post.workoutData?.durationFormatted || (post.workoutData?.durationMinutes ? `${post.workoutData.durationMinutes} min` : '—')}
+          </span>
         </div>
         <div>
           <span className="text-[10px] font-bold text-[#8c90a1] uppercase block">Volume</span>
-          <span className="text-xs font-extrabold text-[#b3c5ff]">{post.volume}</span>
+          <span className="text-xs font-extrabold text-[#b3c5ff]">
+            {post.volume || (post.workoutData?.totalVolume ? `${post.workoutData.totalVolume.toLocaleString('pt-BR')} kg` : '—')}
+          </span>
         </div>
         <div>
           <span className="text-[10px] font-bold text-[#8c90a1] uppercase block">Exercícios</span>
-          <span className="text-xs font-extrabold text-white">{post.exercisesCount}</span>
+          <span className="text-xs font-extrabold text-white">
+            {post.exercisesCount ?? post.workoutData?.totalExercises ?? '—'}
+          </span>
         </div>
         <div>
           <span className="text-[10px] font-bold text-[#ffb59d] uppercase block">PRs</span>
           <span className="text-xs font-extrabold text-[#ffb59d]">
-            {(post.prsCount && post.prsCount > 0) ? `+${post.prsCount}` : '0'}
+            {((post.prsCount ?? post.workoutData?.prsCount ?? 0) > 0) ? `+${post.prsCount ?? post.workoutData?.prsCount}` : '0'}
           </span>
         </div>
       </div>
 
       {/* Exercises Preview List */}
-      {post.exercisesPreview && post.exercisesPreview.length > 0 && (
+      {(post.exercisesPreview || post.workoutData?.exercisesPreview) && (post.exercisesPreview || post.workoutData?.exercisesPreview)!.length > 0 && (
         <div className="space-y-1.5 pt-1">
-          {post.exercisesPreview.map((item, i) => (
+          {(post.exercisesPreview || post.workoutData?.exercisesPreview)!.map((item, i) => (
             <div
               key={i}
               className="flex items-center justify-between text-xs py-1 px-2 rounded-lg bg-[#181c21]/60"
@@ -157,13 +163,13 @@ export const CommunityFeedPostCard: React.FC<CommunityFeedPostCardProps> = ({
             type="button"
             onClick={() => onToggleCheer(post.id)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl transition-all text-xs font-bold cursor-pointer ${
-              post.userCheered
+              (post.userCheered || post.isLiked)
                 ? 'bg-[#ffb59d]/20 text-[#ffb59d] border border-[#ffb59d]/40'
                 : 'bg-[#181c21] text-[#c2c6d8] hover:text-white border border-[#262a30]'
             }`}
           >
-            <Flame className={`w-4 h-4 ${post.userCheered ? 'fill-[#ffb59d]' : ''}`} />
-            <span>Dar Força ({post.cheerCount})</span>
+            <Flame className={`w-4 h-4 ${(post.userCheered || post.isLiked) ? 'fill-[#ffb59d]' : ''}`} />
+            <span>Dar Força ({post.cheerCount ?? post.likesCount ?? 0})</span>
           </button>
 
           <button
@@ -209,14 +215,14 @@ export const CommunityFeedPostCard: React.FC<CommunityFeedPostCardProps> = ({
                 >
                   <div className="flex-1">
                     <div className="flex items-center gap-1.5">
-                      <span className="font-bold text-white">{comment.author}</span>
-                      {comment.role && (
+                      <span className="font-bold text-white">{comment.author || comment.authorName}</span>
+                      {(comment.role || comment.authorBadge) && (
                         <span className="text-[9px] px-1 rounded bg-[#262a30] text-[#8c90a1]">
-                          {comment.role}
+                          {comment.role || comment.authorBadge}
                         </span>
                       )}
                     </div>
-                    <p className="text-[#c2c6d8] mt-0.5">{comment.text}</p>
+                    <p className="text-[#c2c6d8] mt-0.5">{comment.text || comment.content}</p>
                   </div>
                 </div>
               ))}

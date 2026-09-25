@@ -197,7 +197,7 @@ function MainApp() {
         <main
           ref={mainContentRef}
           className={`flex-1 max-w-[480px] md:max-w-3xl w-full mx-auto px-4 pt-16 md:pt-20 ${
-            workoutStatus === 'minimized' ? 'pb-36 md:pb-24' : 'pb-24 md:pb-8'
+            workoutStatus === 'minimized' ? 'pb-52 md:pb-28' : 'pb-24 md:pb-8'
           }`}
         >
           {currentTab === 'inicio' && (

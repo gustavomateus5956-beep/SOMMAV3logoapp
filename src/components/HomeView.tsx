@@ -12,26 +12,20 @@ import {
   ChevronRight, 
   Award, 
   MessageSquare, 
-  Search, 
   Utensils, 
-  HeartPulse, 
-  ShieldCheck, 
   CheckCircle2, 
   Eye, 
   RotateCcw,
   Sparkles,
   Droplet,
-  Send,
-  Copy,
   Plus
 } from 'lucide-react';
-import { TabType, Routine, WorkoutSessionRecord, RoutineFlash, FeedPost, Comment } from '../types';
-import { INITIAL_ROUTINES, MOCK_DAILY_ROUTINES, MOCK_POSTS } from '../data/mockData';
+import { TabType, Routine, WorkoutSessionRecord, FeedPost } from '../types';
+import { INITIAL_ROUTINES } from '../data/mockData';
+import { repositories } from '../data';
 import { useUser } from '../context/UserContext';
 import { useWorkout } from '../context/WorkoutContext';
-import { storageService } from '../services/storageService';
 import { WorkoutSessionDetailModal } from './WorkoutSessionDetailModal';
-import { RoutineViewerModal } from './RoutineViewerModal';
 import { PageHeader } from './PageHeader';
 
 interface HomeViewProps {
@@ -41,7 +35,7 @@ interface HomeViewProps {
 
 export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, onStartRoutine }) => {
   const { user } = useUser();
-  const { workoutStatus, activeSession, maximizeWorkout } = useWorkout();
+  const { workoutStatus, maximizeWorkout } = useWorkout();
 
   // Sessions and routine state
   const [todaySession, setTodaySession] = useState<WorkoutSessionRecord | null>(null);
@@ -50,21 +44,12 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, onStartRoutine }
   // Quick diet water tracking state
   const [waterMl, setWaterMl] = useState(2250);
 
-  // Stories and Feed integration state
-  const [routinesStories] = useState<RoutineFlash[]>(MOCK_DAILY_ROUTINES);
-  const [viewingStoryIndex, setViewingStoryIndex] = useState<number | null>(null);
-  const [posts, setPosts] = useState<FeedPost[]>(() => {
-    const saved = storageService.getCommunityPosts();
-    return saved.length > 0 ? saved : MOCK_POSTS;
-  });
-  const [activeCommentsPostId, setActiveCommentsPostId] = useState<string | null>(null);
-  const [commentInput, setCommentInput] = useState('');
-  const [copiedRoutineId, setCopiedRoutineId] = useState<string | null>(null);
+  // Community preview state
+  const [posts, setPosts] = useState<FeedPost[]>([]);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const plannedRoutine = INITIAL_ROUTINES.find((r) => r.id === 'rotina-a') || INITIAL_ROUTINES[0];
   const userFirstName = user?.name ? user.name.trim().split(' ')[0] : 'Atleta';
-  const streakDays = user?.streakDays ?? 14;
 
   // Dynamic greeting according to time of day
   const currentHour = new Date().getHours();
@@ -84,73 +69,45 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, onStartRoutine }
   };
 
   useEffect(() => {
+    let isMounted = true;
     if (user?.id) {
-      const sessions = storageService.getWorkoutSessions(user.id);
-      const found = sessions.find((s) => s.dateDisplay === 'Hoje' || s.dateDisplay.toLowerCase().includes('hoje'));
-      setTodaySession(found || null);
+      repositories.workout
+        .getWorkoutHistory(user.id)
+        .then((sessions) => {
+          if (!isMounted) return;
+          const found = sessions.find((s) => s.dateDisplay === 'Hoje' || s.dateDisplay.toLowerCase().includes('hoje'));
+          setTodaySession(found || null);
+        })
+        .catch((err) => {
+          console.error('Erro ao recuperar treino de hoje no repositório:', err);
+        });
     } else {
       setTodaySession(null);
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [user?.id]);
 
-  // Handle post cheer / like
-  const handleToggleCheer = (postId: string) => {
-    const { likesCount, isLiked } = storageService.toggleLikePost(postId, user?.id || 'user_lucas_default');
-    setPosts((prev) =>
-      prev.map((post) => {
-        if (post.id === postId) {
-          return {
-            ...post,
-            isLiked,
-            likesCount,
-            userCheered: isLiked,
-            cheerCount: likesCount,
-          };
-        }
-        return post;
+  useEffect(() => {
+    let isMounted = true;
+    repositories.community
+      .getPosts()
+      .then((data) => {
+        if (!isMounted) return;
+        setPosts(data);
       })
-    );
-  };
+      .catch((err) => {
+        console.error('Erro ao recuperar posts da comunidade no repositório:', err);
+      });
 
-  // Handle add comment to post
-  const handleAddComment = (postId: string) => {
-    if (!commentInput.trim()) return;
-    const authorName = user?.name || 'Lucas Andrade';
-    const authorAvatar = user?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80';
-
-    const newComment: Comment = {
-      id: `cmt-${Date.now()}`,
-      authorName,
-      authorAvatar,
-      content: commentInput.trim(),
-      text: commentInput.trim(),
-      createdAt: 'Agora',
+    return () => {
+      isMounted = false;
     };
+  }, []);
 
-    const updatedComments = storageService.addCommentToPost(postId, newComment);
-
-    setPosts((prev) =>
-      prev.map((post) => {
-        if (post.id === postId) {
-          return {
-            ...post,
-            commentsCount: updatedComments.length,
-            comments: updatedComments,
-          };
-        }
-        return post;
-      })
-    );
-
-    setCommentInput('');
-    showToast('Comentário publicado no feed!');
-  };
-
-  const handleCopyRoutine = (routineTitle: string) => {
-    setCopiedRoutineId(routineTitle);
-    showToast(`Rotina "${routineTitle}" copiada para seus treinos!`);
-    setTimeout(() => setCopiedRoutineId(null), 2500);
-  };
+  const latestPost = posts[0] || null;
 
   return (
     <div className="flex flex-col w-full gap-5 pb-24 md:pb-12">
@@ -162,17 +119,17 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, onStartRoutine }
         </div>
       )}
 
-      {/* 1. Page Header: Consistent Hierarchy (Category, Title) */}
+      {/* 1. Page Header: Consistent Hierarchy (Data, Saudação) */}
       <PageHeader
         category={capitalizedDate}
         title={`${greeting}, ${userFirstName}`}
       />
 
-      {/* 2. Ações Rápidas (Primeiro Bloco Funcional da Home) */}
+      {/* 2. Ações Rápidas (Layout 2x2 no mobile) */}
       <section className="flex flex-col gap-2.5">
         <div className="flex items-center justify-between px-0.5">
           <span className="text-[11px] font-bold text-[#8c90a1] uppercase tracking-wider">
-            Ações Rápidas
+            AÇÕES RÁPIDAS
           </span>
         </div>
 
@@ -255,10 +212,10 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, onStartRoutine }
         </div>
       </section>
 
-      {/* 4. Planned Workout Hero Card */}
+      {/* 3. Card do Treino (Concluído ou Treino de Hoje) */}
       <section className="relative overflow-hidden rounded-2xl bg-[#1c2025] p-5 flex flex-col gap-4 border border-[#262a30] shadow-lg">
         {todaySession ? (
-          /* When today's workout has already been completed */
+          /* Quando o treino de hoje já foi concluído */
           <>
             <div className="flex items-start justify-between">
               <div className="flex flex-col gap-1">
@@ -301,30 +258,30 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, onStartRoutine }
               </div>
             </div>
 
-            {/* Actions */}
-            <div className="flex items-center gap-2.5">
+            {/* Actions: Altura consistente, textos centralizados, sem quebra ou overflow em 375px */}
+            <div className="grid grid-cols-2 gap-2.5">
               <button
                 type="button"
                 onClick={() => setSelectedSessionModal(todaySession)}
-                className="flex-1 h-[48px] rounded-xl bg-[#262a30] hover:bg-[#31353b] text-white text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer"
+                className="h-11 rounded-xl bg-[#262a30] hover:bg-[#31353b] text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer px-2"
               >
-                <Eye className="w-4 h-4" />
-                <span>Ver Resumo do Treino</span>
+                <Eye className="w-4 h-4 shrink-0" />
+                <span className="truncate">Ver Resumo</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => onStartRoutine(plannedRoutine)}
-                className="h-[48px] px-4 rounded-xl bg-[#0066ff]/20 hover:bg-[#0066ff]/30 text-[#b3c5ff] border border-[#0066ff]/40 text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                className="h-11 rounded-xl bg-[#0066ff]/20 hover:bg-[#0066ff]/30 text-[#b3c5ff] border border-[#0066ff]/40 text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer px-2"
                 title="Iniciar outro treino hoje"
               >
-                <RotateCcw className="w-3.5 h-3.5" />
-                <span>Treinar Novamente</span>
+                <RotateCcw className="w-3.5 h-3.5 shrink-0" />
+                <span className="truncate">Treinar Novamente</span>
               </button>
             </div>
           </>
         ) : (
-          /* When workout is pending */
+          /* Quando o treino de hoje está pendente */
           <>
             <div className="flex items-start justify-between">
               <div className="flex flex-col gap-1">
@@ -400,7 +357,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, onStartRoutine }
                 onClick={() => onNavigate('treino')}
                 className="text-xs text-[#0066ff] hover:text-[#b3c5ff] font-bold flex items-center gap-1 cursor-pointer"
               >
-                <span>Ver Ficha Completa</span>
+                <span>Abrir</span>
                 <ChevronRight className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -408,7 +365,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, onStartRoutine }
         )}
       </section>
 
-      {/* 5. Weekly Consistency Tracker */}
+      {/* 4. Consistência da Semana */}
       <section className="flex flex-col gap-3 rounded-2xl bg-[#1c2025] p-5 border border-[#262a30] shadow-sm">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -473,7 +430,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, onStartRoutine }
         </div>
       </section>
 
-      {/* 6. Resumo da Dieta & Nutrição */}
+      {/* 5. Resumo da Dieta & Nutrição (Sem badge 'Planejada', CTA 'Abrir') */}
       <section className="rounded-2xl bg-[#1c2025] p-5 border border-[#262a30] shadow-sm flex flex-col gap-3.5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -481,12 +438,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, onStartRoutine }
               <Utensils className="w-4 h-4" />
             </div>
             <div className="flex flex-col">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-bold text-white">Resumo da Dieta</span>
-                <span className="text-[9px] font-extrabold bg-[#00a572]/20 text-[#4edea3] px-2 py-0.5 rounded-full border border-[#00a572]/30">
-                  Planejada
-                </span>
-              </div>
+              <span className="text-sm font-bold text-white">Resumo da Dieta</span>
               <span className="text-[11px] text-[#8c90a1]">Balanço energético de hoje</span>
             </div>
           </div>
@@ -496,7 +448,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, onStartRoutine }
             onClick={() => onNavigate('dieta')}
             className="text-xs font-bold text-[#0066ff] hover:text-[#b3c5ff] flex items-center gap-0.5 cursor-pointer"
           >
-            Abrir Dieta
+            <span>Abrir</span>
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
@@ -554,7 +506,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, onStartRoutine }
         </div>
       </section>
 
-      {/* 7. Resumo de Evolução & Performance */}
+      {/* 6. Resumo de Evolução & Performance */}
       <section className="rounded-2xl bg-[#1c2025] p-5 border border-[#262a30] shadow-sm flex flex-col gap-3.5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -572,7 +524,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, onStartRoutine }
             onClick={() => onNavigate('evolucao')}
             className="text-xs font-bold text-[#0066ff] hover:text-[#b3c5ff] flex items-center gap-0.5 cursor-pointer"
           >
-            Ver Evolução
+            <span>Abrir</span>
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
@@ -607,299 +559,85 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate, onStartRoutine }
         </div>
       </section>
 
-      {/* 8. SOMMA Pass (Preview & Atalho Conceitual - Em Breve) */}
-      <section className="rounded-2xl bg-[#1c2025] p-5 border border-[#262a30] shadow-sm flex flex-col gap-3">
+      {/* 7. Preview Simples da Comunidade (Substitui Stories e Feed antigo) */}
+      <section className="rounded-2xl bg-[#1c2025] p-5 border border-[#262a30] shadow-sm flex flex-col gap-3.5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-[#0066ff]/20 text-[#0066ff] flex items-center justify-center shrink-0">
-              <Sparkles className="w-4 h-4" />
+              <Users className="w-4 h-4" />
             </div>
             <div className="flex flex-col">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-bold text-white">SOMMA Pass</span>
-                <span className="px-2 py-0.5 rounded-full bg-[#0066ff]/20 text-[#b3c5ff] text-[10px] font-extrabold uppercase tracking-wide border border-[#0066ff]/30 flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#0066ff] animate-pulse"></span>
-                  Em breve
-                </span>
-              </div>
-              <span className="text-[11px] text-[#8c90a1]">Conceito de acesso esportivo integrado</span>
+              <span className="text-sm font-bold text-white">Comunidade</span>
+              <span className="text-[11px] text-[#8c90a1]">Atividades recentes dos atletas</span>
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={() => onNavigate('pass')}
-            className="text-xs font-bold text-[#0066ff] hover:text-[#b3c5ff] flex items-center gap-0.5 cursor-pointer"
-          >
-            <span>Ver Conceito</span>
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        </div>
-
-        <div className="p-3.5 rounded-xl bg-[#181c21] border border-[#262a30]/60 flex items-center justify-between gap-3 text-xs">
-          <span className="text-[#8c90a1] text-xs leading-relaxed">
-            Projeto em pesquisa de mercado para conexão futura com estúdios, boxes, centros esportivos e benefícios exclusivos.
-          </span>
-          <button
-            type="button"
-            onClick={() => onNavigate('pass')}
-            className="px-3 py-1.5 rounded-lg bg-[#262a30] hover:bg-[#31353b] text-white text-xs font-semibold shrink-0 cursor-pointer transition-colors"
-          >
-            Saiba mais
-          </button>
-        </div>
-      </section>
-
-      {/* 9. Feed SOMMA Integrado (Stories + Posts com Acesso à Comunidade Completa) */}
-      <section className="flex flex-col gap-4 rounded-3xl bg-[#1c2025] p-5 border border-[#262a30] shadow-sm">
-        {/* Feed Header */}
-        <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Users className="w-5 h-5 text-[#0066ff]" />
-            <div className="flex flex-col">
-              <h2 className="text-sm font-extrabold text-white uppercase tracking-wider">
-                Feed SOMMA
-              </h2>
-              <span className="text-[11px] text-[#8c90a1]">Atividades e rotinas dos atletas</span>
+            <button
+              type="button"
+              onClick={() => onNavigate('comunidade')}
+              className="h-8 px-3 rounded-lg bg-[#0066ff]/20 hover:bg-[#0066ff]/30 text-[#b3c5ff] text-xs font-bold transition-colors cursor-pointer"
+            >
+              Publicar
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigate('comunidade')}
+              className="h-8 px-3 rounded-lg bg-[#262a30] hover:bg-[#31353b] text-white text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
+            >
+              <span>Abrir</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Publicação recente única */}
+        {latestPost ? (
+          <div 
+            onClick={() => onNavigate('comunidade')}
+            className="p-3.5 rounded-xl bg-[#181c21] border border-[#262a30]/60 flex flex-col gap-2.5 cursor-pointer hover:border-[#31353b] transition-colors"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <img
+                  src={latestPost.authorAvatar}
+                  alt={`Foto de ${latestPost.authorName}`}
+                  className="w-8 h-8 rounded-full object-cover bg-[#262a30] shrink-0"
+                />
+                <div className="flex flex-col">
+                  <span className="text-xs font-bold text-white">{latestPost.authorName}</span>
+                  <span className="text-[10px] text-[#8c90a1]">{latestPost.timeAgo || latestPost.createdAt || 'Recente'}</span>
+                </div>
+              </div>
+
+              {latestPost.workoutData && (
+                <span className="text-[10px] font-extrabold text-[#4edea3] bg-[#00a572]/15 px-2 py-0.5 rounded-full">
+                  {latestPost.workoutData.routineName}
+                </span>
+              )}
+            </div>
+
+            <p className="text-xs text-[#c2c6d8] line-clamp-2 leading-relaxed">
+              {latestPost.caption || latestPost.content}
+            </p>
+
+            <div className="flex items-center gap-4 text-xs text-[#8c90a1] pt-1 border-t border-[#262a30]/50">
+              <span className="flex items-center gap-1">
+                <Flame className="w-3.5 h-3.5 text-[#ffb59d]" />
+                {latestPost.likesCount ?? latestPost.cheerCount ?? 0}
+              </span>
+              <span className="flex items-center gap-1">
+                <MessageSquare className="w-3.5 h-3.5" />
+                {latestPost.commentsCount ?? latestPost.comments?.length ?? 0}
+              </span>
             </div>
           </div>
-
-          <button
-            type="button"
-            onClick={() => onNavigate('comunidade')}
-            className="text-xs font-bold text-[#0066ff] hover:text-[#b3c5ff] flex items-center gap-1 px-2.5 py-1 rounded-lg hover:bg-[#0066ff]/10 transition-colors cursor-pointer"
-          >
-            <span>Ver Comunidade Completa</span>
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        </div>
-
-        {/* Stories / Rotinas Rápidas Bar */}
-        <div className="flex flex-col gap-2 pt-1 border-t border-[#262a30]/60">
-          <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#8c90a1]">
-            Rotinas Rápidas dos Atletas
-          </span>
-
-          <div className="flex items-center gap-3 overflow-x-auto no-scrollbar py-1">
-            {routinesStories.map((story, idx) => {
-              const isViewed = story.viewed ?? false;
-
-              return (
-                <button
-                  key={story.id}
-                  type="button"
-                  onClick={() => {
-                    storageService.markStoryViewed(story.id);
-                    setViewingStoryIndex(idx);
-                  }}
-                  className="flex flex-col items-center gap-1.5 shrink-0 focus:outline-none group cursor-pointer"
-                >
-                  <div className="relative">
-                    <div
-                      className={`w-14 h-14 rounded-full p-0.5 transition-transform group-hover:scale-105 ${
-                        isViewed
-                          ? 'ring-2 ring-[#424656]'
-                          : 'ring-2 ring-[#0066ff] ring-offset-2 ring-offset-[#101419]'
-                      }`}
-                    >
-                      <img
-                        src={story.authorAvatar}
-                        alt={`Story de ${story.authorName}`}
-                        className="w-full h-full rounded-full object-cover bg-[#262a30]"
-                      />
-                    </div>
-                    {story.authorVerified && (
-                      <span className="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-[#0066ff] text-white flex items-center justify-center text-[9px] font-bold shadow-md">
-                        ✓
-                      </span>
-                    )}
-                  </div>
-                  <span className="text-[11px] font-medium text-[#c2c6d8] truncate max-w-[62px] text-center group-hover:text-white">
-                    {story.authorName.split(' ')[0]}
-                  </span>
-                </button>
-              );
-            })}
+        ) : (
+          <div className="p-4 rounded-xl bg-[#181c21] border border-[#262a30]/60 text-center text-xs text-[#8c90a1]">
+            Nenhuma publicação recente. Conecte-se com outros atletas!
           </div>
-        </div>
-
-        {/* Integrated Posts Feed List */}
-        <div className="flex flex-col gap-3.5 pt-2">
-          {posts.slice(0, 3).map((post) => {
-            const isCommentsOpen = activeCommentsPostId === post.id;
-            const isCheered = post.isLiked || post.userCheered;
-            const cheersCount = post.likesCount ?? post.cheerCount ?? 0;
-            const commentsCount = post.commentsCount ?? post.comments?.length ?? 0;
-            const postComments = post.comments || [];
-
-            return (
-              <article
-                key={post.id}
-                className="p-4 rounded-2xl bg-[#181c21] border border-[#262a30]/70 flex flex-col gap-3 shadow-sm"
-              >
-                {/* Author Info */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={post.authorAvatar}
-                      alt={`Foto de ${post.authorName}`}
-                      className="w-10 h-10 rounded-full object-cover bg-[#262a30] shrink-0"
-                    />
-                    <div className="flex flex-col">
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-bold text-white">{post.authorName}</span>
-                        {post.authorBadge && (
-                          <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded bg-[#0066ff]/20 text-[#b3c5ff]">
-                            {post.authorBadge}
-                          </span>
-                        )}
-                      </div>
-                      <span className="text-[10px] text-[#8c90a1]">{post.timeAgo || post.createdAt}</span>
-                    </div>
-                  </div>
-
-                  {post.tag1 && (
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#262a30] text-[#c2c6d8] border border-[#31353b]">
-                      {post.tag1}
-                    </span>
-                  )}
-                </div>
-
-                {/* Content Text */}
-                <p className="text-xs text-[#c2c6d8] leading-relaxed">
-                  {post.caption || post.content}
-                </p>
-
-                {/* Optional Post Media */}
-                {post.imageUrl && (
-                  <div className="rounded-xl overflow-hidden max-h-56 bg-black/40 border border-[#262a30]/50">
-                    <img
-                      src={post.imageUrl}
-                      alt="Mídia da postagem"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                )}
-
-                {/* Routine Card Attachment if present */}
-                {post.workoutData && (
-                  <div className="p-3 rounded-xl bg-[#14181d] border border-[#262a30] flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-2">
-                      <Dumbbell className="w-4 h-4 text-[#0066ff]" />
-                      <div className="flex flex-col">
-                        <span className="font-bold text-white text-[11px]">{post.workoutData.routineName}</span>
-                        <span className="text-[10px] text-[#8c90a1]">{post.workoutData.totalVolume} kg volume</span>
-                      </div>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => handleCopyRoutine(post.workoutData?.routineName || 'Rotina')}
-                      className="px-2.5 py-1 rounded-lg bg-[#0066ff]/20 hover:bg-[#0066ff]/30 text-[#b3c5ff] text-[10px] font-bold flex items-center gap-1 transition-colors cursor-pointer"
-                    >
-                      <Copy className="w-3 h-3" />
-                      <span>{copiedRoutineId === post.workoutData.routineName ? 'Copiado!' : 'Copiar'}</span>
-                    </button>
-                  </div>
-                )}
-
-                {/* Interactive Action Bar */}
-                <div className="flex items-center justify-between pt-2 border-t border-[#262a30]/50">
-                  <div className="flex items-center gap-4">
-                    <button
-                      type="button"
-                      onClick={() => handleToggleCheer(post.id)}
-                      className={`flex items-center gap-1.5 text-xs font-semibold transition-all cursor-pointer ${
-                        isCheered ? 'text-[#ffb59d]' : 'text-[#8c90a1] hover:text-white'
-                      }`}
-                    >
-                      <Flame className={`w-4 h-4 ${isCheered ? 'fill-[#ffb59d] text-[#ffb59d]' : ''}`} />
-                      <span>Dar Força ({cheersCount})</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setActiveCommentsPostId(isCommentsOpen ? null : post.id)}
-                      className="flex items-center gap-1.5 text-xs font-semibold text-[#8c90a1] hover:text-white transition-colors cursor-pointer"
-                    >
-                      <MessageSquare className="w-4 h-4" />
-                      <span>{commentsCount}</span>
-                    </button>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={() => setActiveCommentsPostId(isCommentsOpen ? null : post.id)}
-                    className="text-xs text-[#8c90a1] hover:text-white cursor-pointer font-medium"
-                  >
-                    {isCommentsOpen ? 'Fechar' : 'Comentar'}
-                  </button>
-                </div>
-
-                {/* Inline Comments Section */}
-                {isCommentsOpen && (
-                  <div className="flex flex-col gap-2.5 pt-2 border-t border-[#262a30]/40 animate-in fade-in duration-150">
-                    {/* Comments List */}
-                    {postComments.length > 0 ? (
-                      <div className="flex flex-col gap-2 max-h-40 overflow-y-auto pr-1">
-                        {postComments.map((c) => (
-                          <div key={c.id} className="p-2 rounded-lg bg-[#14181d] text-[11px] flex flex-col gap-0.5">
-                            <span className="font-bold text-white">{c.authorName || c.author || 'Usuário'}</span>
-                            <span className="text-[#c2c6d8]">{c.content || c.text}</span>
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <span className="text-[10px] text-[#8c90a1] italic">Seja o primeiro a comentar.</span>
-                    )}
-
-                    {/* Comment Input Form */}
-                    <div className="flex items-center gap-2 pt-1">
-                      <input
-                        type="text"
-                        placeholder="Escreva um incentivo..."
-                        value={commentInput}
-                        onChange={(e) => setCommentInput(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') handleAddComment(post.id);
-                        }}
-                        className="flex-1 h-9 rounded-xl bg-[#14181d] border border-[#262a30] px-3 text-xs text-white placeholder-[#8c90a1] focus:outline-none focus:border-[#0066ff]"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => handleAddComment(post.id)}
-                        className="h-9 px-3 rounded-xl bg-[#0066ff] hover:bg-[#0052cc] text-white text-xs font-bold flex items-center justify-center transition-colors cursor-pointer"
-                      >
-                        <Send className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </article>
-            );
-          })}
-
-          {/* CTA to Full Community View */}
-          <button
-            type="button"
-            onClick={() => onNavigate('comunidade')}
-            className="w-full h-11 rounded-xl bg-[#181c21] hover:bg-[#262a30] text-[#b3c5ff] hover:text-white border border-[#262a30] text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer mt-1"
-          >
-            <Users className="w-4 h-4" />
-            <span>Ver todos os posts e atletas da comunidade</span>
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        </div>
+        )}
       </section>
-
-      {/* Routine Viewer Modal for Stories */}
-      {viewingStoryIndex !== null && (
-        <RoutineViewerModal
-          routines={routinesStories}
-          initialIndex={viewingStoryIndex}
-          onClose={() => setViewingStoryIndex(null)}
-        />
-      )}
 
       {/* Historical Session Detail Modal */}
       {selectedSessionModal && (

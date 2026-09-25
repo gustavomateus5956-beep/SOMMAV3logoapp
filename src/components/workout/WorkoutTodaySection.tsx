@@ -92,7 +92,7 @@ export const WorkoutTodaySection: React.FC<WorkoutTodaySectionProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <span className="px-2.5 py-0.5 rounded-full bg-[#00a572]/20 text-[#4edea3] text-[10px] font-extrabold uppercase tracking-wider">
-                  PAGO HOJE
+                  TREINO PAGO
                 </span>
                 <span className="text-xs text-[#8c90a1]">{todaySession.dateDisplay}</span>
               </div>
@@ -124,24 +124,24 @@ export const WorkoutTodaySection: React.FC<WorkoutTodaySectionProps> = ({
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center gap-2.5 pt-0.5">
+          <div className="grid grid-cols-2 gap-2.5 pt-0.5">
             <button
               type="button"
               onClick={() => onViewSessionDetail(todaySession)}
-              className="flex-1 h-11 bg-[#262a30] hover:bg-[#31353b] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+              className="h-11 bg-[#262a30] hover:bg-[#31353b] text-white rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer px-2"
             >
-              <Eye className="w-4 h-4" />
-              <span>Ver Resumo Completo</span>
+              <Eye className="w-4 h-4 shrink-0" />
+              <span className="truncate">Ver Resumo</span>
             </button>
 
             <button
               type="button"
               onClick={() => onStartRoutine(todayPlannedRoutine)}
-              className="h-11 px-4 bg-[#0066ff]/20 hover:bg-[#0066ff]/30 text-[#b3c5ff] border border-[#0066ff]/40 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+              className="h-11 px-2 bg-[#0066ff]/20 hover:bg-[#0066ff]/30 text-[#b3c5ff] border border-[#0066ff]/40 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               title="Iniciar outro treino hoje"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>Treinar Novamente</span>
+              <RotateCcw className="w-3.5 h-3.5 shrink-0" />
+              <span className="truncate">Treinar Novamente</span>
             </button>
           </div>
         </div>

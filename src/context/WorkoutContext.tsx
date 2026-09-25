@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import { Routine, Exercise, WorkoutSessionRecord, CompletedExerciseLog, CompletedSetLog } from '../types';
-import { storageService } from '../services/storageService';
+import { repositories } from '../data';
 import { useUser } from './UserContext';
 
 export type WorkoutSessionStatus = 'idle' | 'active' | 'minimized' | 'completed';
@@ -29,7 +29,7 @@ export interface WorkoutContextType {
   completedSets: number;
   progressPercentage: number;
   // Actions
-  startWorkout: (routine: Routine | null) => void;
+  startWorkout: (routine: Routine | null) => void | Promise<void>;
   minimizeWorkout: () => void;
   maximizeWorkout: () => void;
   updateExercises: (exercises: Exercise[] | ((prev: Exercise[]) => Exercise[])) => void;
@@ -38,7 +38,7 @@ export interface WorkoutContextType {
   setIsRestPaused: (paused: boolean | ((prev: boolean) => boolean)) => void;
   setIsTimerPaused: (paused: boolean | ((prev: boolean) => boolean)) => void;
   setLastActivePosition: (exerciseIndex: number, setIndex: number) => void;
-  finishWorkout: () => WorkoutSessionRecord | null;
+  finishWorkout: () => Promise<WorkoutSessionRecord | null> | WorkoutSessionRecord | null;
   discardWorkout: () => void;
 }
 
@@ -116,31 +116,37 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
         : 0;
 
   // Start new workout
-  const startWorkout = useCallback((routine: Routine | null) => {
+  const startWorkout = useCallback(async (routine: Routine | null) => {
     let initialExercises: Exercise[] = [];
 
     if (routine && routine.exercises && routine.exercises.length > 0) {
       initialExercises = JSON.parse(JSON.stringify(routine.exercises)) as Exercise[];
       // Enrich with previous performance if available
       if (user?.id) {
-        initialExercises.forEach((ex) => {
-          const past = storageService.getLastExercisePerformance(user.id, ex.name);
-          if (past && past.sets.length > 0) {
-            ex.sets.forEach((set, idx) => {
-              const prevSet = past.sets[idx] || past.sets[past.sets.length - 1];
-              if (prevSet) {
-                set.prevWeight = prevSet.weight;
-                set.prevReps = prevSet.reps;
-                if (!set.weight || set.weight === 0) {
-                  set.weight = prevSet.weight;
-                }
-                if (!set.reps || set.reps === 0) {
-                  set.reps = prevSet.reps;
-                }
+        await Promise.all(
+          initialExercises.map(async (ex) => {
+            try {
+              const past = await repositories.workout.getLastExercisePerformance(user.id, ex.name);
+              if (past && past.sets.length > 0) {
+                ex.sets.forEach((set, idx) => {
+                  const prevSet = past.sets[idx] || past.sets[past.sets.length - 1];
+                  if (prevSet) {
+                    set.prevWeight = prevSet.weight;
+                    set.prevReps = prevSet.reps;
+                    if (!set.weight || set.weight === 0) {
+                      set.weight = prevSet.weight;
+                    }
+                    if (!set.reps || set.reps === 0) {
+                      set.reps = prevSet.reps;
+                    }
+                  }
+                });
               }
-            });
-          }
-        });
+            } catch (err) {
+              console.error(`Erro ao consultar performance anterior de "${ex.name}":`, err);
+            }
+          })
+        );
       }
     } else {
       // Free workout default exercise
@@ -267,7 +273,7 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
   }, []);
 
   // Finish and save workout
-  const finishWorkout = useCallback((): WorkoutSessionRecord | null => {
+  const finishWorkout = useCallback(async (): Promise<WorkoutSessionRecord | null> => {
     if (!activeSession) return null;
 
     const durationMinutes = Math.max(1, Math.round(activeSession.seconds / 60));
@@ -330,7 +336,11 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
     };
 
     if (user?.id) {
-      storageService.saveWorkoutSession(user.id, sessionRecord);
+      try {
+        await repositories.workout.saveWorkoutSession(user.id, sessionRecord);
+      } catch (err) {
+        console.error('Erro ao salvar sessão de treino no repositório:', err);
+      }
       updateUser({
         totalWorkouts: (user.totalWorkouts || 0) + 1,
         totalPrs: (user.totalPrs || 0) + detectedPrs

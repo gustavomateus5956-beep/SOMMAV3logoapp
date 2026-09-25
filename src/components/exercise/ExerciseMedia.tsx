@@ -81,7 +81,7 @@ export const ExerciseMedia: React.FC<ExerciseMediaProps> = ({
 
   // Tamanhos padronizados
   const sizeClasses = {
-    sm: 'w-12 h-12 sm:w-14 sm:h-14 rounded-xl',
+    sm: 'w-12 h-12 sm:w-14 sm:h-14 rounded-full',
     md: 'w-full h-44 sm:h-52 rounded-2xl',
     lg: 'w-full h-64 sm:h-80 rounded-2xl',
     responsive: 'w-full h-full rounded-2xl'
@@ -91,6 +91,17 @@ export const ExerciseMedia: React.FC<ExerciseMediaProps> = ({
 
   // 1. Estado de Carregamento
   if (isLoading) {
+    if (size === 'sm') {
+      return (
+        <div
+          className={`flex items-center justify-center bg-[#181c21] text-[#0066ff] shrink-0 ${className || sizeClasses}`}
+          aria-label="Carregando visualização do exercício"
+        >
+          <Loader2 className="w-4 h-4 text-[#0066ff] animate-spin" />
+        </div>
+      );
+    }
+
     return (
       <div
         className={`${sizeClasses} bg-[#181c21] border border-[#262a30] flex flex-col items-center justify-center text-[#8c90a1] shrink-0 overflow-hidden relative ${className}`}
@@ -98,15 +109,30 @@ export const ExerciseMedia: React.FC<ExerciseMediaProps> = ({
       >
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent animate-pulse" />
         <Loader2 className="w-5 h-5 text-[#0066ff] animate-spin" />
-        {size !== 'sm' && (
-          <span className="text-[11px] font-medium mt-2 text-[#8c90a1]">Carregando execução...</span>
-        )}
+        <span className="text-[11px] font-medium mt-2 text-[#8c90a1]">Carregando execução...</span>
       </div>
     );
   }
 
   // 2. Provedor ExerciseDB (GIF)
   if (media && media.isAvailable && media.gifUrl && !hasError) {
+    if (size === 'sm') {
+      return (
+        <div
+          className={`relative overflow-hidden flex items-center justify-center shrink-0 group ${className || sizeClasses}`}
+        >
+          <img
+            src={media.gifUrl}
+            alt={`Demonstração: ${displayName}`}
+            loading="lazy"
+            decoding="async"
+            onError={() => setHasError(true)}
+            className="w-full h-full object-contain filter drop-shadow transition-transform duration-200 group-hover:scale-105"
+          />
+        </div>
+      );
+    }
+
     return (
       <div
         className={`${sizeClasses} bg-[#181c21] border border-[#262a30] relative overflow-hidden flex items-center justify-center shrink-0 group ${className}`}
@@ -124,6 +150,17 @@ export const ExerciseMedia: React.FC<ExerciseMediaProps> = ({
   }
 
   // 3. Fallback limpo SOMMA+ (sem mídia ou erro de carregamento)
+  if (size === 'sm') {
+    return (
+      <div
+        className={`flex items-center justify-center bg-[#181c21] text-[#0066ff] shrink-0 select-none ${className || sizeClasses}`}
+        title={displayName}
+      >
+        <Dumbbell className="w-5 h-5 text-[#0066ff]" />
+      </div>
+    );
+  }
+
   return (
     <div
       className={`${sizeClasses} bg-[#181c21] border border-[#262a30] flex flex-col items-center justify-center text-[#8c90a1] shrink-0 p-2 text-center select-none ${className}`}
@@ -135,14 +172,10 @@ export const ExerciseMedia: React.FC<ExerciseMediaProps> = ({
           <Dumbbell className="w-4 h-4 text-[#0066ff]" />
         )}
       </div>
-      {size !== 'sm' && (
-        <>
-          <span className="text-[11px] font-bold text-[#c2c6d8] mt-0.5">Animação indisponível</span>
-          <span className="text-[10px] text-[#8c90a1] leading-tight mt-0.5">
-            Consulte as orientações de execução abaixo
-          </span>
-        </>
-      )}
+      <span className="text-[11px] font-bold text-[#c2c6d8] mt-0.5">Animação indisponível</span>
+      <span className="text-[10px] text-[#8c90a1] leading-tight mt-0.5">
+        Consulte as orientações de execução abaixo
+      </span>
     </div>
   );
 };

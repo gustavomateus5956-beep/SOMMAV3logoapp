@@ -4,7 +4,7 @@ import { Routine, Exercise, WorkoutSessionRecord, TabType } from '../types';
 import { INITIAL_ROUTINES } from '../data/mockData';
 import { ExerciseLibraryModal } from './ExerciseLibraryModal';
 import { WorkoutSessionDetailModal } from './WorkoutSessionDetailModal';
-import { storageService } from '../services/storageService';
+import { repositories } from '../data';
 import { useUser } from '../context/UserContext';
 import { useWorkout } from '../context/WorkoutContext';
 import { PageHeader } from './PageHeader';
@@ -40,10 +40,15 @@ export const WorkoutView: React.FC<WorkoutViewProps> = ({
   const [selectedHistorySession, setSelectedHistorySession] = useState<WorkoutSessionRecord | null>(null);
 
   // Load user-specific sessions whenever user changes or view is focused
-  const loadUserSessions = () => {
+  const loadUserSessions = async () => {
     if (user?.id) {
-      const sessions = storageService.getWorkoutSessions(user.id);
-      setHistorySessions(sessions);
+      try {
+        const sessions = await repositories.workout.getWorkoutHistory(user.id);
+        setHistorySessions(sessions);
+      } catch (err) {
+        console.error('Erro ao carregar histórico de treinos no repositório:', err);
+        setHistorySessions([]);
+      }
     } else {
       setHistorySessions([]);
     }
@@ -155,11 +160,9 @@ export const WorkoutView: React.FC<WorkoutViewProps> = ({
   return (
     <div className="flex flex-col w-full pb-24 md:pb-12 gap-5">
       {/* Top Welcome & Consistency Header */}
-      <section className="flex flex-col gap-4">
+      <section className="flex flex-col gap-3">
         <PageHeader
-          category="CENTRAL DE TREINAMENTO"
           title="Treino"
-          subtitle="Rotinas ativas, prescrições e histórico de sessões"
           badge={
             <div className="flex items-center gap-1.5 bg-[#181c21] px-3.5 py-1.5 rounded-full border border-[#262a30] shadow-sm">
               <Flame className="w-4 h-4 text-[#ff8400] fill-[#ff8400]" />

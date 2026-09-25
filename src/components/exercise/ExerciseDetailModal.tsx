@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   ChevronLeft,
   X,
@@ -22,7 +22,7 @@ import {
   translateMuscleList
 } from '../../features/workout/localization';
 import { ExerciseMedia } from './ExerciseMedia';
-import { storageService } from '../../services/storageService';
+import { repositories } from '../../data';
 import { useUser } from '../../context/UserContext';
 import { useScrollLock } from '../../hooks/useScrollLock';
 
@@ -92,10 +92,26 @@ export const ExerciseDetailModal: React.FC<ExerciseDetailModalProps> = ({
   const stepsList = isEnglish ? [] : rawInstructions;
 
   // Carregar histórico real dos treinos do usuário
-  const exerciseHistory = useMemo(() => {
-    const userId = user?.id || 'user_lucas_default';
-    const sessions = storageService.getWorkoutSessions(userId);
+  const [sessions, setSessions] = useState<WorkoutSessionRecord[]>([]);
 
+  useEffect(() => {
+    let isMounted = true;
+    const userId = user?.id || 'user_lucas_default';
+    repositories.workout
+      .getWorkoutHistory(userId)
+      .then((data) => {
+        if (isMounted) setSessions(data);
+      })
+      .catch((err) => {
+        console.error('Erro ao buscar histórico do exercício no repositório:', err);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [user?.id]);
+
+  const exerciseHistory = useMemo(() => {
     const historyPoints: Array<{
       date: string;
       dateLabel: string;

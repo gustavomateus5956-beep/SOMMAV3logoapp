@@ -3,7 +3,7 @@ import { Plus, Trash2, Dumbbell } from 'lucide-react';
 import { Routine, Exercise, WorkoutSessionRecord, CompletedExerciseLog, SetTypeKey } from '../types';
 import { ExportCardModal, WorkoutExportData } from './ExportCardModal';
 import { ExerciseLibraryModal } from './ExerciseLibraryModal';
-import { storageService } from '../services/storageService';
+import { repositories } from '../data';
 import { useUser } from '../context/UserContext';
 import { useWorkout } from '../context/WorkoutContext';
 import { SetTypeSheet } from './active-workout/SetTypeSheet';
@@ -58,6 +58,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     activeSession?.workoutName || routine?.name || 'Treino Personalizado'
   );
   const [isFinished, setIsFinished] = useState(false);
+  const [finalWorkoutSeconds, setFinalWorkoutSeconds] = useState<number | null>(null);
   const [showIncompleteConfirm, setShowIncompleteConfirm] = useState(false);
   const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
   const [showExportModal, setShowExportModal] = useState(false);
@@ -68,6 +69,8 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
   const [showRestSettings, setShowRestSettings] = useState(false);
   const [exerciseForRestConfig, setExerciseForRestConfig] = useState<Exercise | null>(null);
 
+  const displaySeconds = finalWorkoutSeconds !== null ? finalWorkoutSeconds : seconds;
+
   // Rest timer states
   const [restSeconds, setRestSeconds] = useState<number | null>(activeSession?.restSeconds ?? null);
   const [isRestPaused, setIsRestPaused] = useState(activeSession?.isRestPaused || false);
@@ -75,37 +78,54 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
 
   // Sync with global timer in WorkoutContext (keeps running when minimized!)
   useEffect(() => {
-    if (activeSession) {
+    if (activeSession && !isFinished) {
       setSeconds(activeSession.seconds);
       setRestSeconds(activeSession.restSeconds);
     }
-  }, [activeSession?.seconds, activeSession?.restSeconds]);
+  }, [activeSession?.seconds, activeSession?.restSeconds, isFinished]);
 
   // Initialize exercises with previous performance references
   useEffect(() => {
+    let isMounted = true;
     if (routine && routine.exercises.length > 0) {
       const cloned = JSON.parse(JSON.stringify(routine.exercises)) as Exercise[];
       // Enrich with previous exercise data if available for current user
       if (user?.id) {
-        cloned.forEach((ex) => {
-          const past = storageService.getLastExercisePerformance(user.id, ex.name);
-          if (past && past.sets.length > 0) {
-            ex.sets.forEach((set, idx) => {
-              if (past.sets[idx]) {
-                set.prevWeight = past.sets[idx].weight;
-                set.prevReps = past.sets[idx].reps;
+        Promise.all(
+          cloned.map(async (ex) => {
+            try {
+              const past = await repositories.workout.getLastExercisePerformance(user.id, ex.name);
+              if (past && past.sets.length > 0) {
+                ex.sets.forEach((set, idx) => {
+                  if (past.sets[idx]) {
+                    set.prevWeight = past.sets[idx].weight;
+                    set.prevReps = past.sets[idx].reps;
+                  }
+                });
               }
-            });
+            } catch (err) {
+              console.error(`Erro ao buscar performance anterior para "${ex.name}":`, err);
+            }
+          })
+        ).then(() => {
+          if (isMounted) {
+            setExercises(cloned);
+            setWorkoutName(routine.name);
           }
         });
+      } else {
+        setExercises(cloned);
+        setWorkoutName(routine.name);
       }
-      setExercises(cloned);
-      setWorkoutName(routine.name);
     } else if (!activeSession?.exercises?.length && exercises.length === 0) {
       // Empty workout initial state: start empty without pre-filled exercises
       setExercises([]);
       setWorkoutName('Treino Vazio');
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [routine, user?.id]);
 
   // Main workout elapsed timer
@@ -274,18 +294,28 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
   const progressPercentage =
     totalSetsCount > 0 ? Math.round((totalCompletedSets / totalSetsCount) * 100) : 0;
 
+  const finalizeSession = () => {
+    const frozen = seconds;
+    setFinalWorkoutSeconds(frozen);
+    setIsTimerPaused(true);
+    setContextIsTimerPaused(true);
+    setRestSeconds(null);
+    setContextRestSeconds(null);
+    setIsFinished(true);
+  };
+
   const handleFinishAttempt = () => {
     const uncompleted = totalSetsCount - totalCompletedSets;
     if (uncompleted > 0) {
       setShowIncompleteConfirm(true);
     } else {
-      setIsFinished(true);
+      finalizeSession();
     }
   };
 
   const confirmFinishWorkout = () => {
     setShowIncompleteConfirm(false);
-    setIsFinished(true);
+    finalizeSession();
   };
 
   const handleUpdateSetType = (type: SetTypeKey) => {
@@ -318,8 +348,8 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
   };
 
   // Final persistence to user storage & Context
-  const handleSaveAndExit = () => {
-    const durationMinutes = Math.max(1, Math.round(seconds / 60));
+  const handleSaveAndExit = async () => {
+    const durationMinutes = Math.max(1, Math.round(displaySeconds / 60));
     const now = new Date();
 
     const completedExercises: CompletedExerciseLog[] = exercises.map((ex) => ({
@@ -348,7 +378,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
       routineId: routine?.id,
       routineName: workoutName,
       muscleGroups: exercises.map((e) => e.muscleGroup).slice(0, 2).join(' & '),
-      startedAt: new Date(Date.now() - seconds * 1000).toISOString(),
+      startedAt: new Date(Date.now() - displaySeconds * 1000).toISOString(),
       finishedAt: now.toISOString(),
       dateDisplay: 'Hoje',
       durationMinutes,
@@ -362,7 +392,11 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     };
 
     if (user?.id) {
-      storageService.saveWorkoutSession(user.id, sessionRecord);
+      try {
+        await repositories.workout.saveWorkoutSession(user.id, sessionRecord);
+      } catch (err) {
+        console.error('Erro ao salvar sessão de treino no repositório:', err);
+      }
       updateUser({
         totalWorkouts: (user.totalWorkouts || 0) + 1,
         totalPrs: (user.totalPrs || 0) + detectedPrs
@@ -383,7 +417,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
   // Prepare payload for social export modal
   const exportWorkoutPayload: WorkoutExportData = {
     title: workoutName,
-    duration: formatTimer(seconds),
+    duration: formatTimer(displaySeconds),
     volume: `${totalVolume.toLocaleString()} kg`,
     exercisesCount: exercises.length,
     completedSets: totalCompletedSets,
@@ -551,7 +585,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
         <ActiveWorkoutCelebrationModal
           isOpen={isFinished}
           workoutName={workoutName}
-          seconds={seconds}
+          seconds={displaySeconds}
           totalVolume={totalVolume}
           totalCompletedSets={totalCompletedSets}
           detectedPrs={detectedPrs}

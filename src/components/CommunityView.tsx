@@ -1,7 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Camera } from 'lucide-react';
-import { MOCK_POSTS, MOCK_LOCAL_ATHLETES, USER_PROFILE } from '../data/mockData';
-import { FeedPost } from '../types';
+import { MOCK_LOCAL_ATHLETES, USER_PROFILE } from '../data/mockData';
+import { FeedPost, Comment } from '../types';
+import { repositories } from '../data';
 import { PageHeader } from './PageHeader';
 import { CommunityFeedPostCard } from './community/CommunityFeedPostCard';
 import { CommunitySuggestedAthletes } from './community/CommunitySuggestedAthletes';
@@ -17,7 +18,7 @@ export const CommunityView: React.FC<CommunityViewProps> = () => {
   const avatarUrl = user?.avatar || USER_PROFILE.avatar;
   const userName = user?.name || USER_PROFILE.name;
 
-  const [posts, setPosts] = useState<FeedPost[]>(MOCK_POSTS);
+  const [posts, setPosts] = useState<FeedPost[]>([]);
   const [athletes, setAthletes] = useState(MOCK_LOCAL_ATHLETES);
   const [activeCommentsPostId, setActiveCommentsPostId] = useState<string | null>(null);
   const [commentInput, setCommentInput] = useState('');
@@ -33,21 +34,43 @@ export const CommunityView: React.FC<CommunityViewProps> = () => {
   const [newPostImage, setNewPostImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleToggleCheer = (postId: string) => {
-    setPosts((prev) =>
-      prev.map((p) => {
-        if (p.id === postId) {
-          const isCheered = p.userCheered;
-          const currentCount = p.cheerCount ?? 0;
-          return {
-            ...p,
-            userCheered: !isCheered,
-            cheerCount: isCheered ? Math.max(0, currentCount - 1) : currentCount + 1
-          };
-        }
-        return p;
+  useEffect(() => {
+    let isMounted = true;
+    repositories.community
+      .getPosts()
+      .then((data) => {
+        if (isMounted) setPosts(data);
       })
-    );
+      .catch((err) => {
+        console.error('Erro ao recuperar posts da comunidade:', err);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const handleToggleCheer = async (postId: string) => {
+    const userId = user?.id || 'user_lucas_default';
+    try {
+      const { likesCount, isLiked } = await repositories.community.toggleLikePost(postId, userId);
+      setPosts((prev) =>
+        prev.map((p) => {
+          if (p.id === postId) {
+            return {
+              ...p,
+              isLiked,
+              userCheered: isLiked,
+              likesCount,
+              cheerCount: likesCount
+            };
+          }
+          return p;
+        })
+      );
+    } catch (err) {
+      console.error('Erro ao dar força no post:', err);
+    }
   };
 
   const handleCopyRoutine = (postId: string) => {
@@ -61,30 +84,40 @@ export const CommunityView: React.FC<CommunityViewProps> = () => {
     );
   };
 
-  const handleSendComment = (postId: string) => {
+  const handleSendComment = async (postId: string) => {
     if (!commentInput.trim()) return;
-    setPosts((prev) =>
-      prev.map((p) => {
-        if (p.id === postId) {
-          const newComments = [
-            ...(p.comments || []),
-            {
-              id: `c-${Date.now()}`,
-              author: userName,
-              role: 'Você',
-              text: commentInput.trim()
-            }
-          ];
-          return {
-            ...p,
-            commentsCount: p.commentsCount + 1,
-            comments: newComments
-          };
-        }
-        return p;
-      })
-    );
-    setCommentInput('');
+    const newComment: Comment = {
+      id: `c-${Date.now()}`,
+      postId,
+      userId: user?.id || 'user_lucas_default',
+      authorName: userName,
+      authorHandle: user?.username ? `@${user.username}` : '@lucas.andrade',
+      authorAvatar: avatarUrl,
+      author: userName,
+      role: 'Você',
+      text: commentInput.trim(),
+      content: commentInput.trim(),
+      createdAt: new Date().toISOString()
+    };
+
+    try {
+      const updatedComments = await repositories.community.addComment(postId, newComment);
+      setPosts((prev) =>
+        prev.map((p) => {
+          if (p.id === postId) {
+            return {
+              ...p,
+              commentsCount: updatedComments.length || (p.commentsCount + 1),
+              comments: updatedComments
+            };
+          }
+          return p;
+        })
+      );
+      setCommentInput('');
+    } catch (err) {
+      console.error('Erro ao adicionar comentário:', err);
+    }
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,13 +131,17 @@ export const CommunityView: React.FC<CommunityViewProps> = () => {
     }
   };
 
-  const handlePublish = () => {
+  const handlePublish = async () => {
     const newPost: FeedPost = {
       id: `user-post-${Date.now()}`,
+      userId: user?.id || 'user_lucas_default',
+      type: newPostImage ? 'photo' : 'workout',
       authorName: userName,
+      authorHandle: user?.username ? `@${user.username}` : '@lucas.andrade',
       authorBadge: 'Você',
       authorVerified: true,
       authorAvatar: avatarUrl,
+      createdAt: new Date().toISOString(),
       timeAgo: 'Agora mesmo',
       location: 'SOMMA Training Lab',
       tag1: 'EVOLUÇÃO',
@@ -120,12 +157,32 @@ export const CommunityView: React.FC<CommunityViewProps> = () => {
         { name: 'Supino Reto Barra', detail: '4 × 8 @ 96 kg', isPr: !!newHighlightBadge },
         { name: 'Supino Inclinado Halteres', detail: '3 × 10 @ 34 kg' }
       ],
+      workoutData: {
+        routineName: newHighlightBadge || 'Treino Concluído',
+        muscleGroups: newMuscleGroup || 'Peitoral & Ombros',
+        durationMinutes: 52,
+        durationFormatted: '52 min',
+        totalVolume: 7850,
+        totalCompletedSets: 12,
+        totalExercises: 5,
+        prsCount: newHighlightBadge ? 1 : 0,
+        prs: newHighlightBadge ? [newHighlightBadge] : []
+      },
+      likesCount: 1,
       cheerCount: 1,
+      isLiked: true,
       userCheered: true,
-      commentsCount: 0
+      commentsCount: 0,
+      comments: []
     };
 
-    setPosts([newPost, ...posts]);
+    try {
+      await repositories.community.savePost(newPost);
+      setPosts((prev) => [newPost, ...prev]);
+    } catch (err) {
+      console.error('Erro ao salvar publicação na comunidade:', err);
+    }
+
     setNewCaption('');
     setNewPostImage(null);
     setNewHighlightBadge('');
