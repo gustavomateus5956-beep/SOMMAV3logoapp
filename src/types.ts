@@ -58,7 +58,7 @@ export interface ExerciseMedia {
 }
 
 export interface ExternalExerciseResult {
-  provider: 'exercisedb';
+  provider: 'exercisedb' | 'somma';
   externalId: string;
   name: string;
   originalName?: string;
@@ -67,6 +67,7 @@ export interface ExternalExerciseResult {
   equipment?: string;
   secondaryMuscles?: string[];
   instructions?: string[];
+  instructionText?: string;
   gifUrl?: string;
 }
 
@@ -74,6 +75,7 @@ export interface Exercise {
   id: string;
   name: string;
   originalName?: string;
+  catalogRef?: { provider: 'somma'; id: string };
   muscleGroup: string;
   sets: ExerciseSet[];
   notes?: string;

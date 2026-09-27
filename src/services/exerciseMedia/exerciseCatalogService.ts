@@ -7,6 +7,8 @@ import {
 } from './exerciseDbProvider';
 import { SOMMA_EXERCISE_MEDIA_MAP } from './exerciseMediaMap';
 import { NormalizedExternalCatalogResponse } from './types';
+import { sommaDatasetProvider, InvalidSommaCursorError } from './sommaDatasetProvider';
+import type { CatalogQuery } from './sommaDatasetTypes';
 import { 
   translateBodyPart, 
   translateEquipment, 
@@ -77,6 +79,7 @@ export function mapQueryToExerciseDbTerm(query: string): string {
  * e preservando o nome e dados originais.
  */
 export function localizeExternalExercise(ext: ExternalExerciseResult): ExternalExerciseResult {
+  if (ext.provider === 'somma') return ext;
   const localized = localizeExerciseName(ext.name, ext.externalId);
   const localizedBodyPart = translateBodyPart(ext.bodyPart);
   const localizedEquipment = translateEquipment(ext.equipment);
@@ -151,7 +154,8 @@ export async function searchExternalExercises(
   
   // Converte termo de busca para a API externa se digitado em português
   const externalQuery = options.query ? mapQueryToExerciseDbTerm(options.query) : undefined;
-  const cacheKey = `${externalQuery || ''}|${options.bodyPart || ''}|${options.equipment || ''}|${options.after || ''}|${limit}`;
+  signal?.throwIfAborted();
+  const cacheKey = JSON.stringify([externalQuery || '', options.bodyPart || '', options.equipment || '', options.targetMuscle || '', options.after || '', limit]);
 
   if (searchCache.has(cacheKey)) {
     return searchCache.get(cacheKey)!;
@@ -240,6 +244,50 @@ export async function getExternalExerciseById(
   return null;
 }
 
+/** Keep a fallback pagination session on ExerciseDB, even if SOMMA later recovers. */
+export function createCatalogSearch(
+  primary: Pick<typeof sommaDatasetProvider, 'search'> = sommaDatasetProvider,
+  fallback = searchExternalExercises
+) {
+  return async (options: CatalogQuery = {}, signal?: AbortSignal): Promise<NormalizedExternalCatalogResponse> => {
+    signal?.throwIfAborted();
+    const externalPage = options.after?.startsWith('exercisedb:');
+    if (!externalPage) {
+      try {
+        return await primary.search(options, signal);
+      } catch (error) {
+        signal?.throwIfAborted();
+        if ((error as Error).name === 'AbortError' || error instanceof InvalidSommaCursorError || options.after) throw error;
+      }
+    }
+    // These filters belong to the official taxonomy and cannot be silently dropped.
+    if ([options.libraryCategory, options.activityType, options.environment, options.collection]
+      .some(value => value && value !== 'Todos' && value !== 'all')) {
+      throw new Error('Catálogo SOMMA indisponível para os filtros selecionados.');
+    }
+    const response = await fallback({
+      ...options,
+      after: externalPage ? decodeURIComponent(options.after!.slice('exercisedb:'.length)) : undefined,
+    }, signal);
+    signal?.throwIfAborted();
+    return {
+      ...response,
+      nextCursor: response.nextCursor ? `exercisedb:${encodeURIComponent(response.nextCursor)}` : undefined,
+    };
+  };
+}
+
+export const searchCatalogExercises = createCatalogSearch();
+
+/** Provider identity is explicit: an old ExerciseDB ID must never resolve to a SOMMA record. */
+export async function getCatalogExerciseById(
+  id: string,
+  provider: 'somma' | 'exercisedb' = 'somma',
+  signal?: AbortSignal
+): Promise<ExternalExerciseResult | null> {
+  return provider === 'somma' ? sommaDatasetProvider.getById(id, signal) : getExternalExerciseById(id, signal);
+}
+
 /**
  * Converte um exercício externo (ExerciseDB) em uma referência utilizável dentro de uma Rotina SOMMA.
  * Cria um snapshot completo e autocontido.
@@ -250,6 +298,24 @@ export async function getExternalExerciseById(
 export function convertExternalToSommaExercise(
   external: ExternalExerciseResult
 ): Exercise {
+  if (external.provider === 'somma') {
+    return {
+      id: `somma-${external.externalId}-${crypto.randomUUID()}`,
+      catalogRef: { provider: 'somma', id: external.externalId },
+      source: 'somma',
+      name: external.name,
+      originalName: external.originalName,
+      muscleGroup: external.bodyPart || '',
+      bodyPart: external.bodyPart,
+      equipment: external.equipment,
+      target: external.target,
+      targetMuscles: [external.target, ...(external.secondaryMuscles || [])].filter(Boolean) as string[],
+      tips: external.instructions?.[0],
+      instructions: external.instructionText ?? external.instructions?.join('\n'),
+      executionTips: external.instructions ? [...external.instructions] : undefined,
+      sets: [],
+    };
+  }
   const timestamp = Date.now();
   const localized = localizeExerciseName(external.name, external.externalId);
   const muscleGroup = translateBodyPart(external.bodyPart);

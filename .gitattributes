@@ -1,0 +1,2 @@
+# Preserve the supplied catalog files byte for byte across operating systems.
+/src/data/somma/*.json -text

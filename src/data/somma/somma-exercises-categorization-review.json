@@ -1,0 +1,2515 @@
+[
+  {
+    "id": "0011",
+    "name": "Suspenso Elevação de Joelhos Assistido",
+    "originalName": "assisted hanging knee raise",
+    "equipment": {
+      "key": "assisted",
+      "label": "Assistido"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "0010",
+    "name": "Suspenso Elevação de Joelhos com Arremesso para Baixo Assistido",
+    "originalName": "assisted hanging knee raise with throw down",
+    "equipment": {
+      "key": "assisted",
+      "label": "Assistido"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento"
+      ]
+    }
+  },
+  {
+    "id": "0012",
+    "name": "Deitado Elevação de Pernas com Lateral Arremesso para Baixo Assistido",
+    "originalName": "assisted lying leg raise with lateral throw down",
+    "equipment": {
+      "key": "assisted",
+      "label": "Assistido"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "calistenia",
+        "label": "Calistenia"
+      },
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento"
+      ]
+    }
+  },
+  {
+    "id": "0013",
+    "name": "Deitado Elevação de Pernas com Arremesso para Baixo Assistido",
+    "originalName": "assisted lying leg raise with throw down",
+    "equipment": {
+      "key": "assisted",
+      "label": "Assistido"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "calistenia",
+        "label": "Calistenia"
+      },
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento"
+      ]
+    }
+  },
+  {
+    "id": "0014",
+    "name": "Assistido Movimento Rotação Russa com Bola Medicinal",
+    "originalName": "assisted motion russian twist",
+    "equipment": {
+      "key": "medicine ball",
+      "label": "Bola medicinal"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento"
+      ]
+    }
+  },
+  {
+    "id": "0016",
+    "name": "Alongamento Assistido de Posteriores de Coxa em Pronação",
+    "originalName": "assisted prone hamstring",
+    "equipment": {
+      "key": "assisted",
+      "label": "Assistido"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "1758",
+    "name": "Abdominal Completo Assistido",
+    "originalName": "assisted sit-up",
+    "equipment": {
+      "key": "assisted",
+      "label": "Assistido"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "calistenia",
+        "label": "Calistenia"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "0018",
+    "name": "Em Pé Extensão de Tríceps (com Toalha) Assistido",
+    "originalName": "assisted standing triceps extension (with towel)",
+    "equipment": {
+      "key": "assisted",
+      "label": "Assistido"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "1314",
+    "name": "Extensão Lombar em Exercício com Bola",
+    "originalName": "back extension on exercise ball",
+    "equipment": {
+      "key": "stability ball",
+      "label": "Bola suíça"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "0067",
+    "name": "Um Braço Snatch com Barra",
+    "originalName": "barbell one arm snatch",
+    "equipment": {
+      "key": "barbell",
+      "label": "Barra"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      },
+      {
+        "key": "peso-livre",
+        "label": "Peso Livre"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento",
+        "equipamento-peso-livre"
+      ]
+    }
+  },
+  {
+    "id": "3305",
+    "name": "Thruster com Barra",
+    "originalName": "barbell thruster",
+    "equipment": {
+      "key": "barbell",
+      "label": "Barra"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      },
+      {
+        "key": "peso-livre",
+        "label": "Peso Livre"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento",
+        "equipamento-peso-livre"
+      ]
+    }
+  },
+  {
+    "id": "0128",
+    "name": "Corda Naval",
+    "originalName": "battling ropes",
+    "equipment": {
+      "key": "rope",
+      "label": "Corda"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento"
+      ]
+    }
+  },
+  {
+    "id": "1374",
+    "name": "Salto da Caixa com Estabilização Unilateral",
+    "originalName": "box jump down with one leg stabilization",
+    "equipment": {
+      "key": "body weight",
+      "label": "Peso corporal"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "calistenia",
+        "label": "Calistenia"
+      },
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      },
+      {
+        "key": "peso-corporal",
+        "label": "Peso Corporal"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento",
+        "peso-corporal"
+      ]
+    }
+  },
+  {
+    "id": "2466",
+    "name": "Ponte com Escalador Cruzado",
+    "originalName": "bridge - mountain climber (cross body)",
+    "equipment": {
+      "key": "body weight",
+      "label": "Peso corporal"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "calistenia",
+        "label": "Calistenia"
+      },
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      },
+      {
+        "key": "peso-corporal",
+        "label": "Peso Corporal"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento",
+        "peso-corporal"
+      ]
+    }
+  },
+  {
+    "id": "0271",
+    "name": "Abdominal Crunch (em ) na Bola Suíça",
+    "originalName": "crunch (on stability ball)",
+    "equipment": {
+      "key": "stability ball",
+      "label": "Bola suíça"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "calistenia",
+        "label": "Calistenia"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "0272",
+    "name": "Abdominal Crunch (em , Braços Estendido) na Bola Suíça",
+    "originalName": "crunch (on stability ball, arms straight)",
+    "equipment": {
+      "key": "stability ball",
+      "label": "Bola suíça"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "calistenia",
+        "label": "Calistenia"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "3888",
+    "name": "Um Braço Snatch com Halteres",
+    "originalName": "dumbbell one arm snatch",
+    "equipment": {
+      "key": "dumbbell",
+      "label": "Halteres"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      },
+      {
+        "key": "peso-livre",
+        "label": "Peso Livre"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento",
+        "equipamento-peso-livre"
+      ]
+    }
+  },
+  {
+    "id": "1332",
+    "name": "Elevação Alternada dos Braços na Bola Suíça",
+    "originalName": "exercise ball alternating arm ups",
+    "equipment": {
+      "key": "stability ball",
+      "label": "Bola suíça"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "1333",
+    "name": "Exercício com Bola Extensão Lombar com Braços Estendido",
+    "originalName": "exercise ball back extension with arms extended",
+    "equipment": {
+      "key": "stability ball",
+      "label": "Bola suíça"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "1334",
+    "name": "Exercício com Bola Extensão Lombar com Mãos Atrás Cabeça",
+    "originalName": "exercise ball back extension with hands behind head",
+    "equipment": {
+      "key": "stability ball",
+      "label": "Bola suíça"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "1335",
+    "name": "Exercício com Bola Extensão Lombar com Joelhos Fora Solo",
+    "originalName": "exercise ball back extension with knees off ground",
+    "equipment": {
+      "key": "stability ball",
+      "label": "Bola suíça"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "1336",
+    "name": "Exercício com Bola Extensão Lombar com Rotação",
+    "originalName": "exercise ball back extension with rotation",
+    "equipment": {
+      "key": "stability ball",
+      "label": "Bola suíça"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "1744",
+    "name": "Exercício com Bola Mergulho nas Paralelas",
+    "originalName": "exercise ball dip",
+    "equipment": {
+      "key": "stability ball",
+      "label": "Bola suíça"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "calistenia",
+        "label": "Calistenia"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "1338",
+    "name": "Abraço na Bola Suíça",
+    "originalName": "exercise ball hug",
+    "equipment": {
+      "key": "stability ball",
+      "label": "Bola suíça"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "1416",
+    "name": "Exercício com Bola Um Perna Prono Inferior Corpo Rotação",
+    "originalName": "exercise ball one leg prone lower body rotation",
+    "equipment": {
+      "key": "stability ball",
+      "label": "Bola suíça"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "1417",
+    "name": "Exercício com Bola Um Perna Diagonal Chute Flexão de Joelhos",
+    "originalName": "exercise ball one legged diagonal kick hamstring curl",
+    "equipment": {
+      "key": "stability ball",
+      "label": "Bola suíça"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "1296",
+    "name": "Exercício com Bola Pike Flexão de Braços",
+    "originalName": "exercise ball pike push up",
+    "equipment": {
+      "key": "stability ball",
+      "label": "Bola suíça"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "calistenia",
+        "label": "Calistenia"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "1343",
+    "name": "Exercício com Bola Prono Elevação de Pernas",
+    "originalName": "exercise ball prone leg raise",
+    "equipment": {
+      "key": "stability ball",
+      "label": "Bola suíça"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "calistenia",
+        "label": "Calistenia"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "0492",
+    "name": "Inclinado Flexão de Braços Profundidade Salto",
+    "originalName": "incline push up depth jump",
+    "equipment": {
+      "key": "body weight",
+      "label": "Peso corporal"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "calistenia",
+        "label": "Calistenia"
+      },
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      },
+      {
+        "key": "peso-corporal",
+        "label": "Peso Corporal"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento",
+        "peso-corporal"
+      ]
+    }
+  },
+  {
+    "id": "0529",
+    "name": "Duplo Snatch com Kettlebell",
+    "originalName": "kettlebell double snatch",
+    "equipment": {
+      "key": "kettlebell",
+      "label": "Kettlebell"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "kettlebell",
+        "label": "Kettlebell"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      },
+      {
+        "key": "peso-livre",
+        "label": "Peso Livre"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento",
+        "equipamento-peso-livre"
+      ]
+    }
+  },
+  {
+    "id": "0537",
+    "name": "Um Braço Clean e Jerk com Kettlebell",
+    "originalName": "kettlebell one arm clean and jerk",
+    "equipment": {
+      "key": "kettlebell",
+      "label": "Kettlebell"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "kettlebell",
+        "label": "Kettlebell"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      },
+      {
+        "key": "peso-livre",
+        "label": "Peso Livre"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento",
+        "equipamento-peso-livre"
+      ]
+    }
+  },
+  {
+    "id": "0542",
+    "name": "Um Braço Snatch com Kettlebell",
+    "originalName": "kettlebell one arm snatch",
+    "equipment": {
+      "key": "kettlebell",
+      "label": "Kettlebell"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "kettlebell",
+        "label": "Kettlebell"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      },
+      {
+        "key": "peso-livre",
+        "label": "Peso Livre"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento",
+        "equipamento-peso-livre"
+      ]
+    }
+  },
+  {
+    "id": "0549",
+    "name": "Swing com Kettlebell",
+    "originalName": "kettlebell swing",
+    "equipment": {
+      "key": "kettlebell",
+      "label": "Kettlebell"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "kettlebell",
+        "label": "Kettlebell"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      },
+      {
+        "key": "peso-livre",
+        "label": "Peso Livre"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento",
+        "equipamento-peso-livre"
+      ]
+    }
+  },
+  {
+    "id": "0550",
+    "name": "Thruster com Kettlebell",
+    "originalName": "kettlebell thruster",
+    "equipment": {
+      "key": "kettlebell",
+      "label": "Kettlebell"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "kettlebell",
+        "label": "Kettlebell"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      },
+      {
+        "key": "peso-livre",
+        "label": "Peso Livre"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento",
+        "equipamento-peso-livre"
+      ]
+    }
+  },
+  {
+    "id": "0609",
+    "name": "London Ponte com Corda",
+    "originalName": "london bridge",
+    "equipment": {
+      "key": "rope",
+      "label": "Corda"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento"
+      ]
+    }
+  },
+  {
+    "id": "1353",
+    "name": "Recepção e Arremesso Acima da Cabeça com Bola Medicinal",
+    "originalName": "medicine ball catch and overhead throw",
+    "equipment": {
+      "key": "medicine ball",
+      "label": "Bola medicinal"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento"
+      ]
+    }
+  },
+  {
+    "id": "1302",
+    "name": "Passe de Peito com Bola Medicinal",
+    "originalName": "medicine ball chest pass",
+    "equipment": {
+      "key": "medicine ball",
+      "label": "Bola medicinal"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento"
+      ]
+    }
+  },
+  {
+    "id": "1303",
+    "name": "Peitoral Empurrada a Partir de 3 Ponto Base com Bola Medicinal",
+    "originalName": "medicine ball chest push from 3 point stance",
+    "equipment": {
+      "key": "medicine ball",
+      "label": "Bola medicinal"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento"
+      ]
+    }
+  },
+  {
+    "id": "1304",
+    "name": "Empurrada de Peito com Bola Medicinal — Resposta Múltipla",
+    "originalName": "medicine ball chest push multiple response",
+    "equipment": {
+      "key": "medicine ball",
+      "label": "Bola medicinal"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento"
+      ]
+    }
+  },
+  {
+    "id": "1305",
+    "name": "Empurrada de Peito com Bola Medicinal — Resposta Única",
+    "originalName": "medicine ball chest push single response",
+    "equipment": {
+      "key": "medicine ball",
+      "label": "Bola medicinal"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento"
+      ]
+    }
+  },
+  {
+    "id": "1312",
+    "name": "Peitoral Empurrada com Corrida Soltura com Bola Medicinal",
+    "originalName": "medicine ball chest push with run release",
+    "equipment": {
+      "key": "medicine ball",
+      "label": "Bola medicinal"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento"
+      ]
+    }
+  },
+  {
+    "id": "1701",
+    "name": "Fechado Pegada Flexão de Braços com Bola Medicinal",
+    "originalName": "medicine ball close grip push up",
+    "equipment": {
+      "key": "medicine ball",
+      "label": "Bola medicinal"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "calistenia",
+        "label": "Calistenia"
+      },
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento"
+      ]
+    }
+  },
+  {
+    "id": "1354",
+    "name": "Slam Acima da Cabeça com Bola Medicinal",
+    "originalName": "medicine ball overhead slam",
+    "equipment": {
+      "key": "medicine ball",
+      "label": "Bola medicinal"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento"
+      ]
+    }
+  },
+  {
+    "id": "1750",
+    "name": "Arremesso de Peito Deitado com Bola Medicinal",
+    "originalName": "medicine ball supine chest throw",
+    "equipment": {
+      "key": "medicine ball",
+      "label": "Bola medicinal"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento"
+      ]
+    }
+  },
+  {
+    "id": "2328",
+    "name": "Fechado Flexão de Braços em Exercício com Bola",
+    "originalName": "narrow push-up on exercise ball",
+    "equipment": {
+      "key": "stability ball",
+      "label": "Bola suíça"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "calistenia",
+        "label": "Calistenia"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "0640",
+    "name": "Slam Unilateral com Bola Medicinal",
+    "originalName": "one arm slam (with medicine ball)",
+    "equipment": {
+      "key": "medicine ball",
+      "label": "Bola medicinal"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento"
+      ]
+    }
+  },
+  {
+    "id": "1707",
+    "name": "Prono Rotação em na Bola Suíça",
+    "originalName": "prone twist on stability ball",
+    "equipment": {
+      "key": "stability ball",
+      "label": "Bola suíça"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "0650",
+    "name": "Puxada-em (em ) na Bola Suíça",
+    "originalName": "pull-in (on stability ball)",
+    "equipment": {
+      "key": "stability ball",
+      "label": "Bola suíça"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "1307",
+    "name": "Flexão de Braços em no BOSU",
+    "originalName": "push up on bosu ball",
+    "equipment": {
+      "key": "bosu ball",
+      "label": "BOSU"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "calistenia",
+        "label": "Calistenia"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "0653",
+    "name": "Flexão de Braços ( ) no BOSU",
+    "originalName": "push-up (bosu ball)",
+    "equipment": {
+      "key": "bosu ball",
+      "label": "BOSU"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "calistenia",
+        "label": "Calistenia"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "0655",
+    "name": "Flexão de Braços (em ) na Bola Suíça",
+    "originalName": "push-up (on stability ball)",
+    "equipment": {
+      "key": "stability ball",
+      "label": "Bola suíça"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "calistenia",
+        "label": "Calistenia"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "0656",
+    "name": "Flexão de Braços (em ) na Bola Suíça",
+    "originalName": "push-up (on stability ball)",
+    "equipment": {
+      "key": "stability ball",
+      "label": "Bola suíça"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "calistenia",
+        "label": "Calistenia"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "0663",
+    "name": "Flexão de Braços com Bola Medicinal",
+    "originalName": "push-up medicine ball",
+    "equipment": {
+      "key": "medicine ball",
+      "label": "Bola medicinal"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "calistenia",
+        "label": "Calistenia"
+      },
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento"
+      ]
+    }
+  },
+  {
+    "id": "0675",
+    "name": "Inverso Hiper Extensão (em ) na Bola Suíça",
+    "originalName": "reverse hyper extension (on stability ball)",
+    "equipment": {
+      "key": "stability ball",
+      "label": "Bola suíça"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "2204",
+    "name": "Body Saw com Rolo",
+    "originalName": "roller body saw",
+    "equipment": {
+      "key": "roller",
+      "label": "Rolo"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "2206",
+    "name": "Inverso Abdominal Crunch com Rolo",
+    "originalName": "roller reverse crunch",
+    "equipment": {
+      "key": "roller",
+      "label": "Rolo"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "calistenia",
+        "label": "Calistenia"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "2203",
+    "name": "Mobilização de Ombros Sentado com Rolo — Flexão, Depressão e Retração",
+    "originalName": "roller seated shoulder flexor depresor retractor",
+    "equipment": {
+      "key": "roller",
+      "label": "Rolo"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "2209",
+    "name": "Mobilização de Ombros Sentado com Rolo e Uma Perna — Flexão, Depressão e Retração",
+    "originalName": "roller seated single leg shoulder flexor depresor retractor",
+    "equipment": {
+      "key": "roller",
+      "label": "Rolo"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "0680",
+    "name": "Escalada na Corda",
+    "originalName": "rope climb",
+    "equipment": {
+      "key": "rope",
+      "label": "Corda"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "1496",
+    "name": "Golpe de Marreta",
+    "originalName": "sledge hammer",
+    "equipment": {
+      "key": "hammer",
+      "label": "Martelo"
+    },
+    "libraryCategory": {
+      "key": "academia",
+      "label": "Academia"
+    },
+    "collections": [
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "0776",
+    "name": "Snatch Puxada com Barra",
+    "originalName": "snatch pull",
+    "equipment": {
+      "key": "barbell",
+      "label": "Barra"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      },
+      {
+        "key": "peso-livre",
+        "label": "Peso Livre"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento",
+        "equipamento-peso-livre"
+      ]
+    }
+  },
+  {
+    "id": "0778",
+    "name": "Spider Caminhada Flexão de Braços",
+    "originalName": "spider crawl push up",
+    "equipment": {
+      "key": "body weight",
+      "label": "Peso corporal"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "calistenia",
+        "label": "Calistenia"
+      },
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      },
+      {
+        "key": "peso-corporal",
+        "label": "Peso Corporal"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento",
+        "peso-corporal"
+      ]
+    }
+  },
+  {
+    "id": "1705",
+    "name": "Agachamento em no BOSU",
+    "originalName": "squat on bosu ball",
+    "equipment": {
+      "key": "bosu ball",
+      "label": "BOSU"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "2297",
+    "name": "Abdominal Crunch (Completo Amplitude Mãos Atrás Cabeça) na Bola Suíça",
+    "originalName": "stability ball crunch (full range hands behind head)",
+    "equipment": {
+      "key": "stability ball",
+      "label": "Bola suíça"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "calistenia",
+        "label": "Calistenia"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "0796",
+    "name": "Rollout Abdominal em Pé com Roda",
+    "originalName": "standing wheel rollerout",
+    "equipment": {
+      "key": "wheel roller",
+      "label": "Roda abdominal"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "2459",
+    "name": "Virada de Pneu",
+    "originalName": "tire flip",
+    "equipment": {
+      "key": "tire",
+      "label": "Pneu"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento"
+      ]
+    }
+  },
+  {
+    "id": "3641",
+    "name": "Ajoelhado Passo com Swing com Carga",
+    "originalName": "weighted kneeling step with swing",
+    "equipment": {
+      "key": "weighted",
+      "label": "Com carga"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      },
+      {
+        "key": "peso-livre",
+        "label": "Peso Livre"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento",
+        "equipamento-peso-livre"
+      ]
+    }
+  },
+  {
+    "id": "3644",
+    "name": "Afundo com Swing com Carga",
+    "originalName": "weighted lunge with swing",
+    "equipment": {
+      "key": "weighted",
+      "label": "Com carga"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      },
+      {
+        "key": "peso-livre",
+        "label": "Peso Livre"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento",
+        "equipamento-peso-livre"
+      ]
+    }
+  },
+  {
+    "id": "0847",
+    "name": "Com Carga Sentado Rosca de Bíceps (em Estabilidade com Bola)",
+    "originalName": "weighted seated bicep curl (on stability ball)",
+    "equipment": {
+      "key": "medicine ball",
+      "label": "Bola medicinal"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento"
+      ]
+    }
+  },
+  {
+    "id": "0857",
+    "name": "Rollout com Roda Abdominal",
+    "originalName": "wheel rollerout",
+    "equipment": {
+      "key": "wheel roller",
+      "label": "Roda abdominal"
+    },
+    "libraryCategory": {
+      "key": "livre",
+      "label": "Livre"
+    },
+    "collections": [
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": []
+    }
+  },
+  {
+    "id": "0858",
+    "name": "Tiros de Velocidade",
+    "originalName": "wind sprints",
+    "equipment": {
+      "key": "body weight",
+      "label": "Peso corporal"
+    },
+    "libraryCategory": {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    },
+    "collections": [
+      {
+        "key": "calistenia",
+        "label": "Calistenia"
+      },
+      {
+        "key": "condicionamento",
+        "label": "Condicionamento"
+      },
+      {
+        "key": "core",
+        "label": "Core"
+      },
+      {
+        "key": "funcional",
+        "label": "Funcional"
+      },
+      {
+        "key": "musculacao",
+        "label": "Musculação"
+      },
+      {
+        "key": "peso-corporal",
+        "label": "Peso Corporal"
+      }
+    ],
+    "classificationMeta": {
+      "method": "somma-rules-v1",
+      "confidence": "medium",
+      "needsReview": true,
+      "reasons": [
+        "padrao-funcional-condicionamento",
+        "peso-corporal"
+      ]
+    }
+  }
+]

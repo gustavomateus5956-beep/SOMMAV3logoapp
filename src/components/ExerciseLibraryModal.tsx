@@ -10,16 +10,13 @@ import {
   Loader2, 
   Layers
 } from 'lucide-react';
-import { Exercise, ExternalExerciseResult, LibraryExercise } from '../types';
-import { EXERCISE_LIBRARY } from '../data/exerciseLibrary';
+import { Exercise, ExternalExerciseResult } from '../types';
+import { sommaFilterOptions } from '../services/exerciseMedia/sommaDatasetProvider';
 import { ExerciseMedia } from './exercise/ExerciseMedia';
 import { ExerciseDetailModal } from './exercise/ExerciseDetailModal';
 import { 
   convertExternalToSommaExercise, 
-  convertLocalToSommaExercise, 
-  deduplicateExternalResults, 
-  searchExternalExercises, 
-  searchLocalExercises 
+  searchCatalogExercises
 } from '../services/exerciseMedia/exerciseCatalogService';
 import { useScrollLock } from '../hooks/useScrollLock';
 
@@ -29,38 +26,12 @@ interface ExerciseLibraryModalProps {
   title?: string;
 }
 
-const MUSCLE_GROUPS = [
-  'Todos',
-  'Peitoral',
-  'Costas',
-  'Ombros',
-  'Pernas',
-  'Braços',
-  'Core'
-];
+const MUSCLE_GROUPS = [{ key: 'Todos', label: 'Todos' }, ...sommaFilterOptions.bodyParts];
+const EQUIPMENTS = [{ key: 'Todos', label: 'Todos' }, ...sommaFilterOptions.equipment];
 
-const EQUIPMENTS = ['Todos', 'Barra', 'Halteres', 'Máquina', 'Polia', 'Peso Corporal'];
-
-const MUSCLE_TO_BODYPART_MAP: Record<string, string> = {
-  Peitoral: 'chest',
-  Costas: 'back',
-  Ombros: 'shoulders',
-  Pernas: 'upper legs',
-  Braços: 'upper arms',
-  Core: 'waist'
+type UnifiedExerciseItem = {
+  id: string; data: ExternalExerciseResult; name: string; muscleGroup: string; equipment: string;
 };
-
-const EQUIPMENT_TO_EXDB_MAP: Record<string, string> = {
-  Barra: 'barbell',
-  Halteres: 'dumbbell',
-  Máquina: 'leverage machine',
-  Polia: 'cable',
-  'Peso Corporal': 'body weight'
-};
-
-type UnifiedExerciseItem = 
-  | { kind: 'local'; id: string; data: LibraryExercise; name: string; muscleGroup: string; equipment: string }
-  | { kind: 'external'; id: string; data: ExternalExerciseResult; name: string; muscleGroup: string; equipment: string };
 
 export const ExerciseLibraryModal: React.FC<ExerciseLibraryModalProps> = ({
   onClose,
@@ -74,12 +45,13 @@ export const ExerciseLibraryModal: React.FC<ExerciseLibraryModalProps> = ({
   
   // Estado para visualização de detalhes no modal
   const [selectedExerciseDetail, setSelectedExerciseDetail] = useState<
-    LibraryExercise | ExternalExerciseResult | null
+    ExternalExerciseResult | null
   >(null);
   const [addedIds, setAddedIds] = useState<string[]>([]);
 
   // Estados de catálogo paginado
   const [externalExercises, setExternalExercises] = useState<ExternalExerciseResult[]>([]);
+  const [totalExercises, setTotalExercises] = useState<number | undefined>();
   const [isExternalLoading, setIsExternalLoading] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [nextCursor, setNextCursor] = useState<string | undefined>(undefined);
@@ -88,10 +60,7 @@ export const ExerciseLibraryModal: React.FC<ExerciseLibraryModalProps> = ({
   // Abort controller para requisições obsoletas
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  // 1. Busca Local Síncrona e Imediata (~29 movimentos padrão)
-  const localExercises = useMemo(() => {
-    return searchLocalExercises(searchQuery, selectedMuscle, selectedEquipment);
-  }, [searchQuery, selectedMuscle, selectedEquipment]);
+  const [catalogError, setCatalogError] = useState(false);
 
   // 2. Busca e paginação unificada com Debounce (350ms)
   useEffect(() => {
@@ -101,14 +70,21 @@ export const ExerciseLibraryModal: React.FC<ExerciseLibraryModalProps> = ({
     const controller = new AbortController();
     abortControllerRef.current = controller;
 
+    setExternalExercises([]);
+    setTotalExercises(undefined);
+    setHasNextPage(false);
+    setNextCursor(undefined);
+    setCatalogError(false);
+    setIsLoadingMore(false);
+    setIsExternalLoading(true);
     const timer = setTimeout(async () => {
       setIsExternalLoading(true);
 
       try {
-        const bodyPartParam = selectedMuscle !== 'Todos' ? MUSCLE_TO_BODYPART_MAP[selectedMuscle] : undefined;
-        const equipmentParam = selectedEquipment !== 'Todos' ? EQUIPMENT_TO_EXDB_MAP[selectedEquipment] : undefined;
+        const bodyPartParam = selectedMuscle !== 'Todos' ? selectedMuscle : undefined;
+        const equipmentParam = selectedEquipment !== 'Todos' ? selectedEquipment : undefined;
 
-        const res = await searchExternalExercises(
+        const res = await searchCatalogExercises(
           {
             query: searchQuery.trim() || undefined,
             bodyPart: bodyPartParam,
@@ -118,18 +94,18 @@ export const ExerciseLibraryModal: React.FC<ExerciseLibraryModalProps> = ({
           controller.signal
         );
 
-        // Deduplica com base nos exercícios locais para evitar repetições redundantes
-        const deduplicated = deduplicateExternalResults(EXERCISE_LIBRARY, res.exercises);
-
-        setExternalExercises(deduplicated);
+        if (controller.signal.aborted) return;
+        setExternalExercises(res.exercises);
+        setTotalExercises(res.total);
         setHasNextPage(res.hasNextPage);
         setNextCursor(res.nextCursor);
       } catch (err: any) {
-        if (err.name !== 'AbortError') {
+        if (!controller.signal.aborted && err.name !== 'AbortError') {
+          setCatalogError(true);
           setExternalExercises([]);
         }
       } finally {
-        setIsExternalLoading(false);
+        if (!controller.signal.aborted) setIsExternalLoading(false);
       }
     }, 350);
 
@@ -143,65 +119,50 @@ export const ExerciseLibraryModal: React.FC<ExerciseLibraryModalProps> = ({
   const handleLoadMore = async () => {
     if (!hasNextPage || !nextCursor || isLoadingMore) return;
 
+    const controller = abortControllerRef.current;
+    if (!controller || controller.signal.aborted) return;
+    setCatalogError(false);
     setIsLoadingMore(true);
     try {
-      const bodyPartParam = selectedMuscle !== 'Todos' ? MUSCLE_TO_BODYPART_MAP[selectedMuscle] : undefined;
-      const equipmentParam = selectedEquipment !== 'Todos' ? EQUIPMENT_TO_EXDB_MAP[selectedEquipment] : undefined;
+      const bodyPartParam = selectedMuscle !== 'Todos' ? selectedMuscle : undefined;
+      const equipmentParam = selectedEquipment !== 'Todos' ? selectedEquipment : undefined;
 
-      const res = await searchExternalExercises({
+      const res = await searchCatalogExercises({
         query: searchQuery.trim() || undefined,
         bodyPart: bodyPartParam,
         equipment: equipmentParam,
         after: nextCursor,
         limit: 20
-      });
-
-      const deduplicated = deduplicateExternalResults(EXERCISE_LIBRARY, res.exercises);
-
-      setExternalExercises((prev) => [...prev, ...deduplicated]);
+      }, controller.signal);
+      if (controller.signal.aborted) return;
+      setExternalExercises((prev) => [...prev, ...res.exercises]);
       setHasNextPage(res.hasNextPage);
       setNextCursor(res.nextCursor);
     } catch {
-      // Ignora erro de rede suavemente
+      if (!controller.signal.aborted) setCatalogError(true);
     } finally {
-      setIsLoadingMore(false);
+      if (!controller.signal.aborted) setIsLoadingMore(false);
     }
   };
 
   // Lista unificada final
   const unifiedList = useMemo<UnifiedExerciseItem[]>(() => {
-    const localItems: UnifiedExerciseItem[] = localExercises.map((ex) => ({
-      kind: 'local',
-      id: ex.id,
-      data: ex,
-      name: ex.name,
-      muscleGroup: ex.muscleGroup,
-      equipment: ex.equipment
-    }));
-
     const externalItems: UnifiedExerciseItem[] = externalExercises.map((ext) => ({
-      kind: 'external',
-      id: ext.externalId,
+      id: `${ext.provider}:${ext.externalId}`,
       data: ext,
       name: ext.name,
       muscleGroup: ext.bodyPart || 'Geral',
       equipment: ext.equipment || 'Livre'
     }));
 
-    return [...localItems, ...externalItems];
-  }, [localExercises, externalExercises]);
+    return externalItems;
+  }, [externalExercises]);
 
   // Adiciona exercício à rotina
   const handleAddExercise = (item: UnifiedExerciseItem) => {
     const itemId = item.id;
 
-    if (item.kind === 'external') {
-      const newEx = convertExternalToSommaExercise(item.data);
-      onAddExercise(newEx);
-    } else {
-      const newEx = convertLocalToSommaExercise(item.data);
-      onAddExercise(newEx);
-    }
+    onAddExercise(convertExternalToSommaExercise(item.data));
 
     setAddedIds((prev) => [...prev, itemId]);
     setTimeout(() => {
@@ -262,16 +223,16 @@ export const ExerciseLibraryModal: React.FC<ExerciseLibraryModalProps> = ({
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
             {MUSCLE_GROUPS.map((mg) => (
               <button
-                key={mg}
+                key={mg.key}
                 type="button"
-                onClick={() => setSelectedMuscle(mg)}
+                onClick={() => setSelectedMuscle(mg.key)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
-                  selectedMuscle === mg
+                  selectedMuscle === mg.key
                     ? 'bg-[#0066ff] text-white shadow-md'
                     : 'bg-[#181c21] text-[#8c90a1] hover:text-white hover:bg-[#20252c]'
                 }`}
               >
-                {mg}
+                {mg.label}
               </button>
             ))}
           </div>
@@ -281,16 +242,16 @@ export const ExerciseLibraryModal: React.FC<ExerciseLibraryModalProps> = ({
             <span className="text-[#8c90a1] font-semibold text-[10px] uppercase px-1">Equipamento:</span>
             {EQUIPMENTS.map((eq) => (
               <button
-                key={eq}
+                key={eq.key}
                 type="button"
-                onClick={() => setSelectedEquipment(eq)}
+                onClick={() => setSelectedEquipment(eq.key)}
                 className={`px-2.5 py-1 rounded-lg font-medium whitespace-nowrap transition-all cursor-pointer ${
-                  selectedEquipment === eq
+                  selectedEquipment === eq.key
                     ? 'bg-[#262a30] text-[#b3c5ff] border border-[#0066ff]/40 font-bold'
                     : 'text-[#8c90a1] hover:text-white'
                 }`}
               >
-                {eq}
+                {eq.label}
               </button>
             ))}
           </div>
@@ -407,8 +368,13 @@ export const ExerciseLibraryModal: React.FC<ExerciseLibraryModalProps> = ({
             </div>
           )}
 
+          {catalogError && (
+            <p role="alert" className="text-xs text-[#8c90a1] text-center py-3">
+              Não foi possível carregar os exercícios. Tente a busca novamente.
+            </p>
+          )}
           {/* Empty State */}
-          {unifiedList.length === 0 && !isExternalLoading && (
+          {unifiedList.length === 0 && !isExternalLoading && !catalogError && (
             <div className="flex flex-col items-center justify-center py-12 text-center">
               <Dumbbell className="w-10 h-10 text-[#424656] mb-2" />
               <p className="text-sm font-bold text-white">Nenhum exercício encontrado</p>
@@ -435,33 +401,22 @@ export const ExerciseLibraryModal: React.FC<ExerciseLibraryModalProps> = ({
             exercise={selectedExerciseDetail}
             isOpen={Boolean(selectedExerciseDetail)}
             onClose={() => setSelectedExerciseDetail(null)}
-            onAddExercise={() => {
-              const isExt = 'provider' in selectedExerciseDetail && selectedExerciseDetail.provider === 'exercisedb';
-              if (isExt) {
-                const newEx = convertExternalToSommaExercise(selectedExerciseDetail as ExternalExerciseResult);
-                onAddExercise(newEx);
-              } else {
-                const newEx = convertLocalToSommaExercise(selectedExerciseDetail as LibraryExercise);
-                onAddExercise(newEx);
-              }
-              const itemId = isExt ? (selectedExerciseDetail as ExternalExerciseResult).externalId : (selectedExerciseDetail as LibraryExercise).id;
+            onAddExercise={(newExercise) => {
+              onAddExercise(newExercise);
+              const itemId = `${selectedExerciseDetail.provider}:${selectedExerciseDetail.externalId}`;
               setAddedIds((prev) => [...prev, itemId]);
               setTimeout(() => {
                 setAddedIds((prev) => prev.filter((id) => id !== itemId));
               }, 2000);
             }}
-            isAdded={
-              'provider' in selectedExerciseDetail
-                ? addedIds.includes((selectedExerciseDetail as ExternalExerciseResult).externalId)
-                : addedIds.includes((selectedExerciseDetail as LibraryExercise).id)
-            }
+            isAdded={addedIds.includes(`${selectedExerciseDetail.provider}:${selectedExerciseDetail.externalId}`)}
           />
         )}
 
         {/* Footer */}
         <div className="pt-2 border-t border-[#262a30] flex items-center justify-between text-xs text-[#8c90a1]">
           <span className="text-[11px] truncate">
-            {unifiedList.length} exercícios disponíveis
+            {unifiedList.length}{totalExercises !== undefined ? ` de ${totalExercises}` : ''} exercícios disponíveis
           </span>
           <button
             type="button"

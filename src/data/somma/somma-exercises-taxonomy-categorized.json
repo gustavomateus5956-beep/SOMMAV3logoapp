@@ -1,0 +1,548 @@
+{
+  "bodyParts": [
+    {
+      "key": "waist",
+      "label": "Abdômen"
+    },
+    {
+      "key": "lower arms",
+      "label": "Antebraços"
+    },
+    {
+      "key": "upper arms",
+      "label": "Braços"
+    },
+    {
+      "key": "cardio",
+      "label": "Cardio"
+    },
+    {
+      "key": "back",
+      "label": "Costas"
+    },
+    {
+      "key": "shoulders",
+      "label": "Ombros"
+    },
+    {
+      "key": "lower legs",
+      "label": "Panturrilhas"
+    },
+    {
+      "key": "chest",
+      "label": "Peito"
+    },
+    {
+      "key": "upper legs",
+      "label": "Pernas"
+    },
+    {
+      "key": "neck",
+      "label": "Pescoço"
+    }
+  ],
+  "categories": [
+    {
+      "key": "waist",
+      "label": "Abdômen"
+    },
+    {
+      "key": "lower arms",
+      "label": "Antebraços"
+    },
+    {
+      "key": "upper arms",
+      "label": "Braços"
+    },
+    {
+      "key": "cardio",
+      "label": "Cardio"
+    },
+    {
+      "key": "back",
+      "label": "Costas"
+    },
+    {
+      "key": "shoulders",
+      "label": "Ombros"
+    },
+    {
+      "key": "lower legs",
+      "label": "Panturrilhas"
+    },
+    {
+      "key": "chest",
+      "label": "Peito"
+    },
+    {
+      "key": "upper legs",
+      "label": "Pernas"
+    },
+    {
+      "key": "neck",
+      "label": "Pescoço"
+    }
+  ],
+  "targets": [
+    {
+      "key": "abductors",
+      "label": "Abdutores"
+    },
+    {
+      "key": "abs",
+      "label": "Abdômen"
+    },
+    {
+      "key": "adductors",
+      "label": "Adutores"
+    },
+    {
+      "key": "forearms",
+      "label": "Antebraços"
+    },
+    {
+      "key": "biceps",
+      "label": "Bíceps"
+    },
+    {
+      "key": "spine",
+      "label": "Coluna"
+    },
+    {
+      "key": "upper back",
+      "label": "Costas superiores"
+    },
+    {
+      "key": "delts",
+      "label": "Deltoides"
+    },
+    {
+      "key": "lats",
+      "label": "Dorsais"
+    },
+    {
+      "key": "levator scapulae",
+      "label": "Elevador da escápula"
+    },
+    {
+      "key": "glutes",
+      "label": "Glúteos"
+    },
+    {
+      "key": "calves",
+      "label": "Panturrilhas"
+    },
+    {
+      "key": "pectorals",
+      "label": "Peitoral"
+    },
+    {
+      "key": "hamstrings",
+      "label": "Posteriores de coxa"
+    },
+    {
+      "key": "quads",
+      "label": "Quadríceps"
+    },
+    {
+      "key": "serratus anterior",
+      "label": "Serrátil anterior"
+    },
+    {
+      "key": "cardiovascular system",
+      "label": "Sistema cardiovascular"
+    },
+    {
+      "key": "traps",
+      "label": "Trapézio"
+    },
+    {
+      "key": "triceps",
+      "label": "Tríceps"
+    }
+  ],
+  "equipment": [
+    {
+      "key": "assisted",
+      "label": "Assistido"
+    },
+    {
+      "key": "barbell",
+      "label": "Barra"
+    },
+    {
+      "key": "olympic barbell",
+      "label": "Barra olímpica"
+    },
+    {
+      "key": "ez barbell",
+      "label": "Barra W"
+    },
+    {
+      "key": "stationary bike",
+      "label": "Bicicleta ergométrica"
+    },
+    {
+      "key": "medicine ball",
+      "label": "Bola medicinal"
+    },
+    {
+      "key": "stability ball",
+      "label": "Bola suíça"
+    },
+    {
+      "key": "bosu ball",
+      "label": "BOSU"
+    },
+    {
+      "key": "weighted",
+      "label": "Com carga"
+    },
+    {
+      "key": "rope",
+      "label": "Corda"
+    },
+    {
+      "key": "elliptical machine",
+      "label": "Elíptico"
+    },
+    {
+      "key": "upper body ergometer",
+      "label": "Ergômetro de membros superiores"
+    },
+    {
+      "key": "stepmill machine",
+      "label": "Escada ergométrica"
+    },
+    {
+      "key": "resistance band",
+      "label": "Faixa de resistência"
+    },
+    {
+      "key": "band",
+      "label": "Faixa elástica"
+    },
+    {
+      "key": "dumbbell",
+      "label": "Halteres"
+    },
+    {
+      "key": "kettlebell",
+      "label": "Kettlebell"
+    },
+    {
+      "key": "hammer",
+      "label": "Martelo"
+    },
+    {
+      "key": "leverage machine",
+      "label": "Máquina articulada"
+    },
+    {
+      "key": "sled machine",
+      "label": "Máquina sled"
+    },
+    {
+      "key": "body weight",
+      "label": "Peso corporal"
+    },
+    {
+      "key": "tire",
+      "label": "Pneu"
+    },
+    {
+      "key": "cable",
+      "label": "Polia"
+    },
+    {
+      "key": "wheel roller",
+      "label": "Roda abdominal"
+    },
+    {
+      "key": "roller",
+      "label": "Rolo"
+    },
+    {
+      "key": "skierg machine",
+      "label": "SkiErg"
+    },
+    {
+      "key": "smith machine",
+      "label": "Smith"
+    },
+    {
+      "key": "trap bar",
+      "label": "Trap Bar"
+    }
+  ],
+  "muscles": [
+    {
+      "key": "abdominals",
+      "label": "Abdômen"
+    },
+    {
+      "key": "lower abs",
+      "label": "Abdômen inferior"
+    },
+    {
+      "key": "forearms",
+      "label": "Antebraços"
+    },
+    {
+      "key": "brachialis",
+      "label": "Braquial"
+    },
+    {
+      "key": "biceps",
+      "label": "Bíceps"
+    },
+    {
+      "key": "core",
+      "label": "Core"
+    },
+    {
+      "key": "back",
+      "label": "Costas"
+    },
+    {
+      "key": "upper back",
+      "label": "Costas superiores"
+    },
+    {
+      "key": "rear deltoids",
+      "label": "Deltoide posterior"
+    },
+    {
+      "key": "deltoids",
+      "label": "Deltoides"
+    },
+    {
+      "key": "lats",
+      "label": "Dorsais"
+    },
+    {
+      "key": "ankle stabilizers",
+      "label": "Estabilizadores do tornozelo"
+    },
+    {
+      "key": "sternocleidomastoid",
+      "label": "Esternocleidomastoideo"
+    },
+    {
+      "key": "wrist extensors",
+      "label": "Extensores do punho"
+    },
+    {
+      "key": "wrist flexors",
+      "label": "Flexores do punho"
+    },
+    {
+      "key": "hip flexors",
+      "label": "Flexores do quadril"
+    },
+    {
+      "key": "glutes",
+      "label": "Glúteos"
+    },
+    {
+      "key": "latissimus dorsi",
+      "label": "Latíssimo do dorso"
+    },
+    {
+      "key": "lower back",
+      "label": "Lombar"
+    },
+    {
+      "key": "rotator cuff",
+      "label": "Manguito rotador"
+    },
+    {
+      "key": "hands",
+      "label": "Mãos"
+    },
+    {
+      "key": "grip muscles",
+      "label": "Músculos da pegada"
+    },
+    {
+      "key": "obliques",
+      "label": "Oblíquos"
+    },
+    {
+      "key": "shoulders",
+      "label": "Ombros"
+    },
+    {
+      "key": "calves",
+      "label": "Panturrilhas"
+    },
+    {
+      "key": "inner thighs",
+      "label": "Parte interna das coxas"
+    },
+    {
+      "key": "chest",
+      "label": "Peitoral"
+    },
+    {
+      "key": "upper chest",
+      "label": "Peitoral superior"
+    },
+    {
+      "key": "hamstrings",
+      "label": "Posteriores de coxa"
+    },
+    {
+      "key": "wrists",
+      "label": "Punhos"
+    },
+    {
+      "key": "feet",
+      "label": "Pés"
+    },
+    {
+      "key": "quadriceps",
+      "label": "Quadríceps"
+    },
+    {
+      "key": "rhomboids",
+      "label": "Romboides"
+    },
+    {
+      "key": "soleus",
+      "label": "Sóleo"
+    },
+    {
+      "key": "shins",
+      "label": "Tibiais"
+    },
+    {
+      "key": "ankles",
+      "label": "Tornozelos"
+    },
+    {
+      "key": "trapezius",
+      "label": "Trapézio"
+    },
+    {
+      "key": "traps",
+      "label": "Trapézio"
+    },
+    {
+      "key": "triceps",
+      "label": "Tríceps"
+    },
+    {
+      "key": "groin",
+      "label": "Virilha"
+    }
+  ],
+  "libraryCategories": [
+    {
+      "key": "academia",
+      "label": "Academia"
+    },
+    {
+      "key": "livre",
+      "label": "Livre"
+    },
+    {
+      "key": "alongamento-mobilidade",
+      "label": "Alongamento & Mobilidade"
+    },
+    {
+      "key": "cardio",
+      "label": "Cardio"
+    },
+    {
+      "key": "funcional-condicionamento",
+      "label": "Funcional & Condicionamento"
+    }
+  ],
+  "collections": [
+    {
+      "key": "musculacao",
+      "label": "Musculação"
+    },
+    {
+      "key": "peso-livre",
+      "label": "Peso Livre"
+    },
+    {
+      "key": "maquinas",
+      "label": "Máquinas"
+    },
+    {
+      "key": "polias",
+      "label": "Polias"
+    },
+    {
+      "key": "peso-corporal",
+      "label": "Peso Corporal"
+    },
+    {
+      "key": "calistenia",
+      "label": "Calistenia"
+    },
+    {
+      "key": "alongamento-mobilidade",
+      "label": "Alongamento & Mobilidade"
+    },
+    {
+      "key": "cardio",
+      "label": "Cardio"
+    },
+    {
+      "key": "funcional",
+      "label": "Funcional"
+    },
+    {
+      "key": "core",
+      "label": "Core"
+    },
+    {
+      "key": "elasticos",
+      "label": "Elásticos"
+    },
+    {
+      "key": "kettlebell",
+      "label": "Kettlebell"
+    },
+    {
+      "key": "condicionamento",
+      "label": "Condicionamento"
+    }
+  ],
+  "activityTypes": [
+    {
+      "key": "forca",
+      "label": "Força"
+    },
+    {
+      "key": "alongamento-mobilidade",
+      "label": "Alongamento & Mobilidade"
+    },
+    {
+      "key": "cardio",
+      "label": "Cardio"
+    },
+    {
+      "key": "condicionamento",
+      "label": "Condicionamento"
+    }
+  ],
+  "environments": [
+    {
+      "key": "academia",
+      "label": "Academia"
+    },
+    {
+      "key": "livre",
+      "label": "Livre"
+    },
+    {
+      "key": "ambos",
+      "label": "Academia ou Livre"
+    }
+  ]
+}

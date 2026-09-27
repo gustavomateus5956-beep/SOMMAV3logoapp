@@ -4,6 +4,7 @@ import { Exercise, ExternalExerciseResult, LibraryExercise } from '../../types';
 import { resolveExerciseMedia, getExerciseMediaImmediate } from '../../services/exerciseMedia/exerciseMediaService';
 import { buildExerciseDbGifUrl } from '../../services/exerciseMedia/exerciseDbProvider';
 import { ExerciseMediaResult } from '../../services/exerciseMedia/types';
+import { getSommaMedia, isSommaMediaSubject, selectExerciseMediaSource } from '../../services/exerciseMedia/sommaMediaProvider';
 
 type ExerciseMediaSubject = 
   | Exercise 
@@ -22,13 +23,28 @@ interface ExerciseMediaProps {
 
 export const ExerciseMedia: React.FC<ExerciseMediaProps> = ({
   exercise,
+  ...props
+}) => {
+  // Remount only the media state when identity or display mode changes, so an old
+  // GIF/error cannot leak into a new thumbnail (or a different exercise).
+  const subject = exercise as Exercise & ExternalExerciseResult;
+  const identity = [subject.catalogRef?.provider, subject.catalogRef?.id,
+    subject.source, subject.provider, subject.id, subject.externalId,
+    subject.name, subject.gifUrl, subject.media?.gifUrl].join('|');
+  return <ExerciseMediaContent key={`${identity}|${props.size || 'md'}|${Boolean(props.forceStaticThumbnail)}`} exercise={exercise} {...props} />;
+};
+
+const ExerciseMediaContent: React.FC<ExerciseMediaProps> = ({
+  exercise,
   size = 'md',
   className = '',
   showProviderBadge = false,
   altText,
   forceStaticThumbnail = false
 }) => {
+  const staticThumbnail = forceStaticThumbnail || size === 'sm';
   const getInitialMedia = (): ExerciseMediaResult | null => {
+    if (isSommaMediaSubject(exercise)) return getSommaMedia(exercise);
     // Se o próprio objeto já possui gifUrl direto (ex: ExternalExerciseResult)
     const directGif = (exercise as any).gifUrl || (exercise as any).media?.gifUrl;
     if (directGif) {
@@ -46,7 +62,7 @@ export const ExerciseMedia: React.FC<ExerciseMediaProps> = ({
   const [media, setMedia] = useState<ExerciseMediaResult | null>(getInitialMedia);
   const [currentSrc, setCurrentSrc] = useState<string | null>(() => {
     const init = getInitialMedia();
-    return init?.gifUrl || null;
+    return selectExerciseMediaSource(init, staticThumbnail);
   });
   const [fallbackAttempted, setFallbackAttempted] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(!media);
@@ -62,7 +78,7 @@ export const ExerciseMedia: React.FC<ExerciseMediaProps> = ({
 
     if (initial) {
       setMedia(initial);
-      setCurrentSrc(initial.gifUrl || null);
+      setCurrentSrc(selectExerciseMediaSource(initial, staticThumbnail));
       setIsLoading(false);
       return;
     }
@@ -73,7 +89,7 @@ export const ExerciseMedia: React.FC<ExerciseMediaProps> = ({
       .then((res) => {
         if (isMounted) {
           setMedia(res);
-          setCurrentSrc(res.gifUrl || null);
+          setCurrentSrc(selectExerciseMediaSource(res, staticThumbnail));
           setIsLoading(false);
         }
       })
@@ -88,10 +104,10 @@ export const ExerciseMedia: React.FC<ExerciseMediaProps> = ({
     return () => {
       isMounted = false;
     };
-  }, [subjectKey]);
+  }, [subjectKey, staticThumbnail]);
 
   const handleImageError = () => {
-    if (!fallbackAttempted && media?.externalId) {
+    if (!fallbackAttempted && media?.provider !== 'somma' && media?.externalId) {
       setFallbackAttempted(true);
       setCurrentSrc(buildExerciseDbGifUrl(media.externalId, true));
     } else {
@@ -143,6 +159,8 @@ export const ExerciseMedia: React.FC<ExerciseMediaProps> = ({
         >
           <img
             src={currentSrc}
+            loading={media?.provider === 'somma' ? 'lazy' : undefined}
+            decoding={media?.provider === 'somma' ? 'async' : undefined}
             alt={`Demonstração: ${displayName}`}
             onError={handleImageError}
             className="w-full h-full object-cover rounded-full"
@@ -157,6 +175,8 @@ export const ExerciseMedia: React.FC<ExerciseMediaProps> = ({
       >
         <img
           src={currentSrc}
+          loading={media?.provider === 'somma' && staticThumbnail ? 'lazy' : undefined}
+          decoding={media?.provider === 'somma' ? 'async' : undefined}
           alt={`Demonstração biomecânica: ${displayName}`}
           onError={handleImageError}
           className="w-full h-full object-contain p-1 filter drop-shadow transition-transform duration-300 group-hover:scale-[1.02]"

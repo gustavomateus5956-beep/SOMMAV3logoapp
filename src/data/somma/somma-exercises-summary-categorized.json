@@ -1,0 +1,445 @@
+{
+  "source": {
+    "dataset": "hasaneyldrm/exercises-dataset",
+    "sourceFile": "exercises-dataset-main.zip",
+    "records": 1324
+  },
+  "totalExercises": 1324,
+  "uniqueOriginalNames": 1318,
+  "duplicateOriginalNames": [
+    {
+      "name": "barbell seated calf raise",
+      "count": 2
+    },
+    {
+      "name": "ez barbell spider curl",
+      "count": 2
+    },
+    {
+      "name": "lever chest press",
+      "count": 2
+    },
+    {
+      "name": "push-up (on stability ball)",
+      "count": 2
+    },
+    {
+      "name": "self assisted inverse leg curl",
+      "count": 2
+    },
+    {
+      "name": "smith reverse calf raises",
+      "count": 2
+    }
+  ],
+  "uniquePtBrNames": 1311,
+  "duplicatePtBrNames": [
+    {
+      "name": "assistido barra fixa",
+      "count": 2
+    },
+    {
+      "name": "baixo com barra agachamento",
+      "count": 2
+    },
+    {
+      "name": "sentado elevação de panturrilhas com barra",
+      "count": 2
+    },
+    {
+      "name": "um braço crucifixo em exercício com bola",
+      "count": 3
+    },
+    {
+      "name": "um braço press em exercício com bola",
+      "count": 2
+    },
+    {
+      "name": "press em exercício com bola",
+      "count": 2
+    },
+    {
+      "name": "rosca spider com barra w",
+      "count": 2
+    },
+    {
+      "name": "supino na máquina articulada",
+      "count": 2
+    },
+    {
+      "name": "barra fixa",
+      "count": 2
+    },
+    {
+      "name": "flexão de braços (em ) na bola suíça",
+      "count": 2
+    },
+    {
+      "name": "auto assistido inversa flexão de joelhos",
+      "count": 2
+    },
+    {
+      "name": "elevação reversa de panturrilhas no smith",
+      "count": 2
+    }
+  ],
+  "withImage": 1324,
+  "withoutImage": 0,
+  "withGif": 1324,
+  "withoutGif": 0,
+  "orphanImages": [],
+  "orphanGifs": [],
+  "brokenMediaReferences": [],
+  "byBodyPart": {
+    "upper arms": {
+      "label": "Braços",
+      "count": 292
+    },
+    "upper legs": {
+      "label": "Pernas",
+      "count": 227
+    },
+    "back": {
+      "label": "Costas",
+      "count": 203
+    },
+    "waist": {
+      "label": "Abdômen",
+      "count": 169
+    },
+    "chest": {
+      "label": "Peito",
+      "count": 163
+    },
+    "shoulders": {
+      "label": "Ombros",
+      "count": 143
+    },
+    "lower legs": {
+      "label": "Panturrilhas",
+      "count": 59
+    },
+    "lower arms": {
+      "label": "Antebraços",
+      "count": 37
+    },
+    "cardio": {
+      "label": "Cardio",
+      "count": 29
+    },
+    "neck": {
+      "label": "Pescoço",
+      "count": 2
+    }
+  },
+  "byEquipment": {
+    "body weight": {
+      "label": "Peso corporal",
+      "count": 325
+    },
+    "dumbbell": {
+      "label": "Halteres",
+      "count": 294
+    },
+    "cable": {
+      "label": "Polia",
+      "count": 157
+    },
+    "barbell": {
+      "label": "Barra",
+      "count": 154
+    },
+    "leverage machine": {
+      "label": "Máquina articulada",
+      "count": 81
+    },
+    "band": {
+      "label": "Faixa elástica",
+      "count": 54
+    },
+    "smith machine": {
+      "label": "Smith",
+      "count": 48
+    },
+    "kettlebell": {
+      "label": "Kettlebell",
+      "count": 41
+    },
+    "weighted": {
+      "label": "Com carga",
+      "count": 36
+    },
+    "stability ball": {
+      "label": "Bola suíça",
+      "count": 28
+    },
+    "ez barbell": {
+      "label": "Barra W",
+      "count": 23
+    },
+    "assisted": {
+      "label": "Assistido",
+      "count": 15
+    },
+    "sled machine": {
+      "label": "Máquina sled",
+      "count": 15
+    },
+    "medicine ball": {
+      "label": "Bola medicinal",
+      "count": 13
+    },
+    "rope": {
+      "label": "Corda",
+      "count": 10
+    },
+    "roller": {
+      "label": "Rolo",
+      "count": 8
+    },
+    "resistance band": {
+      "label": "Faixa de resistência",
+      "count": 7
+    },
+    "bosu ball": {
+      "label": "BOSU",
+      "count": 3
+    },
+    "olympic barbell": {
+      "label": "Barra olímpica",
+      "count": 2
+    },
+    "wheel roller": {
+      "label": "Roda abdominal",
+      "count": 2
+    },
+    "upper body ergometer": {
+      "label": "Ergômetro de membros superiores",
+      "count": 1
+    },
+    "skierg machine": {
+      "label": "SkiErg",
+      "count": 1
+    },
+    "hammer": {
+      "label": "Martelo",
+      "count": 1
+    },
+    "stationary bike": {
+      "label": "Bicicleta ergométrica",
+      "count": 1
+    },
+    "tire": {
+      "label": "Pneu",
+      "count": 1
+    },
+    "trap bar": {
+      "label": "Trap Bar",
+      "count": 1
+    },
+    "elliptical machine": {
+      "label": "Elíptico",
+      "count": 1
+    },
+    "stepmill machine": {
+      "label": "Escada ergométrica",
+      "count": 1
+    }
+  },
+  "byTarget": {
+    "abs": {
+      "label": "Abdômen",
+      "count": 169
+    },
+    "pectorals": {
+      "label": "Peitoral",
+      "count": 158
+    },
+    "biceps": {
+      "label": "Bíceps",
+      "count": 151
+    },
+    "glutes": {
+      "label": "Glúteos",
+      "count": 144
+    },
+    "delts": {
+      "label": "Deltoides",
+      "count": 143
+    },
+    "triceps": {
+      "label": "Tríceps",
+      "count": 141
+    },
+    "upper back": {
+      "label": "Costas superiores",
+      "count": 88
+    },
+    "lats": {
+      "label": "Dorsais",
+      "count": 81
+    },
+    "calves": {
+      "label": "Panturrilhas",
+      "count": 59
+    },
+    "quads": {
+      "label": "Quadríceps",
+      "count": 44
+    },
+    "forearms": {
+      "label": "Antebraços",
+      "count": 37
+    },
+    "cardiovascular system": {
+      "label": "Sistema cardiovascular",
+      "count": 29
+    },
+    "hamstrings": {
+      "label": "Posteriores de coxa",
+      "count": 28
+    },
+    "spine": {
+      "label": "Coluna",
+      "count": 19
+    },
+    "traps": {
+      "label": "Trapézio",
+      "count": 15
+    },
+    "adductors": {
+      "label": "Adutores",
+      "count": 6
+    },
+    "serratus anterior": {
+      "label": "Serrátil anterior",
+      "count": 5
+    },
+    "abductors": {
+      "label": "Abdutores",
+      "count": 5
+    },
+    "levator scapulae": {
+      "label": "Elevador da escápula",
+      "count": 2
+    }
+  },
+  "translationReview": {
+    "namesNeedingReview": 0,
+    "instructionsNeedingReview": 1324,
+    "note": "Nomes/taxonomia são uma normalização SOMMA para teste. Instruções PT-BR são rascunho automático derivado do texto espanhol do dataset e devem ser revisadas antes de uso comercial/profissional."
+  },
+  "classificationVersion": "somma-rules-v1",
+  "byLibraryCategory": {
+    "academia": {
+      "label": "Academia",
+      "count": 839
+    },
+    "livre": {
+      "label": "Livre",
+      "count": 362
+    },
+    "alongamento-mobilidade": {
+      "label": "Alongamento & Mobilidade",
+      "count": 59
+    },
+    "funcional-condicionamento": {
+      "label": "Funcional & Condicionamento",
+      "count": 35
+    },
+    "cardio": {
+      "label": "Cardio",
+      "count": 29
+    }
+  },
+  "byActivityType": {
+    "forca": {
+      "label": "Força",
+      "count": 1201
+    },
+    "alongamento-mobilidade": {
+      "label": "Alongamento & Mobilidade",
+      "count": 59
+    },
+    "condicionamento": {
+      "label": "Condicionamento",
+      "count": 35
+    },
+    "cardio": {
+      "label": "Cardio",
+      "count": 29
+    }
+  },
+  "byEnvironment": {
+    "ambos": {
+      "label": "Academia ou Livre",
+      "count": 693
+    },
+    "livre": {
+      "label": "Livre",
+      "count": 325
+    },
+    "academia": {
+      "label": "Academia",
+      "count": 306
+    }
+  },
+  "byCollection": {
+    "musculacao": {
+      "label": "Musculação",
+      "count": 1236
+    },
+    "peso-livre": {
+      "label": "Peso Livre",
+      "count": 551
+    },
+    "calistenia": {
+      "label": "Calistenia",
+      "count": 403
+    },
+    "peso-corporal": {
+      "label": "Peso Corporal",
+      "count": 325
+    },
+    "maquinas": {
+      "label": "Máquinas",
+      "count": 306
+    },
+    "core": {
+      "label": "Core",
+      "count": 281
+    },
+    "polias": {
+      "label": "Polias",
+      "count": 157
+    },
+    "funcional": {
+      "label": "Funcional",
+      "count": 80
+    },
+    "condicionamento": {
+      "label": "Condicionamento",
+      "count": 64
+    },
+    "elasticos": {
+      "label": "Elásticos",
+      "count": 61
+    },
+    "alongamento-mobilidade": {
+      "label": "Alongamento & Mobilidade",
+      "count": 59
+    },
+    "kettlebell": {
+      "label": "Kettlebell",
+      "count": 41
+    },
+    "cardio": {
+      "label": "Cardio",
+      "count": 29
+    }
+  },
+  "classificationReview": {
+    "needsReviewCount": 71,
+    "note": "Itens funcionais/condicionamento e casos ambíguos foram preservados e marcados para revisão manual; nada foi excluído."
+  }
+}

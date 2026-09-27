@@ -2,6 +2,7 @@ import { Exercise, LibraryExercise } from '../../types';
 import { SOMMA_EXERCISE_MEDIA_MAP } from './exerciseMediaMap';
 import { getExerciseDbMedia } from './exerciseDbProvider';
 import { ExerciseMediaResult } from './types';
+import { getSommaMedia, isSommaMediaSubject } from './sommaMediaProvider';
 
 // Cache em memória para evitar requisições ou resoluções duplicadas
 const mediaCache = new Map<string, ExerciseMediaResult>();
@@ -119,6 +120,7 @@ function findExternalIdByName(name?: string): string | null {
 export async function resolveExerciseMedia(
   exercise: Exercise | LibraryExercise | { id: string; name?: string; media?: any }
 ): Promise<ExerciseMediaResult> {
+  if (isSommaMediaSubject(exercise)) return getSommaMedia(exercise);
   const baseId = extractBaseSommaId(exercise.id);
   const cacheKey = baseId || exercise.id || exercise.name || 'ex';
 
@@ -194,6 +196,7 @@ export async function resolveExerciseMedia(
 export function getExerciseMediaImmediate(
   exercise: Exercise | LibraryExercise | { id: string; name?: string; media?: any }
 ): ExerciseMediaResult | null {
+  if (isSommaMediaSubject(exercise)) return getSommaMedia(exercise);
   const baseId = extractBaseSommaId(exercise.id);
   const cacheKey = baseId || exercise.id || exercise.name || 'ex';
 

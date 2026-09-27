@@ -55,26 +55,30 @@ export const ExerciseDetailModal: React.FC<ExerciseDetailModalProps> = ({
 
   if (!isOpen) return null;
 
-  const isExternal = 'provider' in exercise && (exercise as any).provider === 'exercisedb';
+  const isExternal = 'provider' in exercise;
+  const isSommaCatalog = ('provider' in exercise && exercise.provider === 'somma') ||
+    ('catalogRef' in exercise && exercise.catalogRef?.provider === 'somma');
   const isLibrary = 'defaultSets' in exercise;
   const externalId = (exercise as any).externalId || (exercise as any).external?.id;
 
   // Localização 100% PT-BR
-  const localizedInfo = localizeExerciseName(exercise.name, externalId);
+  const localizedInfo = isSommaCatalog
+    ? { name: exercise.name, originalName: exercise.originalName }
+    : localizeExerciseName(exercise.name, externalId);
   const displayName = localizedInfo.name;
 
   const rawBodyPart = (exercise as any).bodyPart || (exercise as any).muscleGroup;
-  const muscleGroup = translateBodyPart(rawBodyPart);
+  const muscleGroup = isSommaCatalog ? rawBodyPart : translateBodyPart(rawBodyPart);
 
   const rawEquipment = (exercise as any).equipment;
-  const equipment = translateEquipment(rawEquipment);
+  const equipment = isSommaCatalog ? rawEquipment : translateEquipment(rawEquipment);
 
   const rawTargetMuscles: string[] = (exercise as any).targetMuscles || [
     (exercise as any).target,
     ...((exercise as any).secondaryMuscles || [])
   ].filter(Boolean);
 
-  const targetMuscles = translateMuscleList(rawTargetMuscles);
+  const targetMuscles = isSommaCatalog ? rawTargetMuscles : translateMuscleList(rawTargetMuscles);
 
   // Instruções técnicas em PT-BR
   const rawInstructions: string[] = Array.isArray((exercise as any).instructions)
@@ -89,7 +93,7 @@ export const ExerciseDetailModal: React.FC<ExerciseDetailModalProps> = ({
     /\b(stand|hold|feet|slowly|lower|barbell|dumbbell|cable|chest|elbows|shoulder-width|exhale|inhale|grip|knees)\b/i.test(inst)
   );
 
-  const stepsList = isEnglish ? [] : rawInstructions;
+  const stepsList = isSommaCatalog ? rawInstructions : isEnglish ? [] : rawInstructions;
 
   // Carregar histórico real dos treinos do usuário
   const [sessions, setSessions] = useState<WorkoutSessionRecord[]>([]);
