@@ -17,6 +17,7 @@ export interface ActiveWorkoutSession {
   isRestPaused: boolean;
   lastActiveExerciseIndex: number;
   lastActiveSetIndex: number;
+  finalDurationSeconds?: number;
 }
 
 export interface WorkoutContextType {
@@ -38,6 +39,13 @@ export interface WorkoutContextType {
   setIsRestPaused: (paused: boolean | ((prev: boolean) => boolean)) => void;
   setIsTimerPaused: (paused: boolean | ((prev: boolean) => boolean)) => void;
   setLastActivePosition: (exerciseIndex: number, setIndex: number) => void;
+  completeSetInContext: (
+    exercises: Exercise[],
+    exIndex: number,
+    setIndex: number,
+    targetRest: number | null
+  ) => void;
+  completeWorkoutInContext: (frozenSeconds: number) => void;
   finishWorkout: () => Promise<WorkoutSessionRecord | null> | WorkoutSessionRecord | null;
   discardWorkout: () => void;
 }
@@ -272,11 +280,57 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
     );
   }, []);
 
+  const completeSetInContext = useCallback(
+    (newExercises: Exercise[], exIndex: number, setIndex: number, targetRest: number | null) => {
+      setActiveSession((prev) => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          exercises: newExercises,
+          lastActiveExerciseIndex: exIndex,
+          lastActiveSetIndex: setIndex,
+          restSeconds: targetRest !== null ? targetRest : prev.restSeconds,
+          isRestPaused: targetRest !== null ? false : prev.isRestPaused
+        };
+      });
+    },
+    []
+  );
+
+  const isFinishingRef = useRef(false);
+
+  // Freeze session and timers upon completion snapshot
+  const completeWorkoutInContext = useCallback((frozenSeconds: number) => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+    setWorkoutStatus('completed');
+    setActiveSession((prev) => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        seconds: frozenSeconds,
+        finalDurationSeconds: frozenSeconds,
+        restSeconds: null,
+        isTimerPaused: true,
+        isRestPaused: true
+      };
+    });
+  }, []);
+
   // Finish and save workout
   const finishWorkout = useCallback(async (): Promise<WorkoutSessionRecord | null> => {
-    if (!activeSession) return null;
+    if (!activeSession || isFinishingRef.current) return null;
+    isFinishingRef.current = true;
 
-    const durationMinutes = Math.max(1, Math.round(activeSession.seconds / 60));
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+
+    const finalSeconds = activeSession.finalDurationSeconds ?? activeSession.seconds;
+    const durationMinutes = Math.max(1, Math.round(finalSeconds / 60));
     const now = new Date();
 
     let sessionTotalVolume = 0;
@@ -352,6 +406,7 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
     // After brief completed state, reset to idle
     setTimeout(() => {
+      isFinishingRef.current = false;
       setWorkoutStatus('idle');
     }, 500);
 
@@ -383,6 +438,8 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
         setIsRestPaused,
         setIsTimerPaused,
         setLastActivePosition,
+        completeSetInContext,
+        completeWorkoutInContext,
         finishWorkout,
         discardWorkout
       }}

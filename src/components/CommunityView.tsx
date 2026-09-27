@@ -3,7 +3,6 @@ import { Camera } from 'lucide-react';
 import { MOCK_LOCAL_ATHLETES, USER_PROFILE } from '../data/mockData';
 import { FeedPost, Comment } from '../types';
 import { repositories } from '../data';
-import { PageHeader } from './PageHeader';
 import { CommunityFeedPostCard } from './community/CommunityFeedPostCard';
 import { CommunitySuggestedAthletes } from './community/CommunitySuggestedAthletes';
 import { CommunityCreateModal } from './community/CommunityCreateModal';
@@ -190,14 +189,8 @@ export const CommunityView: React.FC<CommunityViewProps> = () => {
   };
 
   return (
-    <div className="flex flex-col w-full pb-24 md:pb-12 gap-5">
-      {/* 1. Header: Clean title without redundant category, duplicate back or badges */}
-      <PageHeader
-        title="Comunidade"
-        subtitle="Compartilhe sua evolução e acompanhe outros atletas."
-      />
-
-      {/* 2. Ação Principal: Compartilhar Evolução */}
+    <div className="flex flex-col w-full pb-24 md:pb-12 gap-5 pt-1">
+      {/* 1. Ação Principal: Compartilhar Evolução */}
       <div className="bg-[#1c2025] p-3.5 sm:p-4 rounded-2xl border border-[#262a30] flex items-center justify-between gap-3 shadow-sm hover:border-[#31353b] transition-all">
         <div className="flex items-center gap-3 flex-1 min-w-0">
           <img

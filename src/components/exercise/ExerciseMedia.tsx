@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Dumbbell, ImageOff, Loader2 } from 'lucide-react';
 import { Exercise, ExternalExerciseResult, LibraryExercise } from '../../types';
 import { resolveExerciseMedia, getExerciseMediaImmediate } from '../../services/exerciseMedia/exerciseMediaService';
+import { buildExerciseDbGifUrl } from '../../services/exerciseMedia/exerciseDbProvider';
 import { ExerciseMediaResult } from '../../services/exerciseMedia/types';
 
 type ExerciseMediaSubject = 
@@ -43,6 +44,11 @@ export const ExerciseMedia: React.FC<ExerciseMediaProps> = ({
   };
 
   const [media, setMedia] = useState<ExerciseMediaResult | null>(getInitialMedia);
+  const [currentSrc, setCurrentSrc] = useState<string | null>(() => {
+    const init = getInitialMedia();
+    return init?.gifUrl || null;
+  });
+  const [fallbackAttempted, setFallbackAttempted] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(!media);
   const [hasError, setHasError] = useState<boolean>(false);
 
@@ -51,25 +57,30 @@ export const ExerciseMedia: React.FC<ExerciseMediaProps> = ({
   useEffect(() => {
     let isMounted = true;
     const initial = getInitialMedia();
+    setHasError(false);
+    setFallbackAttempted(false);
+
     if (initial) {
       setMedia(initial);
+      setCurrentSrc(initial.gifUrl || null);
       setIsLoading(false);
       return;
     }
 
     setIsLoading(true);
-    setHasError(false);
 
     resolveExerciseMedia(exercise as any)
       .then((res) => {
         if (isMounted) {
           setMedia(res);
+          setCurrentSrc(res.gifUrl || null);
           setIsLoading(false);
         }
       })
       .catch(() => {
         if (isMounted) {
           setMedia({ provider: 'somma', isAvailable: false });
+          setCurrentSrc(null);
           setIsLoading(false);
         }
       });
@@ -78,6 +89,15 @@ export const ExerciseMedia: React.FC<ExerciseMediaProps> = ({
       isMounted = false;
     };
   }, [subjectKey]);
+
+  const handleImageError = () => {
+    if (!fallbackAttempted && media?.externalId) {
+      setFallbackAttempted(true);
+      setCurrentSrc(buildExerciseDbGifUrl(media.externalId, true));
+    } else {
+      setHasError(true);
+    }
+  };
 
   // Tamanhos padronizados
   const sizeClasses = {
@@ -94,7 +114,7 @@ export const ExerciseMedia: React.FC<ExerciseMediaProps> = ({
     if (size === 'sm') {
       return (
         <div
-          className={`flex items-center justify-center bg-[#181c21] text-[#0066ff] shrink-0 ${className || sizeClasses}`}
+          className={`flex items-center justify-center bg-[#181c21] text-[#0066ff] shrink-0 rounded-full ${className || sizeClasses}`}
           aria-label="Carregando visualização do exercício"
         >
           <Loader2 className="w-4 h-4 text-[#0066ff] animate-spin" />
@@ -115,19 +135,17 @@ export const ExerciseMedia: React.FC<ExerciseMediaProps> = ({
   }
 
   // 2. Provedor ExerciseDB (GIF)
-  if (media && media.isAvailable && media.gifUrl && !hasError) {
+  if (currentSrc && !hasError) {
     if (size === 'sm') {
       return (
         <div
-          className={`relative overflow-hidden flex items-center justify-center shrink-0 group ${className || sizeClasses}`}
+          className={`relative overflow-hidden flex items-center justify-center shrink-0 group rounded-full bg-white ${className || sizeClasses}`}
         >
           <img
-            src={media.gifUrl}
+            src={currentSrc}
             alt={`Demonstração: ${displayName}`}
-            loading="lazy"
-            decoding="async"
-            onError={() => setHasError(true)}
-            className="w-full h-full object-contain filter drop-shadow transition-transform duration-200 group-hover:scale-105"
+            onError={handleImageError}
+            className="w-full h-full object-cover rounded-full"
           />
         </div>
       );
@@ -138,11 +156,9 @@ export const ExerciseMedia: React.FC<ExerciseMediaProps> = ({
         className={`${sizeClasses} bg-[#181c21] border border-[#262a30] relative overflow-hidden flex items-center justify-center shrink-0 group ${className}`}
       >
         <img
-          src={media.gifUrl}
+          src={currentSrc}
           alt={`Demonstração biomecânica: ${displayName}`}
-          loading="lazy"
-          decoding="async"
-          onError={() => setHasError(true)}
+          onError={handleImageError}
           className="w-full h-full object-contain p-1 filter drop-shadow transition-transform duration-300 group-hover:scale-[1.02]"
         />
       </div>
@@ -153,7 +169,7 @@ export const ExerciseMedia: React.FC<ExerciseMediaProps> = ({
   if (size === 'sm') {
     return (
       <div
-        className={`flex items-center justify-center bg-[#181c21] text-[#0066ff] shrink-0 select-none ${className || sizeClasses}`}
+        className={`flex items-center justify-center bg-[#181c21] text-[#0066ff] shrink-0 select-none rounded-full ${className || sizeClasses}`}
         title={displayName}
       >
         <Dumbbell className="w-5 h-5 text-[#0066ff]" />

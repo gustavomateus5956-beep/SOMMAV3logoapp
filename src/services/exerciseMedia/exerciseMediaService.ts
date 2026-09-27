@@ -91,7 +91,10 @@ const NAME_TO_EXTERNAL_ID: Record<string, string> = {
   'elevacao de pernas na barra fixa': '0472',
   'elevacao de pernas': '0472',
   'prancha isometrica': '0464',
-  'prancha': '0464'
+  'prancha': '0464',
+  'flexao de bracos no solo': '0662',
+  'flexao de bracos': '0662',
+  'flexao': '0662'
 };
 
 function findExternalIdByName(name?: string): string | null {

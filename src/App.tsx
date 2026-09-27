@@ -16,6 +16,7 @@ import { ProfessionalDetailModal } from './components/ProfessionalDetailModal';
 import { ProfessionalChatModal } from './components/ProfessionalChatModal';
 import { PlansModal } from './components/PlansModal';
 import { NotificationsModal } from './components/NotificationsModal';
+import { MessagesModal } from './components/MessagesModal';
 import { MOCK_PROFESSIONALS } from './data/mockData';
 import { UserProvider, useUser } from './context/UserContext';
 import { WorkoutProvider, useWorkout } from './context/WorkoutContext';
@@ -91,6 +92,7 @@ function MainApp() {
   const [activeChatProfessional, setActiveChatProfessional] = useState<Professional | null>(null);
   const [showPlansModal, setShowPlansModal] = useState(false);
   const [showNotificationsModal, setShowNotificationsModal] = useState(false);
+  const [showMessagesModal, setShowMessagesModal] = useState(false);
   const [feedbackToast, setFeedbackToast] = useState<string | null>(null);
 
   // Synchronize professionals linked status with user.linkedProfessionalIds
@@ -190,14 +192,15 @@ function MainApp() {
           currentTab={currentTab}
           onNavigate={handleNavigate}
           onOpenNotifications={() => setShowNotificationsModal(true)}
+          onOpenMessages={() => setShowMessagesModal(true)}
           onBack={handleBack}
         />
 
         {/* View Body */}
         <main
           ref={mainContentRef}
-          className={`flex-1 max-w-[480px] md:max-w-3xl w-full mx-auto px-4 pt-16 md:pt-20 ${
-            workoutStatus === 'minimized' ? 'pb-52 md:pb-28' : 'pb-24 md:pb-8'
+          className={`flex-1 max-w-[480px] md:max-w-3xl w-full mx-auto px-4 pt-18 md:pt-22 ${
+            workoutStatus === 'minimized' ? 'pb-44 md:pb-28' : 'pb-28 md:pb-8'
           }`}
         >
           {currentTab === 'inicio' && (
@@ -325,6 +328,15 @@ function MainApp() {
       {/* Notifications Drawer */}
       {showNotificationsModal && (
         <NotificationsModal onClose={() => setShowNotificationsModal(false)} />
+      )}
+
+      {/* Messages Drawer */}
+      {showMessagesModal && (
+        <MessagesModal
+          onClose={() => setShowMessagesModal(false)}
+          assignedCoach={professionals.find((p) => p.category === 'personal' && p.isLinkedToUserPlan) || professionals[0]}
+          onOpenChatWithCoach={(coach) => setActiveChatProfessional(coach)}
+        />
       )}
 
       {/* Toast Feedback Notification */}

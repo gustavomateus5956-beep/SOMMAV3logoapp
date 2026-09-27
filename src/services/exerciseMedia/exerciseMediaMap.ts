@@ -11,6 +11,7 @@ export const SOMMA_EXERCISE_MEDIA_MAP: Record<string, ExerciseMedia> = {
   'lib-peito-3': { provider: 'exercisedb', externalId: '1270' }, // Crucifixo Inclinado no Cabo
   'lib-peito-4': { provider: 'exercisedb', externalId: '0033' }, // Supino Declinado
   'lib-peito-5': { provider: 'exercisedb', externalId: '0251' }, // Paralelas com Peso Corporal
+  'lib-peito-6': { provider: 'exercisedb', externalId: '0662' }, // Flexão de Braços no Solo
 
   // Costas
   'lib-costas-1': { provider: 'exercisedb', externalId: '0198' }, // Puxador Alto Frente (Lat Pulldown)

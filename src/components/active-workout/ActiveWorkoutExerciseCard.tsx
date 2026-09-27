@@ -76,13 +76,13 @@ export const ActiveWorkoutExerciseCard: React.FC<ActiveWorkoutExerciseCardProps>
             onClick={() => onOpenDetail && onOpenDetail(exercise)}
             title="Ver execução biomecânica e histórico"
             aria-label={`Ver execução de ${exercise.name}`}
-            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border border-[#262a30] bg-[#181c21] flex items-center justify-center shrink-0 cursor-pointer active:scale-95 transition-transform group shadow-sm p-1"
+            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border border-[#262a30] bg-[#181c21] flex items-center justify-center shrink-0 cursor-pointer active:scale-95 transition-transform group shadow-sm p-0.5"
           >
             <ExerciseMedia
               exercise={exercise}
               size="sm"
               forceStaticThumbnail={true}
-              className="w-full h-full object-contain rounded-full"
+              className="w-full h-full object-cover rounded-full"
             />
           </button>
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Plus, Trash2, Dumbbell } from 'lucide-react';
 import { Routine, Exercise, WorkoutSessionRecord, CompletedExerciseLog, SetTypeKey } from '../types';
 import { ExportCardModal, WorkoutExportData } from './ExportCardModal';
@@ -37,12 +37,15 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
   const { user, updateUser } = useUser();
   const {
     activeSession,
+    workoutStatus,
     minimizeWorkout,
     updateExercises: syncExercisesToContext,
     setRestSeconds: setContextRestSeconds,
     setIsRestPaused: setContextIsRestPaused,
     setIsTimerPaused: setContextIsTimerPaused,
     setLastActivePosition,
+    completeSetInContext,
+    completeWorkoutInContext,
     discardWorkout: contextDiscardWorkout
   } = useWorkout();
 
@@ -78,11 +81,11 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
 
   // Sync with global timer in WorkoutContext (keeps running when minimized!)
   useEffect(() => {
-    if (activeSession && !isFinished) {
+    if (activeSession && !isFinished && workoutStatus !== 'completed') {
       setSeconds(activeSession.seconds);
       setRestSeconds(activeSession.restSeconds);
     }
-  }, [activeSession?.seconds, activeSession?.restSeconds, isFinished]);
+  }, [activeSession?.seconds, activeSession?.restSeconds, isFinished, workoutStatus]);
 
   // Initialize exercises with previous performance references
   useEffect(() => {
@@ -127,32 +130,6 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
       isMounted = false;
     };
   }, [routine, user?.id]);
-
-  // Main workout elapsed timer
-  useEffect(() => {
-    if (isTimerPaused || isFinished) return;
-    const interval = setInterval(() => {
-      setSeconds((prev) => prev + 1);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [isTimerPaused, isFinished]);
-
-  // Rest countdown timer
-  useEffect(() => {
-    if (restSeconds === null || restSeconds <= 0 || isRestPaused) return;
-    const interval = setInterval(() => {
-      setRestSeconds((prev) => {
-        if (prev === null || prev <= 1) {
-          setContextRestSeconds(null);
-          return null;
-        }
-        const next = prev - 1;
-        setContextRestSeconds(next);
-        return next;
-      });
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [restSeconds, isRestPaused, setContextRestSeconds]);
 
   // Sync state to WorkoutContext whenever exercises change
   const updateExercisesAndSync = (newExercises: Exercise[]) => {
@@ -201,19 +178,17 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     };
     targetEx.sets = sets;
     updated[exIndex] = targetEx;
-    updateExercisesAndSync(updated);
+    setExercises(updated);
 
-    // Save position for quick resume
-    setLastActivePosition(exIndex, setIndex);
-
-    // If completed and rest timer wasn't running, trigger standard rest timer
-    if (!currentStatus) {
-      const targetRest = (targetEx as any).restTimeSeconds || defaultRestTime;
+    // If completing the set, start rest timer
+    const targetRest = !currentStatus ? ((targetEx as any).restTimeSeconds || defaultRestTime) : null;
+    if (targetRest !== null) {
       setRestSeconds(targetRest);
-      setContextRestSeconds(targetRest);
       setIsRestPaused(false);
-      setContextIsRestPaused(false);
     }
+
+    // Atomic update to WorkoutContext (prevents setState during render and batching issues)
+    completeSetInContext(updated, exIndex, setIndex, targetRest);
   };
 
   const updateSetField = (
@@ -294,14 +269,21 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
   const progressPercentage =
     totalSetsCount > 0 ? Math.round((totalCompletedSets / totalSetsCount) * 100) : 0;
 
+  const isFinalizingRef = useRef(false);
+  const isSavingRef = useRef(false);
+
   const finalizeSession = () => {
-    const frozen = seconds;
+    if (isFinalizingRef.current) return;
+    isFinalizingRef.current = true;
+
+    const frozen = activeSession?.finalDurationSeconds ?? activeSession?.seconds ?? seconds;
     setFinalWorkoutSeconds(frozen);
     setIsTimerPaused(true);
-    setContextIsTimerPaused(true);
     setRestSeconds(null);
-    setContextRestSeconds(null);
     setIsFinished(true);
+
+    // Freeze session and timers definitively in WorkoutContext
+    completeWorkoutInContext(frozen);
   };
 
   const handleFinishAttempt = () => {
@@ -349,7 +331,13 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
 
   // Final persistence to user storage & Context
   const handleSaveAndExit = async () => {
-    const durationMinutes = Math.max(1, Math.round(displaySeconds / 60));
+    if (isSavingRef.current) return;
+    isSavingRef.current = true;
+
+    const frozenDuration = finalWorkoutSeconds !== null 
+      ? finalWorkoutSeconds 
+      : (activeSession?.finalDurationSeconds ?? activeSession?.seconds ?? seconds);
+    const durationMinutes = Math.max(1, Math.round(frozenDuration / 60));
     const now = new Date();
 
     const completedExercises: CompletedExerciseLog[] = exercises.map((ex) => ({
@@ -378,7 +366,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
       routineId: routine?.id,
       routineName: workoutName,
       muscleGroups: exercises.map((e) => e.muscleGroup).slice(0, 2).join(' & '),
-      startedAt: new Date(Date.now() - displaySeconds * 1000).toISOString(),
+      startedAt: new Date(Date.now() - frozenDuration * 1000).toISOString(),
       finishedAt: now.toISOString(),
       dateDisplay: 'Hoje',
       durationMinutes,
