@@ -70,28 +70,9 @@ export const WorkoutView: React.FC<WorkoutViewProps> = ({
       category: newRoutineMuscle.trim() || 'Personalizado',
       muscleGroups: newRoutineMuscle.trim() || 'Vários',
       lastSession: 'Nunca realizado',
-      exercisesCount: 3,
-      estimatedMinutes: 50,
-      exercises: [
-        {
-          id: `ex-cust-1`,
-          name: 'Supino Reto com Barra',
-          muscleGroup: 'Peitoral',
-          sets: [
-            { id: 'cs-1', setNumber: 1, prevWeight: 80, prevReps: 10, weight: 80, reps: 10, completed: false },
-            { id: 'cs-2', setNumber: 2, prevWeight: 84, prevReps: 8, weight: 84, reps: 8, completed: false }
-          ]
-        },
-        {
-          id: `ex-cust-2`,
-          name: 'Desenvolvimento Militar',
-          muscleGroup: 'Ombros',
-          sets: [
-            { id: 'cs-3', setNumber: 1, prevWeight: 20, prevReps: 10, weight: 20, reps: 10, completed: false },
-            { id: 'cs-4', setNumber: 2, prevWeight: 22, prevReps: 8, weight: 22, reps: 8, completed: false }
-          ]
-        }
-      ]
+      exercisesCount: 0,
+      estimatedMinutes: 45,
+      exercises: []
     };
     setRoutines([newRoutine, ...routines]);
     setNewRoutineName('');

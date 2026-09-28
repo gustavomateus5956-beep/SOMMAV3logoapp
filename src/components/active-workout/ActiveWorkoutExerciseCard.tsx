@@ -44,8 +44,8 @@ export const ActiveWorkoutExerciseCard: React.FC<ActiveWorkoutExerciseCardProps>
   const [isEditingNotes, setIsEditingNotes] = useState(false);
   const [notesValue, setNotesValue] = useState(exercise.professionalNote || (exercise as any).notes || '');
 
-  // Rest duration format (e.g. 120s -> "2min 0s", 60s -> "1min 0s", 90s -> "1min 30s")
-  const defaultRest = (exercise as any).restTimeSeconds || 120;
+  // Rest duration format (e.g. 120s -> "2min", 90s -> "1min 30s", 45s -> "45s")
+  const exerciseRest = exercise.restSeconds ?? (exercise as any).restTimeSeconds ?? 120;
   const formatRestDisplay = (secs: number) => {
     const mins = Math.floor(secs / 60);
     const remainderSecs = secs % 60;
@@ -158,14 +158,14 @@ export const ActiveWorkoutExerciseCard: React.FC<ActiveWorkoutExerciseCardProps>
             if (onConfigureRest) {
               onConfigureRest(exercise);
             } else {
-              onStartRest(defaultRest);
+              onStartRest(exerciseRest);
             }
           }}
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#0066ff] hover:text-[#38bdf8] transition-colors cursor-pointer"
           title="Toque para configurar ou iniciar descanso"
         >
           <Timer className="w-3.5 h-3.5 stroke-[2.5]" />
-          <span>Descanso: {formatRestDisplay(defaultRest)}</span>
+          <span>Descanso: {formatRestDisplay(exerciseRest)}</span>
         </button>
       </div>
 
@@ -311,7 +311,7 @@ export const ActiveWorkoutExerciseCard: React.FC<ActiveWorkoutExerciseCardProps>
           if (onConfigureRest) {
             onConfigureRest(exercise);
           } else {
-            onStartRest(defaultRest);
+            onStartRest(exerciseRest);
           }
         }}
         onRemoveExercise={() => onRemoveExercise(exIndex)}

@@ -81,6 +81,7 @@ export interface Exercise {
   notes?: string;
   equipment?: string;
   targetMuscles?: string[];
+  secondaryMuscles?: string[];
   tips?: string;
   professionalNote?: string; // Orientação específica do treinador/profissional
   instructions?: string;     // Instruções gerais de execução
@@ -90,6 +91,7 @@ export interface Exercise {
   external?: ExerciseExternalRef;
   bodyPart?: string;
   target?: string;
+  restSeconds?: number;
 }
 
 export interface LibraryExercise {

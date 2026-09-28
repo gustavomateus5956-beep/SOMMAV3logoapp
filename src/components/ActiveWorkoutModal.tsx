@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Plus, Trash2, Dumbbell } from 'lucide-react';
 import { Routine, Exercise, WorkoutSessionRecord, CompletedExerciseLog, SetTypeKey } from '../types';
 import { ExportCardModal, WorkoutExportData } from './ExportCardModal';
@@ -10,11 +10,14 @@ import { SetTypeSheet } from './active-workout/SetTypeSheet';
 import { RestSettingsSheet } from './active-workout/RestSettingsSheet';
 import { ExerciseFeedbackModal } from './ExerciseFeedbackModal';
 import { ExerciseDetailModal } from './exercise/ExerciseDetailModal';
+import { calculateWorkoutMuscleScores } from '../features/muscle-map/sommaMuscleMapAdapter';
 
 import { ActiveWorkoutHeader } from './active-workout/ActiveWorkoutHeader';
 import { ActiveWorkoutExerciseCard } from './active-workout/ActiveWorkoutExerciseCard';
 import { ActiveWorkoutCelebrationModal } from './active-workout/ActiveWorkoutCelebrationModal';
 import { IncompleteSetsModal, DiscardWorkoutModal } from './active-workout/ActiveWorkoutConfirmModals';
+import { ActiveWorkoutMuscleSheet } from './active-workout/ActiveWorkoutMuscleSheet';
+import { ActiveWorkoutRestBottomBar } from './active-workout/ActiveWorkoutRestBottomBar';
 
 interface ActiveWorkoutModalProps {
   routine: Routine | null;
@@ -41,6 +44,8 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     minimizeWorkout,
     updateExercises: syncExercisesToContext,
     setRestSeconds: setContextRestSeconds,
+    adjustRestSeconds: contextAdjustRestSeconds,
+    skipRest: contextSkipRest,
     setIsRestPaused: setContextIsRestPaused,
     setIsTimerPaused: setContextIsTimerPaused,
     setLastActivePosition,
@@ -71,11 +76,13 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
   const [selectedExerciseForDetail, setSelectedExerciseForDetail] = useState<Exercise | null>(null);
   const [showRestSettings, setShowRestSettings] = useState(false);
   const [exerciseForRestConfig, setExerciseForRestConfig] = useState<Exercise | null>(null);
+  const [showMuscleDistribution, setShowMuscleDistribution] = useState(false);
 
   const displaySeconds = finalWorkoutSeconds !== null ? finalWorkoutSeconds : seconds;
 
   // Rest timer states
   const [restSeconds, setRestSeconds] = useState<number | null>(activeSession?.restSeconds ?? null);
+  const [restTotalSeconds, setRestTotalSeconds] = useState<number | null>(activeSession?.restTotalSeconds ?? null);
   const [isRestPaused, setIsRestPaused] = useState(activeSession?.isRestPaused || false);
   const defaultRestTime = 120; // 2 minutes standard
 
@@ -84,8 +91,17 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     if (activeSession && !isFinished && workoutStatus !== 'completed') {
       setSeconds(activeSession.seconds);
       setRestSeconds(activeSession.restSeconds);
+      setRestTotalSeconds(activeSession.restTotalSeconds);
+      setIsRestPaused(activeSession.isRestPaused);
     }
-  }, [activeSession?.seconds, activeSession?.restSeconds, isFinished, workoutStatus]);
+  }, [
+    activeSession?.seconds,
+    activeSession?.restSeconds,
+    activeSession?.restTotalSeconds,
+    activeSession?.isRestPaused,
+    isFinished,
+    workoutStatus
+  ]);
 
   // Initialize exercises with previous performance references
   useEffect(() => {
@@ -180,11 +196,16 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     updated[exIndex] = targetEx;
     setExercises(updated);
 
-    // If completing the set, start rest timer
-    const targetRest = !currentStatus ? ((targetEx as any).restTimeSeconds || defaultRestTime) : null;
+    // If completing the set, start rest timer using this exercise's individual rest configuration
+    const targetRest = !currentStatus
+      ? (targetEx.restSeconds ?? (targetEx as any).restTimeSeconds ?? defaultRestTime)
+      : null;
     if (targetRest !== null) {
       setRestSeconds(targetRest);
+      setRestTotalSeconds(targetRest);
       setIsRestPaused(false);
+      setContextRestSeconds(targetRest, targetRest);
+      setContextIsRestPaused(false);
     }
 
     // Atomic update to WorkoutContext (prevents setState during render and batching issues)
@@ -268,6 +289,11 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
 
   const progressPercentage =
     totalSetsCount > 0 ? Math.round((totalCompletedSets / totalSetsCount) * 100) : 0;
+
+  // Muscle activation scores computed reactively for both MiniMuscleMapButton and Muscle Sheet
+  const workoutMuscleScores = useMemo(() => {
+    return calculateWorkoutMuscleScores(exercises);
+  }, [exercises]);
 
   const isFinalizingRef = useRef(false);
   const isSavingRef = useRef(false);
@@ -460,10 +486,13 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
           onWorkoutNameChange={setWorkoutName}
           totalVolume={totalVolume}
           formatTimer={formatTimer}
+          onOpenMuscleDistribution={() => setShowMuscleDistribution(true)}
+          muscleValues={workoutMuscleScores.values}
+          onDiscard={() => setShowDiscardConfirm(true)}
         />
 
         {/* Scrollable Exercises Feed (Clean Hevy-style blocks on dark canvas) */}
-        <div className="flex-1 overflow-y-auto px-4 py-4 space-y-2 no-scrollbar">
+        <div className={`flex-1 overflow-y-auto px-4 py-4 space-y-2 no-scrollbar ${restSeconds !== null && restSeconds > 0 ? 'pb-24' : 'pb-6'}`}>
           {exercises.length === 0 ? (
             <div className="h-full min-h-[380px] flex flex-col items-center justify-center text-center px-4 py-12">
               <div className="w-16 h-16 rounded-2xl bg-[#181c21] border border-[#262a30] flex items-center justify-center text-[#0066ff] mb-4 shadow-sm">
@@ -503,9 +532,10 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
                   totalExercises={exercises.length}
                   onOpenFeedback={setFeedbackExercise}
                   onStartRest={(secs) => {
-                    const restDuration = secs || defaultRestTime;
+                    const restDuration = secs || exercise.restSeconds || defaultRestTime;
                     setRestSeconds(restDuration);
-                    setContextRestSeconds(restDuration);
+                    setRestTotalSeconds(restDuration);
+                    setContextRestSeconds(restDuration, restDuration);
                     setIsRestPaused(false);
                     setContextIsRestPaused(false);
                   }}
@@ -549,6 +579,40 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
             </>
           )}
         </div>
+
+        {/* Fixed Bottom Rest Countdown Bar (Preenchimento progressivo que diminui suavemente) */}
+        <ActiveWorkoutRestBottomBar
+          remainingSeconds={restSeconds}
+          totalSeconds={restTotalSeconds}
+          isPaused={isRestPaused}
+          onAddSeconds={(delta) => {
+            contextAdjustRestSeconds(delta);
+            if (restSeconds !== null) {
+              const nextRem = Math.max(0, restSeconds + delta);
+              if (nextRem === 0) {
+                setRestSeconds(null);
+                setRestTotalSeconds(null);
+                setContextRestSeconds(null);
+              } else {
+                setRestSeconds(nextRem);
+                const nextTot = Math.max(nextRem, (restTotalSeconds ?? restSeconds) + delta);
+                setRestTotalSeconds(nextTot);
+                setContextRestSeconds(nextRem, nextTot);
+              }
+            }
+          }}
+          onTogglePause={() => {
+            const next = !isRestPaused;
+            setIsRestPaused(next);
+            setContextIsRestPaused(next);
+          }}
+          onSkip={() => {
+            contextSkipRest();
+            setRestSeconds(null);
+            setRestTotalSeconds(null);
+            setContextRestSeconds(null);
+          }}
+        />
 
         {/* Confirmation Modal for Incomplete Sets */}
         <IncompleteSetsModal
@@ -619,7 +683,9 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
         isOpen={showRestSettings}
         exerciseName={exerciseForRestConfig?.name}
         currentRestSeconds={
-          (exerciseForRestConfig as any)?.restTimeSeconds || restSeconds || defaultRestTime
+          exerciseForRestConfig?.restSeconds ??
+          (exerciseForRestConfig as any)?.restTimeSeconds ??
+          defaultRestTime
         }
         onClose={() => {
           setShowRestSettings(false);
@@ -630,13 +696,15 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
             const updated = [...exercises];
             const foundIdx = updated.findIndex((e) => e.id === exerciseForRestConfig.id);
             if (foundIdx >= 0) {
+              updated[foundIdx].restSeconds = selectedSecs;
               (updated[foundIdx] as any).restTimeSeconds = selectedSecs;
               updateExercisesAndSync(updated);
             }
           }
           if (autoStart) {
             setRestSeconds(selectedSecs);
-            setContextRestSeconds(selectedSecs);
+            setRestTotalSeconds(selectedSecs);
+            setContextRestSeconds(selectedSecs, selectedSecs);
             setIsRestPaused(false);
             setContextIsRestPaused(false);
           }
@@ -689,6 +757,13 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
           onClose={() => setSelectedExerciseForDetail(null)}
         />
       )}
+
+      {/* Muscle Distribution Bottom Sheet (MuscleMap front & back) */}
+      <ActiveWorkoutMuscleSheet
+        isOpen={showMuscleDistribution}
+        onClose={() => setShowMuscleDistribution(false)}
+        exercises={exercises}
+      />
     </div>
   );
 };

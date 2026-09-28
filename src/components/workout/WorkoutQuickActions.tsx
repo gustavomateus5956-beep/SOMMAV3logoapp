@@ -13,14 +13,14 @@ export const WorkoutQuickActions: React.FC<WorkoutQuickActionsProps> = ({
 }) => {
   return (
     <div className="flex flex-col gap-2.5">
-      {/* Botão de destaque: Iniciar Treino Vazio */}
+      {/* Botão de destaque: Iniciar novo treinamento */}
       <button
         type="button"
         onClick={onStartEmptyWorkout}
         className="w-full h-[52px] bg-[#0066ff] hover:bg-[#0054d6] active:scale-[0.98] text-white rounded-2xl text-sm font-bold flex items-center justify-center gap-2 shadow-md shadow-[#0066ff]/20 transition-all cursor-pointer"
       >
         <Plus className="w-5 h-5 stroke-[2.5]" />
-        <span>Iniciar Treino Vazio</span>
+        <span>Iniciar novo treinamento</span>
       </button>
 
       {/* Contextual Access to Evolução de Cargas & PRs */}

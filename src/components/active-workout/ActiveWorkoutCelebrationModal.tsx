@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Award, Instagram, Check } from 'lucide-react';
 import { Exercise } from '../../types';
+import { calculateWorkoutMuscleScores } from '../../features/muscle-map/sommaMuscleMapAdapter';
+import { SommaMuscleMap } from '../muscle-map/SommaMuscleMap';
 
 interface ActiveWorkoutCelebrationModalProps {
   isOpen: boolean;
@@ -27,6 +29,10 @@ export const ActiveWorkoutCelebrationModal: React.FC<ActiveWorkoutCelebrationMod
   onOpenExport,
   onSaveAndExit
 }) => {
+  const analysis = useMemo(() => {
+    return calculateWorkoutMuscleScores(exercises);
+  }, [exercises]);
+
   if (!isOpen) return null;
 
   return (
@@ -74,6 +80,46 @@ export const ActiveWorkoutCelebrationModal: React.FC<ActiveWorkoutCelebrationMod
               {detectedPrs}
             </span>
           </div>
+        </div>
+
+        {/* SommaMuscleMap Resumo Final (Modo: completed, view: BOTH) */}
+        <div className="w-full max-w-md bg-[#181c21] rounded-2xl p-4 border border-[#262a30] text-left mb-4 flex flex-col items-center">
+          <div className="w-full flex items-center justify-between mb-2">
+            <span className="text-xs font-bold text-white flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-[#0066ff]" />
+              Estímulo Muscular Registrado
+            </span>
+            <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[#0066ff]/20 text-[#38bdf8] border border-[#0066ff]/30">
+              MuscleMap
+            </span>
+          </div>
+
+          <SommaMuscleMap
+            values={analysis.values}
+            mode="completed"
+            view="BOTH"
+            compact={true}
+            figureWidth={130}
+          />
+
+          {analysis.details.length > 0 ? (
+            <div className="w-full mt-3 pt-3 border-t border-[#262a30]/60">
+              <div className="flex flex-wrap gap-1.5 justify-center">
+                {analysis.details.slice(0, 4).map((m) => (
+                  <span
+                    key={m.group}
+                    className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#14181f] text-[#b3c5ff] border border-[#262a30]"
+                  >
+                    {m.label}: {m.loadPercentage}%
+                  </span>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <span className="text-xs text-[#8c90a1] mt-2">
+              Nenhum músculo trabalhado ainda.
+            </span>
+          )}
         </div>
 
         {/* Exercise Summary Preview */}

@@ -41,13 +41,32 @@ export const INITIAL_ROUTINES: Routine[] = [
     },
     exercises: [
       {
-        id: 'ex-1',
+        id: '0025',
+        source: 'somma',
+        catalogRef: { provider: 'somma', id: '0025' },
         name: 'Supino Reto com Barra',
+        originalName: 'barbell bench press',
         muscleGroup: 'Peitoral',
+        bodyPart: 'Peito',
         equipment: 'Barra',
-        targetMuscles: ['Peitoral Maior', 'Tríceps', 'Deltóide Anterior'],
+        target: 'Peitoral',
+        targetMuscles: ['Peitoral', 'Tríceps', 'Ombros'],
         professionalNote: 'Seu foco hoje é controle de movimento. Não aumente a carga caso perca a amplitude ou a estabilidade escapular.',
-        instructions: '1. Deite no banco mantendo as escápulas aduzidas e os pés firmes no solo.\n2. Desça a barra de forma controlada até tocar suavemente a linha do peito.\n3. Mantenha os cotovelos a ~70 graus em relação ao tronco.\n4. Empurre com força focando na contração do peitoral sem desencostar os ombros do banco.',
+        instructions: 'Deite-se sobre um banco com os pés apoiados no chão e a costas pressionada contra o banco. Segure a barra com uma pegada pronada um pouco mais largura que a afastamento dos ombros. Eleve a barra do suporte e segure-a diretamente sobre o peito com os braços completamente estendidos. Abaixe a barra lentamente em direção ao peito, mantendo os cotovelos junto ao corpo. Faça uma pausa breve quando a barra toque o peito. Empurre a barra de volta à posição inicial estendendo os braços. Repita o número de repetições desejado.',
+        executionTips: [
+          'Deite-se sobre um banco com os pés apoiados no chão e a costas pressionada contra o banco.',
+          'Segure a barra com uma pegada pronada um pouco mais largura que a afastamento dos ombros.',
+          'Eleve a barra do suporte e segure-a diretamente sobre o peito com os braços completamente estendidos.',
+          'Abaixe a barra lentamente em direção ao peito, mantendo os cotovelos junto ao corpo.',
+          'Faça uma pausa breve quando a barra toque o peito.',
+          'Empurre a barra de volta à posição inicial estendendo os braços.',
+          'Repita o número de repetições desejado.'
+        ],
+        media: {
+          provider: 'somma',
+          imageUrl: '/exercises/images/0025-EIeI8Vf.jpg',
+          gifUrl: '/exercises/gifs/0025-EIeI8Vf.gif'
+        },
         sets: [
           { id: 's1', setNumber: 1, type: 'warmup', prevWeight: 60, prevReps: 15, targetWeight: 60, targetReps: 15, weight: 60, reps: 15, instruction: 'Use carga leve apenas para preparar articulações e movimento.', completed: true },
           { id: 's2', setNumber: 2, type: 'working', prevWeight: 84, prevReps: 10, targetWeight: 84, targetReps: 10, weight: 84, reps: 10, instruction: 'Primeira série de trabalho. Foque em 3s na fase excêntrica.', completed: true },
@@ -56,13 +75,31 @@ export const INITIAL_ROUTINES: Routine[] = [
         ]
       },
       {
-        id: 'ex-2',
+        id: '0314',
+        source: 'somma',
+        catalogRef: { provider: 'somma', id: '0314' },
         name: 'Supino Inclinado com Halteres',
-        muscleGroup: 'Peitoral Superior',
+        originalName: 'dumbbell incline bench press',
+        muscleGroup: 'Peitoral',
+        bodyPart: 'Peito',
         equipment: 'Halteres',
-        targetMuscles: ['Feixe Clavicular', 'Deltóide Anterior'],
+        target: 'Peitoral',
+        targetMuscles: ['Peitoral', 'Ombros', 'Tríceps'],
         professionalNote: 'Banco a 30º. Mantenha os cotovelos convergentes e contração de pico no topo.',
-        instructions: '1. Ajuste o banco em inclinação de 30º.\n2. Suba os halteres em linha reta sobre a linha superior do tórax.\n3. Desça controlando o peso até sentir o alongamento controlado do peitoral.',
+        instructions: 'Posicione um banco inclinado a um ângulo de 45 graus. Sente-se no banco com os pés apoiados no chão e a costas firmemente apoiada contra o banco. Segure uma halter em cada mão, com as palmas para a frente, e eleve-as hastna altura dos ombros. Abaixe lentamente as halteres em direção aos lados do peito, mantendo os cotovelos em um ângulo de 90 graus. Empurre as halteres de novo para cima hastà posição inicial, estendendo completamente os braços. Repita o número de repetições desejado.',
+        executionTips: [
+          'Posicione um banco inclinado a um ângulo de 45 graus.',
+          'Sente-se no banco com os pés apoiados no chão e a costas firmemente apoiada contra o banco.',
+          'Segure uma halter em cada mão, com as palmas para a frente, e eleve-as hastna altura dos ombros.',
+          'Abaixe lentamente as halteres em direção aos lados do peito, mantendo os cotovelos em um ângulo de 90 graus.',
+          'Empurre as halteres de novo para cima hastà posição inicial, estendendo completamente os braços.',
+          'Repita o número de repetições desejado.'
+        ],
+        media: {
+          provider: 'somma',
+          imageUrl: '/exercises/images/0314-ns0SIbU.jpg',
+          gifUrl: '/exercises/gifs/0314-ns0SIbU.gif'
+        },
         sets: [
           { id: 's5', setNumber: 1, type: 'working', prevWeight: 30, prevReps: 10, targetWeight: 32, targetReps: 10, weight: 32, reps: 10, completed: false },
           { id: 's6', setNumber: 2, type: 'working', prevWeight: 32, prevReps: 8, targetWeight: 34, targetReps: 8, weight: 34, reps: 8, completed: false },
@@ -70,12 +107,30 @@ export const INITIAL_ROUTINES: Routine[] = [
         ]
       },
       {
-        id: 'ex-3',
-        name: 'Desenvolvimento Militar c/ Halteres',
-        muscleGroup: 'Deltóides',
+        id: '0405',
+        source: 'somma',
+        catalogRef: { provider: 'somma', id: '0405' },
+        name: 'Sentado Desenvolvimento de Ombros com Halteres',
+        originalName: 'dumbbell seated shoulder press',
+        muscleGroup: 'Ombros',
+        bodyPart: 'Ombros',
         equipment: 'Halteres',
+        target: 'Deltoides',
+        targetMuscles: ['Deltoides', 'Tríceps', 'Costas superiores'],
         professionalNote: 'Tronco firme no encosto, evite hiperlordose durante a fase concêntrica.',
-        instructions: '1. Sente-se com as costas apoiadas e os halteres na altura das orelhas.\n2. Empurre os halteres para cima sem bater no topo.\n3. Desça controladamente até os cotovelos formarem 90º.',
+        instructions: 'Sente-se em um banco com uma halter em cada mão, apoiadas nos coxas. Suba as halteres hastna altura dos ombros, com as palmas para a frente. Pressione as halteres para cima até que os braços fiquem completamente estendidos acima da cabeça. Faça uma pausa por um momento na parte superior, depois abaixe lentamente as halteres de volta na altura dos ombros. Repita o número de repetições desejado.',
+        executionTips: [
+          'Sente-se em um banco com uma halter em cada mão, apoiadas nos coxas.',
+          'Suba as halteres hastna altura dos ombros, com as palmas para a frente.',
+          'Pressione as halteres para cima até que os braços fiquem completamente estendidos acima da cabeça.',
+          'Faça uma pausa por um momento na parte superior, depois abaixe lentamente as halteres de volta na altura dos ombros.',
+          'Repita o número de repetições desejado.'
+        ],
+        media: {
+          provider: 'somma',
+          imageUrl: '/exercises/images/0405-znQUdHY.jpg',
+          gifUrl: '/exercises/gifs/0405-znQUdHY.gif'
+        },
         sets: [
           { id: 's8', setNumber: 1, type: 'working', prevWeight: 22, prevReps: 10, targetWeight: 24, targetReps: 10, weight: 24, reps: 10, completed: false },
           { id: 's9', setNumber: 2, type: 'working', prevWeight: 24, prevReps: 8, targetWeight: 24, targetReps: 8, weight: 24, reps: 8, completed: false },
@@ -83,12 +138,32 @@ export const INITIAL_ROUTINES: Routine[] = [
         ]
       },
       {
-        id: 'ex-4',
-        name: 'Tríceps Corda no Pulley',
+        id: '0200',
+        source: 'somma',
+        catalogRef: { provider: 'somma', id: '0200' },
+        name: 'Extensão na Polia (com com Corda Acessório)',
+        originalName: 'cable pushdown (with rope attachment)',
         muscleGroup: 'Tríceps',
+        bodyPart: 'Braços',
         equipment: 'Polia',
+        target: 'Tríceps',
+        targetMuscles: ['Tríceps', 'Antebraços'],
         professionalNote: 'Abra a corda na parte inferior para ativar o pico de contração da cabeça lateral.',
-        instructions: '1. Segure a corda com os cotovelos colados ao tronco.\n2. Estenda completamente os braços e separe as mãos no final do movimento.\n3. Retorne até os antebraços ficarem paralelos ao chão.',
+        instructions: 'Segure um acessório de corda a uma polia alta em uma máquina de cabo. Fique de pé frente a a máquina com os pés afastados na largura dos ombros e uma leve flexão nos joelhos. Segure a corda com uma pegada pronada, com as palmas uma frente a a outra. Mantenha os cotovelos perto dos lados e os braços superiores parados durante todo o exercício. Expire e empurre a corda para baixo estendendo os cotovelos até que os braços fiquem completamente estendidos. Faça uma pausa por um momento, depois inspire e retorne lentamente à posição inicial permitindo que os cotovelos se flexionem. Repita o número de repetições desejado.',
+        executionTips: [
+          'Segure um acessório de corda a uma polia alta em uma máquina de cabo.',
+          'Fique de pé frente a a máquina com os pés afastados na largura dos ombros e uma leve flexão nos joelhos.',
+          'Segure a corda com uma pegada pronada, com as palmas uma frente a a outra.',
+          'Mantenha os cotovelos perto dos lados e os braços superiores parados durante todo o exercício.',
+          'Expire e empurre a corda para baixo estendendo os cotovelos até que os braços fiquem completamente estendidos.',
+          'Faça uma pausa por um momento, depois inspire e retorne lentamente à posição inicial permitindo que os cotovelos se flexionem.',
+          'Repita o número de repetições desejado.'
+        ],
+        media: {
+          provider: 'somma',
+          imageUrl: '/exercises/images/0200-dU605di.jpg',
+          gifUrl: '/exercises/gifs/0200-dU605di.gif'
+        },
         sets: [
           { id: 's11', setNumber: 1, type: 'working', prevWeight: 22, prevReps: 15, targetWeight: 25, targetReps: 15, weight: 25, reps: 15, completed: false },
           { id: 's12', setNumber: 2, type: 'rest_pause', prevWeight: 25, prevReps: 12, targetWeight: 25, targetReps: 12, weight: 25, reps: 12, instruction: 'Pausa de 15 segundos após as primeiras 8 reps antes de finalizar.', completed: false },
@@ -115,9 +190,31 @@ export const INITIAL_ROUTINES: Routine[] = [
     },
     exercises: [
       {
-        id: 'ex-b1',
-        name: 'Puxador Alto Frente (Lat Pulldown)',
+        id: '0198',
+        source: 'somma',
+        catalogRef: { provider: 'somma', id: '0198' },
+        name: 'Puxada Alta na Polia',
+        originalName: 'cable pulldown',
         muscleGroup: 'Dorsais',
+        bodyPart: 'Costas',
+        equipment: 'Polia',
+        target: 'Dorsais',
+        targetMuscles: ['Dorsais', 'Bíceps', 'Antebraços'],
+        instructions: 'Ajuste a máquina de puxada de cabo de modo que o assento fique a uma altura confortável e a almofada de joelhos esteja asegurada. Sente-se com as costas retas e os pés apoiados apoiados no chão. Segure a barra do cabo com uma pegada pronada, um pouco mais afastado que a largura dos ombros. Incline-se ligeiramente para trás e ative o core. Puxe a barra do cabo em direção ao peito, contraindo as escápulas entre si. Faça uma pausa por um momento na parte abaixe do movimento e depois solte lentamente a barra de volta à posição inicial. Repita o número de repetições desejado.',
+        executionTips: [
+          'Ajuste a máquina de puxada de cabo de modo que o assento fique a uma altura confortável e a almofada de joelhos esteja asegurada.',
+          'Sente-se com as costas retas e os pés apoiados apoiados no chão.',
+          'Segure a barra do cabo com uma pegada pronada, um pouco mais afastado que a largura dos ombros.',
+          'Incline-se ligeiramente para trás e ative o core.',
+          'Puxe a barra do cabo em direção ao peito, contraindo as escápulas entre si.',
+          'Faça uma pausa por um momento na parte abaixe do movimento e depois solte lentamente a barra de volta à posição inicial.',
+          'Repita o número de repetições desejado.'
+        ],
+        media: {
+          provider: 'somma',
+          imageUrl: '/exercises/images/0198-RVwzP10.jpg',
+          gifUrl: '/exercises/gifs/0198-RVwzP10.gif'
+        },
         sets: [
           { id: 'sb1', setNumber: 1, prevWeight: 65, prevReps: 12, weight: 70, reps: 10, completed: false },
           { id: 'sb2', setNumber: 2, prevWeight: 70, prevReps: 10, weight: 75, reps: 8, completed: false },
@@ -125,9 +222,30 @@ export const INITIAL_ROUTINES: Routine[] = [
         ]
       },
       {
-        id: 'ex-b2',
+        id: '0027',
+        source: 'somma',
+        catalogRef: { provider: 'somma', id: '0027' },
         name: 'Remada Curvada com Barra',
-        muscleGroup: 'Dorsais / Rombóides',
+        originalName: 'barbell bent over row',
+        muscleGroup: 'Dorsais',
+        bodyPart: 'Costas',
+        equipment: 'Barra',
+        target: 'Costas superiores',
+        targetMuscles: ['Costas superiores', 'Bíceps', 'Antebraços'],
+        instructions: 'Fique de pé com os pés afastados na largura dos ombros e os joelhos ligeiramente flexionados. Incline-se para a frente desde os quadris mantendo as costas retas e o peito elevado. Segure a barra com uma pegada pronada, com as mãos um pouco mais afastadas que a largura dos ombros. Puxe da barra em direção a a parte inferior do peito retraindo as escápulas e contraindo os músculos da costas. Faça uma pausa breve na parte alta e depois abaixe lentamente a barra de volta à posição inicial. Repita o número de repetições desejado.',
+        executionTips: [
+          'Fique de pé com os pés afastados na largura dos ombros e os joelhos ligeiramente flexionados.',
+          'Incline-se para a frente desde os quadris mantendo as costas retas e o peito elevado.',
+          'Segure a barra com uma pegada pronada, com as mãos um pouco mais afastadas que a largura dos ombros.',
+          'Puxe da barra em direção a a parte inferior do peito retraindo as escápulas e contraindo os músculos da costas.',
+          'Faça uma pausa breve na parte alta e depois abaixe lentamente a barra de volta à posição inicial.',
+          'Repita o número de repetições desejado.'
+        ],
+        media: {
+          provider: 'somma',
+          imageUrl: '/exercises/images/0027-eZyBC3j.jpg',
+          gifUrl: '/exercises/gifs/0027-eZyBC3j.gif'
+        },
         sets: [
           { id: 'sb4', setNumber: 1, prevWeight: 70, prevReps: 10, weight: 75, reps: 10, completed: false },
           { id: 'sb5', setNumber: 2, prevWeight: 75, prevReps: 8, weight: 80, reps: 8, completed: false },
@@ -135,18 +253,58 @@ export const INITIAL_ROUTINES: Routine[] = [
         ]
       },
       {
-        id: 'ex-b3',
-        name: 'Remada Baixa no Triângulo',
+        id: '0861',
+        source: 'somma',
+        catalogRef: { provider: 'somma', id: '0861' },
+        name: 'Remada Baixa na Polia',
+        originalName: 'cable seated row',
         muscleGroup: 'Dorsais',
+        bodyPart: 'Costas',
+        equipment: 'Polia',
+        target: 'Costas superiores',
+        targetMuscles: ['Costas superiores', 'Bíceps', 'Antebraços'],
+        instructions: 'Sente-se na máquina de remada com cabo com os pés apoiados sobre os apoio para os pés e os joelhos ligeiramente flexionados. Segure os pegadores com uma pegada pronada, mantendo as costas retas e os ombros relaxados. Puxe os pegadores em direção ao corpo, contraindo as escápulas entre si. Faça uma pausa por um momento no ponto máximo do movimento, depois solte lentamente os pegadores de volta à posição inicial. Repita o número de repetições desejado.',
+        executionTips: [
+          'Sente-se na máquina de remada com cabo com os pés apoiados sobre os apoio para os pés e os joelhos ligeiramente flexionados.',
+          'Segure os pegadores com uma pegada pronada, mantendo as costas retas e os ombros relaxados.',
+          'Puxe os pegadores em direção ao corpo, contraindo as escápulas entre si.',
+          'Faça uma pausa por um momento no ponto máximo do movimento, depois solte lentamente os pegadores de volta à posição inicial.',
+          'Repita o número de repetições desejado.'
+        ],
+        media: {
+          provider: 'somma',
+          imageUrl: '/exercises/images/0861-fUBheHs.jpg',
+          gifUrl: '/exercises/gifs/0861-fUBheHs.gif'
+        },
         sets: [
           { id: 'sb7', setNumber: 1, prevWeight: 60, prevReps: 12, weight: 65, reps: 12, completed: false },
           { id: 'sb8', setNumber: 2, prevWeight: 65, prevReps: 10, weight: 70, reps: 10, completed: false }
         ]
       },
       {
-        id: 'ex-b4',
-        name: 'Rosca Direta Barra W',
+        id: '0447',
+        source: 'somma',
+        catalogRef: { provider: 'somma', id: '0447' },
+        name: 'Rosca com Barra W',
+        originalName: 'ez barbell curl',
         muscleGroup: 'Bíceps',
+        bodyPart: 'Braços',
+        equipment: 'Barra W',
+        target: 'Bíceps',
+        targetMuscles: ['Bíceps', 'Antebraços'],
+        instructions: 'Fique de pé com os pés afastados na largura dos ombros e segure a barra EZ com pegada supino, palmas para cima. Mantenha os cotovelos perto do tronco e os braços superiores parados durante todo o movimento. Expire enquanto suba a barra em direção aos ombros, contraindo os bíceps. Faça uma pausa breve na parte mais alta, depois inspire enquanto abaixe lentamente a barra de volta à posição inicial. Repita o número de repetições desejado.',
+        executionTips: [
+          'Fique de pé com os pés afastados na largura dos ombros e segure a barra EZ com pegada supino, palmas para cima.',
+          'Mantenha os cotovelos perto do tronco e os braços superiores parados durante todo o movimento.',
+          'Expire enquanto suba a barra em direção aos ombros, contraindo os bíceps.',
+          'Faça uma pausa breve na parte mais alta, depois inspire enquanto abaixe lentamente a barra de volta à posição inicial.',
+          'Repita o número de repetições desejado.'
+        ],
+        media: {
+          provider: 'somma',
+          imageUrl: '/exercises/images/0447-6TG6x2w.jpg',
+          gifUrl: '/exercises/gifs/0447-6TG6x2w.gif'
+        },
         sets: [
           { id: 'sb9', setNumber: 1, prevWeight: 28, prevReps: 10, weight: 30, reps: 10, completed: false },
           { id: 'sb10', setNumber: 2, prevWeight: 30, prevReps: 8, weight: 32, reps: 8, completed: false },
@@ -154,9 +312,32 @@ export const INITIAL_ROUTINES: Routine[] = [
         ]
       },
       {
-        id: 'ex-b5',
-        name: 'Rosca Martelo Alternada',
-        muscleGroup: 'Braquial / Antebraço',
+        id: '0313',
+        source: 'somma',
+        catalogRef: { provider: 'somma', id: '0313' },
+        name: 'Rosca Martelo com Halteres',
+        originalName: 'dumbbell hammer curl',
+        muscleGroup: 'Bíceps',
+        bodyPart: 'Braços',
+        equipment: 'Halteres',
+        target: 'Bíceps',
+        targetMuscles: ['Bíceps', 'Antebraços'],
+        instructions: 'Fique de pé com uma halter em cada mão, com as palmas olhando em direção ao tronco. Mantenha os cotovelos perto do tronco e gire as palmas das mãos até que fiquem olhando para a frente. Esta será seu posição inicial. Agora, mantendo os braços superiores parados, expire e flexione os braços contraindo os bíceps. Continue elevando as pesos até que os bíceps estejam completamente contraídos e as halteres estejam na altura dos ombros. Mantenha a posição contraído durante uma breve pausa enquanto contrai os bíceps. Depois, inspire e comece a abaixar lentamente as halteres de volta à posição inicial. Repita o número de repetições recomendado.',
+        executionTips: [
+          'Fique de pé com uma halter em cada mão, com as palmas olhando em direção ao tronco.',
+          'Mantenha os cotovelos perto do tronco e gire as palmas das mãos até que fiquem olhando para a frente.',
+          'Esta será seu posição inicial.',
+          'Agora, mantendo os braços superiores parados, expire e flexione os braços contraindo os bíceps.',
+          'Continue elevando as pesos até que os bíceps estejam completamente contraídos e as halteres estejam na altura dos ombros.',
+          'Mantenha a posição contraído durante uma breve pausa enquanto contrai os bíceps.',
+          'Depois, inspire e comece a abaixar lentamente as halteres de volta à posição inicial.',
+          'Repita o número de repetições recomendado.'
+        ],
+        media: {
+          provider: 'somma',
+          imageUrl: '/exercises/images/0313-slDvUAU.jpg',
+          gifUrl: '/exercises/gifs/0313-slDvUAU.gif'
+        },
         sets: [
           { id: 'sb12', setNumber: 1, prevWeight: 14, prevReps: 12, weight: 16, reps: 12, completed: false },
           { id: 'sb13', setNumber: 2, prevWeight: 16, prevReps: 10, weight: 16, reps: 10, completed: false }
@@ -169,13 +350,36 @@ export const INITIAL_ROUTINES: Routine[] = [
     name: 'Treino C - Pernas Completo',
     category: 'Inferiores',
     lastSession: 'há 1 semana',
-    exercisesCount: 6,
+    exercisesCount: 3,
     estimatedMinutes: 65,
     exercises: [
       {
-        id: 'ex-c1',
-        name: 'Agachamento Livre com Barra',
+        id: '0043',
+        source: 'somma',
+        catalogRef: { provider: 'somma', id: '0043' },
+        name: 'Completo Agachamento com Barra',
+        originalName: 'barbell full squat',
         muscleGroup: 'Quadríceps / Glúteos',
+        bodyPart: 'Pernas',
+        equipment: 'Barra',
+        target: 'Glúteos',
+        targetMuscles: ['Glúteos', 'Quadríceps', 'Posteriores de coxa', 'Panturrilhas', 'Core'],
+        instructions: 'Fique de pé com os pés afastados na largura dos ombros, com os dedos dos pés ligeiramente para fora. Segure a barra sobre a parte superior da costas, apoiando-a nos trapézios o os deltoides posteriores. Ative o core e mantenha o peito elevado enquanto comece a abaixar o corpo. Flexione os joelhos e os quadris, empurrando os quadris para trás e para baixo como se se sente-se em uma cadeira. Abaixe até que os coxas fiquem paralelos ao chão o um pouco por abaixo. Mantenha os joelhos alinhadas com os dedos dos pés e o peso sobre os calcanhares. Empurre com os calcanhares para retornar a ficar de pé, estendendo os quadris e os joelhos. Repita o número de repetições desejado.',
+        executionTips: [
+          'Fique de pé com os pés afastados na largura dos ombros, com os dedos dos pés ligeiramente para fora.',
+          'Segure a barra sobre a parte superior da costas, apoiando-a nos trapézios o os deltoides posteriores.',
+          'Ative o core e mantenha o peito elevado enquanto comece a abaixar o corpo.',
+          'Flexione os joelhos e os quadris, empurrando os quadris para trás e para baixo como se se sente-se em uma cadeira.',
+          'Abaixe até que os coxas fiquem paralelos ao chão o um pouco por abaixo.',
+          'Mantenha os joelhos alinhadas com os dedos dos pés e o peso sobre os calcanhares.',
+          'Empurre com os calcanhares para retornar a ficar de pé, estendendo os quadris e os joelhos.',
+          'Repita o número de repetições desejado.'
+        ],
+        media: {
+          provider: 'somma',
+          imageUrl: '/exercises/images/0043-qXTaZnJ.jpg',
+          gifUrl: '/exercises/gifs/0043-qXTaZnJ.gif'
+        },
         sets: [
           { id: 'sc1', setNumber: 1, prevWeight: 100, prevReps: 10, weight: 110, reps: 10, completed: false },
           { id: 'sc2', setNumber: 2, prevWeight: 120, prevReps: 8, weight: 130, reps: 8, completed: false },
@@ -183,18 +387,60 @@ export const INITIAL_ROUTINES: Routine[] = [
         ]
       },
       {
-        id: 'ex-c2',
-        name: 'Leg Press 45°',
+        id: '1425',
+        source: 'somma',
+        catalogRef: { provider: 'somma', id: '1425' },
+        name: 'Leg Press 45° Unilateral na Máquina Sled',
+        originalName: 'sled 45 degrees one leg press',
         muscleGroup: 'Quadríceps',
+        bodyPart: 'Pernas',
+        equipment: 'Máquina sled',
+        target: 'Glúteos',
+        targetMuscles: ['Glúteos', 'Quadríceps', 'Posteriores de coxa', 'Panturrilhas'],
+        instructions: 'Ajuste a máquina de sled a um ângulo de 45 graus. Sente-se na máquina de sled com a costas contra o encosto e os pés sobre a placa. Posicione um pé sobre a placa e estenda a perna, empurrando o sled afastando-o de você. Dobre lentamente ao joelho e abaixe o sled de volta à posição inicial. Repita com a outra perna. Continue alternando as pernas durante o número de repetições desejado.',
+        executionTips: [
+          'Ajuste a máquina de sled a um ângulo de 45 graus.',
+          'Sente-se na máquina de sled com a costas contra o encosto e os pés sobre a placa.',
+          'Posicione um pé sobre a placa e estenda a perna, empurrando o sled afastando-o de você.',
+          'Dobre lentamente ao joelho e abaixe o sled de volta à posição inicial.',
+          'Repita com a outra perna.',
+          'Continue alternando as pernas durante o número de repetições desejado.'
+        ],
+        media: {
+          provider: 'somma',
+          imageUrl: '/exercises/images/1425-WWD6FzI.jpg',
+          gifUrl: '/exercises/gifs/1425-WWD6FzI.gif'
+        },
         sets: [
           { id: 'sc4', setNumber: 1, prevWeight: 280, prevReps: 12, weight: 300, reps: 12, completed: false },
           { id: 'sc5', setNumber: 2, prevWeight: 320, prevReps: 10, weight: 340, reps: 10, completed: false }
         ]
       },
       {
-        id: 'ex-c3',
+        id: '0585',
+        source: 'somma',
+        catalogRef: { provider: 'somma', id: '0585' },
         name: 'Cadeira Extensora',
+        originalName: 'lever leg extension',
         muscleGroup: 'Quadríceps',
+        bodyPart: 'Pernas',
+        equipment: 'Máquina articulada',
+        target: 'Quadríceps',
+        targetMuscles: ['Quadríceps', 'Posteriores de coxa'],
+        instructions: 'Ajuste a altura do assento e o encosto da máquina a seu corpo. Sente-se na máquina com a costas apoiada no encosto e os pés sobre a almofada para os pés. Segure as alças o as barras laterais para maior estabilidade. Estenda as pernas para a frente endireitando os joelhos, elevando o peso. Faça uma pausa breve no alto, depois abaixe lentamente o peso de volta à posição inicial. Repita o número de repetições desejado.',
+        executionTips: [
+          'Ajuste a altura do assento e o encosto da máquina a seu corpo.',
+          'Sente-se na máquina com a costas apoiada no encosto e os pés sobre a almofada para os pés.',
+          'Segure as alças o as barras laterais para maior estabilidade.',
+          'Estenda as pernas para a frente endireitando os joelhos, elevando o peso.',
+          'Faça uma pausa breve no alto, depois abaixe lentamente o peso de volta à posição inicial.',
+          'Repita o número de repetições desejado.'
+        ],
+        media: {
+          provider: 'somma',
+          imageUrl: '/exercises/images/0585-my33uHU.jpg',
+          gifUrl: '/exercises/gifs/0585-my33uHU.gif'
+        },
         sets: [
           { id: 'sc6', setNumber: 1, prevWeight: 50, prevReps: 15, weight: 55, reps: 15, completed: false },
           { id: 'sc7', setNumber: 2, prevWeight: 55, prevReps: 12, weight: 60, reps: 12, completed: false }

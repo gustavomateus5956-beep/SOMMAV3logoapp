@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useRef, useCallb
 import { Routine, Exercise, WorkoutSessionRecord, CompletedExerciseLog, CompletedSetLog } from '../types';
 import { repositories } from '../data';
 import { useUser } from './UserContext';
+import { playRestFinishedSound } from '../utils/workoutSound';
 
 export type WorkoutSessionStatus = 'idle' | 'active' | 'minimized' | 'completed';
 
@@ -14,6 +15,7 @@ export interface ActiveWorkoutSession {
   seconds: number;
   isTimerPaused: boolean;
   restSeconds: number | null;
+  restTotalSeconds: number | null;
   isRestPaused: boolean;
   lastActiveExerciseIndex: number;
   lastActiveSetIndex: number;
@@ -29,13 +31,20 @@ export interface WorkoutContextType {
   totalSets: number;
   completedSets: number;
   progressPercentage: number;
+  restSeconds: number | null;
+  restTotalSeconds: number | null;
   // Actions
   startWorkout: (routine: Routine | null) => void | Promise<void>;
   minimizeWorkout: () => void;
   maximizeWorkout: () => void;
   updateExercises: (exercises: Exercise[] | ((prev: Exercise[]) => Exercise[])) => void;
   setWorkoutName: (name: string) => void;
-  setRestSeconds: (seconds: number | null | ((prev: number | null) => number | null)) => void;
+  setRestSeconds: (
+    seconds: number | null | ((prev: number | null) => number | null),
+    totalOverride?: number | null
+  ) => void;
+  adjustRestSeconds: (delta: number) => void;
+  skipRest: () => void;
   setIsRestPaused: (paused: boolean | ((prev: boolean) => boolean)) => void;
   setIsTimerPaused: (paused: boolean | ((prev: boolean) => boolean)) => void;
   setLastActivePosition: (exerciseIndex: number, setIndex: number) => void;
@@ -73,9 +82,12 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
           }
 
           let newRestSeconds = prev.restSeconds;
+          let newRestTotalSeconds = prev.restTotalSeconds;
           if (newRestSeconds !== null && !prev.isRestPaused) {
             if (newRestSeconds <= 1) {
               newRestSeconds = null;
+              newRestTotalSeconds = null;
+              playRestFinishedSound();
             } else {
               newRestSeconds = newRestSeconds - 1;
             }
@@ -84,7 +96,8 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
           return {
             ...prev,
             seconds: newSeconds,
-            restSeconds: newRestSeconds
+            restSeconds: newRestSeconds,
+            restTotalSeconds: newRestTotalSeconds
           };
         });
       }, 1000);
@@ -157,24 +170,11 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
         );
       }
     } else {
-      // Free workout default exercise
-      initialExercises = [
-        {
-          id: 'ex-free-1',
-          name: 'Supino Reto com Barra',
-          muscleGroup: 'Peitoral',
-          equipment: 'Barra Olímpica',
-          sets: [
-            { id: 's1', setNumber: 1, type: 'warmup', weight: 40, reps: 15, completed: false },
-            { id: 's2', setNumber: 2, type: 'working', weight: 80, reps: 10, completed: false },
-            { id: 's3', setNumber: 3, type: 'working', weight: 85, reps: 8, completed: false },
-            { id: 's4', setNumber: 4, type: 'dropset', weight: 65, reps: 12, completed: false }
-          ]
-        }
-      ];
+      // Manual/free workout starts completely empty: no default exercises, no Supino, no mock
+      initialExercises = [];
     }
 
-    const muscleGroups = routine?.muscleGroups || initialExercises.map((e) => e.muscleGroup).slice(0, 2).join(' & ');
+    const muscleGroups = routine?.muscleGroups || (initialExercises.length > 0 ? initialExercises.map((e) => e.muscleGroup).slice(0, 2).join(' & ') : 'Livre');
 
     setActiveSession({
       routine,
@@ -185,6 +185,7 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
       seconds: 0,
       isTimerPaused: false,
       restSeconds: null,
+      restTotalSeconds: null,
       isRestPaused: false,
       lastActiveExerciseIndex: 0,
       lastActiveSetIndex: 0
@@ -227,18 +228,62 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
   }, []);
 
   const setRestSeconds = useCallback(
-    (action: number | null | ((prev: number | null) => number | null)) => {
+    (
+      action: number | null | ((prev: number | null) => number | null),
+      totalOverride?: number | null
+    ) => {
       setActiveSession((prev) => {
         if (!prev) return null;
         const nextVal = typeof action === 'function' ? action(prev.restSeconds) : action;
+        let nextTotal = prev.restTotalSeconds;
+        if (nextVal === null) {
+          nextTotal = null;
+        } else if (totalOverride !== undefined) {
+          nextTotal = totalOverride;
+        } else if (prev.restTotalSeconds === null || prev.restSeconds === null) {
+          nextTotal = nextVal;
+        }
         return {
           ...prev,
-          restSeconds: nextVal
+          restSeconds: nextVal,
+          restTotalSeconds: nextTotal
         };
       });
     },
     []
   );
+
+  const adjustRestSeconds = useCallback((delta: number) => {
+    setActiveSession((prev) => {
+      if (!prev || prev.restSeconds === null) return prev;
+      const nextRemaining = Math.max(0, prev.restSeconds + delta);
+      if (nextRemaining === 0) {
+        return {
+          ...prev,
+          restSeconds: null,
+          restTotalSeconds: null
+        };
+      }
+      const currentTotal = prev.restTotalSeconds ?? prev.restSeconds;
+      const nextTotal = Math.max(nextRemaining, currentTotal + delta);
+      return {
+        ...prev,
+        restSeconds: nextRemaining,
+        restTotalSeconds: nextTotal
+      };
+    });
+  }, []);
+
+  const skipRest = useCallback(() => {
+    setActiveSession((prev) => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        restSeconds: null,
+        restTotalSeconds: null
+      };
+    });
+  }, []);
 
   const setIsRestPaused = useCallback(
     (action: boolean | ((prev: boolean) => boolean)) => {
@@ -290,6 +335,7 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
           lastActiveExerciseIndex: exIndex,
           lastActiveSetIndex: setIndex,
           restSeconds: targetRest !== null ? targetRest : prev.restSeconds,
+          restTotalSeconds: targetRest !== null ? targetRest : prev.restTotalSeconds,
           isRestPaused: targetRest !== null ? false : prev.isRestPaused
         };
       });
@@ -313,6 +359,7 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
         seconds: frozenSeconds,
         finalDurationSeconds: frozenSeconds,
         restSeconds: null,
+        restTotalSeconds: null,
         isTimerPaused: true,
         isRestPaused: true
       };
@@ -429,12 +476,16 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
         totalSets,
         completedSets,
         progressPercentage,
+        restSeconds: activeSession?.restSeconds ?? null,
+        restTotalSeconds: activeSession?.restTotalSeconds ?? null,
         startWorkout,
         minimizeWorkout,
         maximizeWorkout,
         updateExercises,
         setWorkoutName,
         setRestSeconds,
+        adjustRestSeconds,
+        skipRest,
         setIsRestPaused,
         setIsTimerPaused,
         setLastActivePosition,

@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { X, Calendar, Clock, Dumbbell, Award, Share2, Instagram, CheckCircle2, RotateCcw, ShieldCheck } from 'lucide-react';
 import { WorkoutSessionRecord, Routine } from '../types';
 import { ExportCardModal, WorkoutExportData } from './ExportCardModal';
 import { getSetTypeConfig, SetTypeIcon } from '../data/setTypes';
 import { useScrollLock } from '../hooks/useScrollLock';
+import { calculateWorkoutMuscleScores } from '../features/muscle-map/sommaMuscleMapAdapter';
+import { SommaMuscleMap } from './muscle-map/SommaMuscleMap';
 
 interface WorkoutSessionDetailModalProps {
   session: WorkoutSessionRecord | null;
@@ -18,6 +20,10 @@ export const WorkoutSessionDetailModal: React.FC<WorkoutSessionDetailModalProps>
 }) => {
   const [showExportModal, setShowExportModal] = useState(false);
   useScrollLock(!!session);
+
+  const analysis = useMemo(() => {
+    return session ? calculateWorkoutMuscleScores(session.exercises) : null;
+  }, [session]);
 
   if (!session) return null;
 
@@ -99,6 +105,38 @@ export const WorkoutSessionDetailModal: React.FC<WorkoutSessionDetailModalProps>
 
         {/* Exercises list */}
         <div className="flex-1 overflow-y-auto p-4 space-y-3.5 no-scrollbar">
+          {/* SommaMuscleMap Card (Completed Mode) */}
+          {analysis && analysis.details.length > 0 && (
+            <div className="bg-[#181c21] rounded-2xl p-3.5 border border-[#262a30] flex flex-col items-center mb-1">
+              <div className="w-full flex items-center justify-between mb-2">
+                <span className="text-xs font-bold text-white flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-[#0066ff]" />
+                  Ativação Muscular Registrada
+                </span>
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[#0066ff]/20 text-[#38bdf8] border border-[#0066ff]/30">
+                  MuscleMap
+                </span>
+              </div>
+              <SommaMuscleMap
+                values={analysis.values}
+                mode="completed"
+                view="BOTH"
+                compact={true}
+                figureWidth={120}
+              />
+              <div className="w-full mt-2.5 pt-2.5 border-t border-[#262a30]/60 flex flex-wrap gap-1.5 justify-center">
+                {analysis.details.slice(0, 4).map((m) => (
+                  <span
+                    key={m.group}
+                    className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#14181f] text-[#b3c5ff] border border-[#262a30]"
+                  >
+                    {m.label}: {m.loadPercentage}%
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
           {session.exercises.map((exercise, exIndex) => (
             <div
               key={exercise.exerciseId || `ex-${exIndex}`}

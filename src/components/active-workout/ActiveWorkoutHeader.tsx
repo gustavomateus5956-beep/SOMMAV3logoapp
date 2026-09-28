@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   ChevronDown,
   Timer,
   Play,
-  Pause
+  Pause,
+  MoreVertical,
+  Pencil,
+  Trash2,
+  X
 } from 'lucide-react';
+import type { MuscleMapValues } from '@musclemap/core';
+import { MiniMuscleMapButton } from '../muscle-map/MiniMuscleMapButton';
 
 interface ActiveWorkoutHeaderProps {
   isTimerPaused: boolean;
@@ -25,6 +31,9 @@ interface ActiveWorkoutHeaderProps {
   onWorkoutNameChange: (name: string) => void;
   totalVolume: number;
   formatTimer: (secs: number) => string;
+  onOpenMuscleDistribution?: () => void;
+  muscleValues?: MuscleMapValues;
+  onDiscard?: () => void;
 }
 
 export const ActiveWorkoutHeader: React.FC<ActiveWorkoutHeaderProps> = ({
@@ -43,8 +52,47 @@ export const ActiveWorkoutHeader: React.FC<ActiveWorkoutHeaderProps> = ({
   workoutName,
   onWorkoutNameChange,
   totalVolume,
-  formatTimer
+  formatTimer,
+  onOpenMuscleDistribution,
+  muscleValues,
+  onDiscard
 }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isRenameOpen, setIsRenameOpen] = useState(false);
+  const [newNameInput, setNewNameInput] = useState(workoutName);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Close menu on click outside
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isMenuOpen]);
+
+  // Keep input in sync with current workout name
+  useEffect(() => {
+    setNewNameInput(workoutName);
+  }, [workoutName]);
+
+  const handleOpenRename = () => {
+    setIsMenuOpen(false);
+    setNewNameInput(workoutName);
+    setIsRenameOpen(true);
+  };
+
+  const handleSaveRename = () => {
+    const trimmed = newNameInput.trim();
+    if (trimmed) {
+      onWorkoutNameChange(trimmed);
+      setIsRenameOpen(false);
+    }
+  };
+
   // Format duration nicely (e.g. "8s" if < 60, or "MM:SS")
   const formatDurationDisplay = (totalSecs: number) => {
     if (totalSecs < 60) return `${totalSecs}s`;
@@ -55,37 +103,36 @@ export const ActiveWorkoutHeader: React.FC<ActiveWorkoutHeaderProps> = ({
 
   return (
     <div className="bg-[#101419] border-b border-[#1c2025] shrink-0 z-20">
-      {/* Top Bar: [ Recolher ]   TREINO   [ Timer ] [ CONCLUIR ] */}
-      <div className="px-4 py-2.5 flex items-center justify-between">
+      {/* Top Bar: [ Recolher ]   TREINO (Informativo, não editável inline)   [ Timer ] [ Menu ] [ CONCLUIR ] */}
+      <div className="px-3.5 sm:px-4 py-2.5 flex items-center justify-between gap-2">
         {/* Left: Button Recolher / Voltar */}
         <button
           type="button"
           onClick={onMinimize}
-          aria-label="Recolher treino"
-          className="w-9 h-9 rounded-full bg-[#181c21] hover:bg-[#262a30] border border-[#262a30] flex items-center justify-center text-[#c2c6d8] hover:text-white transition-colors cursor-pointer"
+          aria-label="Minimizar treino"
+          className="w-9 h-9 rounded-full bg-[#181c21] hover:bg-[#262a30] active:scale-95 border border-[#262a30] flex items-center justify-center text-[#c2c6d8] hover:text-white transition-all shrink-0 cursor-pointer"
           title="Minimizar treino para segundo plano"
         >
           <ChevronDown className="w-5 h-5 stroke-[2.5]" />
         </button>
 
-        {/* Center: Workout Title (Discreet / Clean) */}
-        <div className="flex flex-col items-center max-w-[180px] sm:max-w-[240px]">
-          <input
-            type="text"
-            value={workoutName}
-            onChange={(e) => onWorkoutNameChange(e.target.value)}
-            className="text-center font-bold text-sm sm:text-base text-white bg-transparent border-none outline-none truncate hover:bg-[#181c21] focus:bg-[#181c21] px-2 py-0.5 rounded transition-all cursor-text"
-            title="Clique para editar o nome do treino"
-          />
+        {/* Center: Workout Title (Informativo, sem sobreposição, truncamento inteligente) */}
+        <div className="flex-1 min-w-0 px-2 flex items-center justify-center">
+          <h2
+            className="text-sm sm:text-base font-bold text-white truncate text-center select-none"
+            title={workoutName}
+          >
+            {workoutName}
+          </h2>
         </div>
 
-        {/* Right: Timer icon + Concluir button */}
-        <div className="flex items-center gap-2">
+        {/* Right: Timer icon + Menu 3 Pontos + Concluir button */}
+        <div className="flex items-center gap-1.5 shrink-0">
           {onOpenRestSettings && (
             <button
               type="button"
               onClick={onOpenRestSettings}
-              className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors cursor-pointer border ${
+              className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center transition-colors cursor-pointer border ${
                 restSeconds !== null
                   ? 'bg-[#0066ff]/20 text-[#0066ff] border-[#0066ff]/40'
                   : 'bg-[#181c21] hover:bg-[#262a30] text-[#8c90a1] hover:text-white border-[#262a30]'
@@ -97,19 +144,66 @@ export const ActiveWorkoutHeader: React.FC<ActiveWorkoutHeaderProps> = ({
             </button>
           )}
 
+          {/* Menu de Ações do Treino (Três Pontos) */}
+          <div className="relative" ref={menuRef}>
+            <button
+              type="button"
+              onClick={() => setIsMenuOpen((prev) => !prev)}
+              aria-label="Ações do treino"
+              aria-expanded={isMenuOpen}
+              className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center transition-colors cursor-pointer border ${
+                isMenuOpen
+                  ? 'bg-[#0066ff]/20 text-[#38bdf8] border-[#0066ff]/40'
+                  : 'bg-[#181c21] hover:bg-[#262a30] text-[#8c90a1] hover:text-white border-[#262a30]'
+              }`}
+              title="Mais opções do treino"
+            >
+              <MoreVertical className="w-4 h-4" />
+            </button>
+
+            {/* Dropdown Menu */}
+            {isMenuOpen && (
+              <div className="absolute right-0 top-full mt-1.5 w-48 bg-[#181c21] border border-[#2a303c] rounded-2xl p-1.5 shadow-2xl z-30 animate-in fade-in zoom-in-95 duration-150">
+                <button
+                  type="button"
+                  onClick={handleOpenRename}
+                  className="w-full px-3 py-2.5 rounded-xl hover:bg-[#22272e] flex items-center gap-2.5 text-xs font-semibold text-white transition-colors cursor-pointer text-left"
+                >
+                  <Pencil className="w-3.5 h-3.5 text-[#0066ff]" />
+                  <span>Renomear treino</span>
+                </button>
+
+                {onDiscard && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      onDiscard();
+                    }}
+                    className="w-full px-3 py-2.5 rounded-xl hover:bg-[#ef4444]/10 flex items-center gap-2.5 text-xs font-semibold text-[#ef4444] transition-colors cursor-pointer text-left"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    <span>Descartar treino</span>
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Botão Concluir */}
           <button
             type="button"
             onClick={onConclude}
-            className="h-8 sm:h-9 px-4 sm:px-5 rounded-full bg-[#0066ff] hover:bg-[#0054d6] active:scale-[0.98] text-white text-xs sm:text-sm font-bold flex items-center justify-center transition-all cursor-pointer shadow-sm shadow-[#0066ff]/25"
+            className="h-8 sm:h-9 px-3.5 sm:px-4 rounded-full bg-[#0066ff] hover:bg-[#0054d6] active:scale-[0.98] text-white text-xs sm:text-sm font-bold flex items-center justify-center transition-all cursor-pointer shadow-sm shadow-[#0066ff]/25"
           >
             Concluir
           </button>
         </div>
       </div>
 
-      {/* Horizontal Stats Row: Duração | Volume | Séries | Body Silhouette */}
-      <div className="px-5 py-2.5 flex items-center justify-between border-t border-[#181c21]/80">
-        <div className="flex items-center gap-6 sm:gap-10">
+      {/* Horizontal Stats Row: Duração | Volume | Séries | Muscle Map Action */}
+      <div className="px-4 sm:px-5 py-2.5 flex items-center justify-between border-t border-[#181c21]/80">
+        <div className="flex items-center gap-5 sm:gap-8">
           {/* Duração */}
           <div 
             onClick={onTogglePauseTimer} 
@@ -148,78 +242,73 @@ export const ActiveWorkoutHeader: React.FC<ActiveWorkoutHeaderProps> = ({
           </div>
         </div>
 
-        {/* Minimal Body Silhouette Vector (Front/Back Anatomy Icon) */}
-        <div 
-          className="w-8 h-8 rounded-lg bg-[#181c21] border border-[#262a30]/80 flex items-center justify-center text-[#8c90a1]"
-          title="Mapa de estímulo muscular do treino"
-        >
-          <svg
-            className="w-5 h-5 text-[#8c90a1]"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            {/* Head */}
-            <circle cx="12" cy="4" r="2" />
-            {/* Torso & Arms */}
-            <path d="M9 7.5h6l1.5 6-1.5.5-1-4h-4l-1 4-1.5-.5 1.5-6z" />
-            {/* Legs */}
-            <path d="M10 14v7h1.5v-5h1v5H14v-7" />
-          </svg>
-        </div>
+        {/* Mini Preview Visual do Muscle Map (Clicável, Frente e Costas com Highlights em Azul SOMMA) */}
+        {onOpenMuscleDistribution && (
+          <MiniMuscleMapButton
+            values={muscleValues}
+            onClick={onOpenMuscleDistribution}
+          />
+        )}
       </div>
 
-      {/* Floating Rest Countdown Bar (when rest is active) */}
-      {restSeconds !== null && (
-        <div className="bg-[#0066ff]/15 border-t border-b border-[#0066ff]/35 px-4 py-2 flex items-center justify-between animate-in slide-in-from-top-1 duration-200">
-          <div className="flex items-center gap-2">
-            <Timer className="w-4 h-4 text-[#0066ff] animate-spin" />
-            <div className="flex flex-col">
-              <span className="text-[9px] font-bold uppercase tracking-wider text-[#b3c5ff]">
-                Descanso em andamento
-              </span>
-              <span className="font-mono text-sm sm:text-base font-extrabold text-white tabular-nums leading-none">
-                {formatTimer(restSeconds)}
-              </span>
+      {/* Modal / Dialog de Renomear Treino */}
+      {isRenameOpen && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
+          <div
+            className="w-full max-w-sm bg-[#14181f] border border-[#262a30] rounded-t-3xl sm:rounded-2xl p-5 flex flex-col gap-4 shadow-2xl animate-in slide-in-from-bottom sm:zoom-in-95 duration-200"
+          >
+            <div className="flex items-center justify-between pb-2 border-b border-[#262a30]/80">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-[#0066ff]/20 text-[#0066ff] flex items-center justify-center">
+                  <Pencil className="w-4 h-4" />
+                </div>
+                <h3 className="text-sm sm:text-base font-bold text-white">Renomear Treino</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsRenameOpen(false)}
+                className="w-8 h-8 rounded-full bg-[#181c21] hover:bg-[#262a30] text-[#8c90a1] hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
             </div>
-          </div>
 
-          <div className="flex items-center gap-1.5">
-            <button
-              type="button"
-              onClick={() => onAddRestSeconds(30)}
-              className="px-2 py-1 bg-[#181c21] hover:bg-[#262a30] rounded-lg text-[11px] font-bold text-[#b3c5ff] cursor-pointer border border-[#262a30]"
-            >
-              +30s
-            </button>
-            <button
-              type="button"
-              onClick={() => onAddRestSeconds(-15)}
-              className="px-2 py-1 bg-[#181c21] hover:bg-[#262a30] rounded-lg text-[11px] font-bold text-[#8c90a1] cursor-pointer border border-[#262a30]"
-            >
-              -15s
-            </button>
-            <button
-              type="button"
-              onClick={onTogglePauseRest}
-              className="p-1.5 bg-[#181c21] hover:bg-[#262a30] rounded-lg text-white cursor-pointer border border-[#262a30]"
-            >
-              {isRestPaused ? (
-                <Play className="w-3.5 h-3.5 fill-white" />
-              ) : (
-                <Pause className="w-3.5 h-3.5" />
-              )}
-            </button>
-            <button
-              type="button"
-              onClick={onSkipRest}
-              className="px-2.5 py-1 bg-[#0066ff] hover:bg-[#0054d6] text-white rounded-lg text-[11px] font-bold cursor-pointer"
-            >
-              Pular
-            </button>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-semibold text-[#8c90a1]">Nome da sessão</label>
+              <input
+                type="text"
+                value={newNameInput}
+                onChange={(e) => setNewNameInput(e.target.value)}
+                placeholder="Ex: Treino A - Peito e Tríceps"
+                autoFocus
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && newNameInput.trim()) {
+                    handleSaveRename();
+                  } else if (e.key === 'Escape') {
+                    setIsRenameOpen(false);
+                  }
+                }}
+                className="w-full h-11 px-3.5 rounded-xl bg-[#101419] border border-[#262a30] text-white text-sm placeholder-[#8c90a1] focus:border-[#0066ff] outline-none transition-all"
+              />
+            </div>
+
+            <div className="flex items-center justify-end gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setIsRenameOpen(false)}
+                className="h-10 px-4 rounded-xl bg-[#181c21] hover:bg-[#262a30] text-xs font-semibold text-[#8c90a1] hover:text-white transition-colors cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                disabled={!newNameInput.trim()}
+                onClick={handleSaveRename}
+                className="h-10 px-5 rounded-xl bg-[#0066ff] hover:bg-[#0054d6] disabled:opacity-50 disabled:cursor-not-allowed text-xs font-bold text-white shadow-md shadow-[#0066ff]/25 transition-all cursor-pointer"
+              >
+                Salvar
+              </button>
+            </div>
           </div>
         </div>
       )}
