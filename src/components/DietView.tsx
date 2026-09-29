@@ -15,6 +15,8 @@ import { NutritionPlan, DailyMeal, MealFoodEntry } from '../types';
 import { AddFoodModal } from './AddFoodModal';
 import { PageHeader } from './PageHeader';
 import { useUser } from '../context/UserContext';
+import { NutritionPlanInfoSheet } from './nutrition/NutritionPlanInfoSheet';
+import type { NutritionPlanStrategyData } from '../features/nutrition/types';
 
 // Helper to simplify meal names if desired
 const formatMealDisplayName = (name: string): string => {
@@ -34,6 +36,28 @@ export const DietView: React.FC = () => {
   const [activeMealForAdd, setActiveMealForAdd] = useState<DailyMeal | null>(null);
   const [expandedMealIds, setExpandedMealIds] = useState<string[]>(['meal-3']); // Expand Almoço by default
   const [supplementStack, setSupplementStack] = useState(INITIAL_NUTRITION_PLAN.supplementStack);
+  const [showPlanInfoSheet, setShowPlanInfoSheet] = useState(false);
+
+  // Dados da estratégia nutricional para o NutritionPlanInfoSheet
+  const planStrategyData: NutritionPlanStrategyData = useMemo(() => ({
+    goal: user?.goal || nutritionPlan.objective || 'Hipertrofia e Força',
+    calorieTarget: nutritionPlan.targetCalories,
+    proteinTarget: nutritionPlan.targetProtein,
+    carbohydrateTarget: nutritionPlan.targetCarbs,
+    fatTarget: nutritionPlan.targetFats,
+    fiberTarget: nutritionPlan.targetFiber,
+    waterTargetMl: nutritionPlan.targetWaterMl,
+    strategy: (nutritionPlan as any).strategy,
+    notes: (nutritionPlan as any).notes,
+    professional: nutritionPlan.professionalName
+      ? {
+          name: nutritionPlan.professionalName,
+          role: nutritionPlan.professionalRole,
+          registration: nutritionPlan.professionalCremOrCrn
+        }
+      : undefined,
+    updatedAt: (nutritionPlan as any).updatedAt
+  }), [user?.goal, nutritionPlan]);
 
   // Toggle meal completion
   const handleToggleMealCompleted = (mealId: string) => {
@@ -192,19 +216,23 @@ export const DietView: React.FC = () => {
   }, [completedMealsCount, totalMealsCount]);
 
   return (
-    <div className="flex flex-col w-full pb-24 md:pb-12 gap-5">
-      {/* 1. Header: Mesma hierarquia e padrão de Início e Treino */}
+    <div className="flex flex-col w-full pb-24 md:pb-12 gap-4">
+      {/* 1. Header: Mesma hierarquia limpa e direta de Treino */}
       <PageHeader
-        category="NUTRIÇÃO"
         title="Dieta"
-        subtitle="Seu plano alimentar, metas nutricionais e refeições do dia."
         badge={
-          <div className="flex items-center gap-1.5 bg-[#181c21] px-3.5 py-1.5 rounded-full border border-[#262a30] shadow-sm shrink-0">
-            <span className="w-2 h-2 rounded-full bg-[#0066ff]" />
+          <button
+            type="button"
+            onClick={() => setShowPlanInfoSheet(true)}
+            className="flex items-center gap-1.5 bg-[#181c21] hover:bg-[#20252c] active:scale-95 px-3.5 py-1.5 rounded-full border border-[#262a30] hover:border-[#0066ff]/50 shadow-sm shrink-0 transition-all cursor-pointer group"
+            title="Ver informações da estratégia nutricional"
+            aria-label="Abrir detalhes do plano nutricional"
+          >
+            <span className="w-2 h-2 rounded-full bg-[#0066ff] group-hover:shadow-[0_0_8px_rgba(0,102,255,0.8)] transition-shadow" />
             <span className="text-xs font-bold text-white tracking-wide">
               {user?.goal || 'Hipertrofia e Força'}
             </span>
-          </div>
+          </button>
         }
       />
 
@@ -638,6 +666,13 @@ export const DietView: React.FC = () => {
           onAddFood={handleAddFoodToMeal}
         />
       )}
+
+      {/* Informações da Estratégia Nutricional */}
+      <NutritionPlanInfoSheet
+        isOpen={showPlanInfoSheet}
+        onClose={() => setShowPlanInfoSheet(false)}
+        plan={planStrategyData}
+      />
     </div>
   );
 };

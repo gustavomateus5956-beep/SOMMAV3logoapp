@@ -14,6 +14,10 @@ import { WorkoutTodaySection } from './workout/WorkoutTodaySection';
 import { WorkoutRoutinesSection } from './workout/WorkoutRoutinesSection';
 import { WorkoutHistorySection } from './workout/WorkoutHistorySection';
 import { WorkoutCreateRoutineModal } from './workout/WorkoutCreateRoutineModal';
+import { RoutineLimitSheet } from './workout/RoutineLimitSheet';
+
+// Regra de produto provisória da Etapa Visual 3: Limite de rotinas do Plano Free
+const FREE_ROUTINES_LIMIT = 4;
 
 interface WorkoutViewProps {
   onStartRoutine: (routine: Routine | null) => void;
@@ -30,6 +34,7 @@ export const WorkoutView: React.FC<WorkoutViewProps> = ({
   const { workoutStatus, activeSession, maximizeWorkout } = useWorkout();
   const [routines, setRoutines] = useState<Routine[]>(INITIAL_ROUTINES);
   const [showNewRoutineModal, setShowNewRoutineModal] = useState(false);
+  const [showLimitSheet, setShowLimitSheet] = useState(false);
   const [newRoutineName, setNewRoutineName] = useState('');
   const [newRoutineMuscle, setNewRoutineMuscle] = useState('');
   const [showExerciseLibrary, setShowExerciseLibrary] = useState(false);
@@ -62,8 +67,26 @@ export const WorkoutView: React.FC<WorkoutViewProps> = ({
   const todaySession = historySessions.find((s) => s.dateDisplay === 'Hoje' || s.dateDisplay.toLowerCase().includes('hoje'));
   const todayPlannedRoutine = routines[0] || INITIAL_ROUTINES[0];
 
+  // Intercepta a abertura da criação de rotina se o limite Free já foi atingido
+  const handleOpenNewRoutineModal = () => {
+    if (routines.length >= FREE_ROUTINES_LIMIT) {
+      setShowLimitSheet(true);
+      return;
+    }
+    setShowNewRoutineModal(true);
+  };
+
+  const handleDeleteRoutine = (routineId: string) => {
+    setRoutines((prev) => prev.filter((r) => r.id !== routineId));
+  };
+
   const handleCreateRoutine = () => {
     if (!newRoutineName.trim()) return;
+    if (routines.length >= FREE_ROUTINES_LIMIT) {
+      setShowNewRoutineModal(false);
+      setShowLimitSheet(true);
+      return;
+    }
     const newRoutine: Routine = {
       id: `custom-${Date.now()}`,
       name: newRoutineName.trim(),
@@ -175,13 +198,15 @@ export const WorkoutView: React.FC<WorkoutViewProps> = ({
       {/* 2. SEÇÃO SEUS TREINOS / MINHAS ROTINAS */}
       <WorkoutRoutinesSection
         routines={routines}
-        onOpenNewRoutineModal={() => setShowNewRoutineModal(true)}
+        onOpenNewRoutineModal={handleOpenNewRoutineModal}
         onStartRoutine={onStartRoutine}
         onAddExerciseToRoutine={(routine) => {
           setTargetRoutineForExercise(routine);
           setShowExerciseLibrary(true);
         }}
         onViewRoutineDetail={onViewRoutineDetail}
+        onDeleteRoutine={handleDeleteRoutine}
+        maxLimit={FREE_ROUTINES_LIMIT}
       />
 
       {/* 3. SEÇÃO HISTÓRICO DE TREINOS */}
@@ -225,6 +250,19 @@ export const WorkoutView: React.FC<WorkoutViewProps> = ({
           onAddExercise={handleAddExerciseFromLibrary}
         />
       )}
+
+      {/* Routine Limit Sheet (Limite de Rotinas do Plano Free = 4) */}
+      <RoutineLimitSheet
+        isOpen={showLimitSheet}
+        onClose={() => setShowLimitSheet(false)}
+        onManageRoutines={() => setShowLimitSheet(false)}
+        onExploreSommaPlus={() => {
+          setShowLimitSheet(false);
+          onNavigate?.('pass');
+        }}
+        currentCount={routines.length}
+        maxLimit={FREE_ROUTINES_LIMIT}
+      />
     </div>
   );
 };

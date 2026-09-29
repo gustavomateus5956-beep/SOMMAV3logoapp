@@ -1,5 +1,5 @@
 import React from 'react';
-import { Info, MessageSquarePlus, Timer, Trash2 } from 'lucide-react';
+import { Info, MessageSquarePlus, Timer, Trash2, Layers, Unlink, ClipboardList } from 'lucide-react';
 import { Exercise } from '../../types';
 import { useScrollLock } from '../../hooks/useScrollLock';
 
@@ -7,26 +7,43 @@ interface ExerciseOptionsSheetProps {
   isOpen: boolean;
   exercise: Exercise;
   totalExercises: number;
+  isInBlock?: boolean;
+  blockName?: string;
   onClose: () => void;
   onOpenDetail: () => void;
   onOpenFeedback: () => void;
+  onOpenInstructions?: () => void;
   onConfigureRest: () => void;
   onRemoveExercise: () => void;
+  onAddToBlock?: () => void;
+  onRemoveFromBlock?: () => void;
 }
 
 export const ExerciseOptionsSheet: React.FC<ExerciseOptionsSheetProps> = ({
   isOpen,
   exercise,
   totalExercises,
+  isInBlock = false,
+  blockName,
   onClose,
   onOpenDetail,
   onOpenFeedback,
+  onOpenInstructions,
   onConfigureRest,
-  onRemoveExercise
+  onRemoveExercise,
+  onAddToBlock,
+  onRemoveFromBlock
 }) => {
   useScrollLock(isOpen);
 
   if (!isOpen) return null;
+
+  const hasInstructions = Boolean(
+    exercise.professionalNote?.trim() ||
+    (exercise as any).instruction?.trim() ||
+    (exercise as any).instructions?.trim() ||
+    (exercise as any).notes?.trim()
+  );
 
   return (
     <div
@@ -50,6 +67,7 @@ export const ExerciseOptionsSheet: React.FC<ExerciseOptionsSheetProps> = ({
 
         {/* Actions List */}
         <div className="py-2 px-3 space-y-1">
+          {/* 1. Ver detalhes e histórico */}
           <button
             type="button"
             onClick={() => {
@@ -62,6 +80,7 @@ export const ExerciseOptionsSheet: React.FC<ExerciseOptionsSheetProps> = ({
             <span className="text-sm font-semibold">Ver detalhes e histórico</span>
           </button>
 
+          {/* 2. Configurar tempo de descanso */}
           <button
             type="button"
             onClick={() => {
@@ -74,6 +93,22 @@ export const ExerciseOptionsSheet: React.FC<ExerciseOptionsSheetProps> = ({
             <span className="text-sm font-semibold">Configurar tempo de descanso</span>
           </button>
 
+          {/* 3. Instruções do profissional (apenas se houver instrução real) */}
+          {hasInstructions && (
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                onOpenInstructions?.();
+              }}
+              className="w-full h-12 px-4 rounded-xl flex items-center gap-3 hover:bg-[#181c22] text-left transition-colors cursor-pointer text-white"
+            >
+              <ClipboardList className="w-4 h-4 text-[#ff8400]" />
+              <span className="text-sm font-semibold">Instruções do profissional</span>
+            </button>
+          )}
+
+          {/* 4. Tirar dúvida com o profissional */}
           <button
             type="button"
             onClick={() => {
@@ -83,9 +118,39 @@ export const ExerciseOptionsSheet: React.FC<ExerciseOptionsSheetProps> = ({
             className="w-full h-12 px-4 rounded-xl flex items-center gap-3 hover:bg-[#181c22] text-left transition-colors cursor-pointer text-white"
           >
             <MessageSquarePlus className="w-4 h-4 text-[#4edea3]" />
-            <span className="text-sm font-semibold">Tirar dúvida com o professor</span>
+            <span className="text-sm font-semibold">Tirar dúvida com o profissional</span>
           </button>
 
+          {/* 5. Bi-set / Superset Block Action */}
+          {isInBlock ? (
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                onRemoveFromBlock && onRemoveFromBlock();
+              }}
+              className="w-full h-12 px-4 rounded-xl flex items-center gap-3 hover:bg-[#181c22] text-left transition-colors cursor-pointer text-white"
+            >
+              <Unlink className="w-4 h-4 text-[#ff8400]" />
+              <span className="text-sm font-semibold">Remover do Superset</span>
+            </button>
+          ) : (
+            totalExercises > 1 && (
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  onAddToBlock && onAddToBlock();
+                }}
+                className="w-full h-12 px-4 rounded-xl flex items-center gap-3 hover:bg-[#181c22] text-left transition-colors cursor-pointer text-white"
+              >
+                <Layers className="w-4 h-4 text-[#0066ff]" />
+                <span className="text-sm font-semibold">Adicionar ao bloco</span>
+              </button>
+            )
+          )}
+
+          {/* 6. Separador e Remover exercício */}
           {totalExercises > 1 && (
             <>
               <div className="pt-2 border-t border-[#262a30]/60 mt-1" />
@@ -107,3 +172,4 @@ export const ExerciseOptionsSheet: React.FC<ExerciseOptionsSheetProps> = ({
     </div>
   );
 };
+

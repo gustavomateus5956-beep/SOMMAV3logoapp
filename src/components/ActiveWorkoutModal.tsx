@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Plus, Trash2, Dumbbell } from 'lucide-react';
-import { Routine, Exercise, WorkoutSessionRecord, CompletedExerciseLog, SetTypeKey } from '../types';
+import { Routine, Exercise, WorkoutSessionRecord, CompletedExerciseLog, SetTypeKey, SetRole, SetMethod } from '../types';
 import { ExportCardModal, WorkoutExportData } from './ExportCardModal';
 import { ExerciseLibraryModal } from './ExerciseLibraryModal';
 import { repositories } from '../data';
@@ -18,6 +18,18 @@ import { ActiveWorkoutCelebrationModal } from './active-workout/ActiveWorkoutCel
 import { IncompleteSetsModal, DiscardWorkoutModal } from './active-workout/ActiveWorkoutConfirmModals';
 import { ActiveWorkoutMuscleSheet } from './active-workout/ActiveWorkoutMuscleSheet';
 import { ActiveWorkoutRestBottomBar } from './active-workout/ActiveWorkoutRestBottomBar';
+import { AddToBlockSheet } from './active-workout/AddToBlockSheet';
+import { BlockRestConfigSheet } from './active-workout/BlockRestConfigSheet';
+import { WorkoutSupersetBlockContainer } from './active-workout/WorkoutSupersetBlockContainer';
+
+export interface WorkoutBlockLocal {
+  id: string;
+  name: string;
+  type: 'superset' | 'biset';
+  exerciseIds: string[];
+  transitionRestSeconds: number;
+  blockRestSeconds: number;
+}
 
 interface ActiveWorkoutModalProps {
   routine: Routine | null;
@@ -77,6 +89,11 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
   const [showRestSettings, setShowRestSettings] = useState(false);
   const [exerciseForRestConfig, setExerciseForRestConfig] = useState<Exercise | null>(null);
   const [showMuscleDistribution, setShowMuscleDistribution] = useState(false);
+
+  // Workout Method Engine: Local Blocks (Bi-set / Superset)
+  const [activeBlocks, setActiveBlocks] = useState<WorkoutBlockLocal[]>([]);
+  const [exerciseForBlockAdd, setExerciseForBlockAdd] = useState<Exercise | null>(null);
+  const [blockForRestConfig, setBlockForRestConfig] = useState<WorkoutBlockLocal | null>(null);
 
   const displaySeconds = finalWorkoutSeconds !== null ? finalWorkoutSeconds : seconds;
 
@@ -341,6 +358,106 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     updateExercisesAndSync(updated);
   };
 
+  const handleUpdateSetConfig = (config: {
+    role: SetRole;
+    method: SetMethod;
+    targetRepsRange?: string;
+    rir?: number | null;
+    rpe?: number | null;
+    restTimeSeconds?: number;
+    type?: SetTypeKey;
+  }) => {
+    if (!editingSetType) return;
+    const { exIndex, setIndex } = editingSetType;
+    const updated = [...exercises];
+    const targetEx = { ...updated[exIndex] };
+    const sets = [...targetEx.sets];
+    sets[setIndex] = {
+      ...sets[setIndex],
+      ...config
+    };
+    targetEx.sets = sets;
+    updated[exIndex] = targetEx;
+    updateExercisesAndSync(updated);
+  };
+
+  // Workout Method Engine: Block Handlers (Bi-set / Superset)
+  const handleCreateBlock = (secondExerciseId: string, blockType: 'superset' | 'biset') => {
+    if (!exerciseForBlockAdd) return;
+    const newBlockId = `block-${Date.now()}`;
+    const blockNumber = activeBlocks.length + 1;
+    const newBlock: WorkoutBlockLocal = {
+      id: newBlockId,
+      name: `SUPERSET ${blockNumber}`,
+      type: blockType,
+      exerciseIds: [exerciseForBlockAdd.id, secondExerciseId],
+      transitionRestSeconds: 0,
+      blockRestSeconds: 90
+    };
+
+    // Reposition second exercise adjacent to the first in exercises list
+    const updated = [...exercises];
+    const sourceIdx = updated.findIndex((e) => e.id === exerciseForBlockAdd.id);
+    const targetIdx = updated.findIndex((e) => e.id === secondExerciseId);
+
+    if (sourceIdx !== -1 && targetIdx !== -1 && targetIdx !== sourceIdx + 1) {
+      const [targetEx] = updated.splice(targetIdx, 1);
+      const insertAt = targetIdx < sourceIdx ? sourceIdx : sourceIdx + 1;
+      updated.splice(insertAt, 0, targetEx);
+      updateExercisesAndSync(updated);
+    }
+
+    setActiveBlocks((prev) => [...prev, newBlock]);
+    setExerciseForBlockAdd(null);
+  };
+
+  const handleRemoveBlock = (blockId: string) => {
+    setActiveBlocks((prev) => prev.filter((b) => b.id !== blockId));
+  };
+
+  const handleSwapBlockExercises = (blockId: string) => {
+    const targetBlock = activeBlocks.find((b) => b.id === blockId);
+    if (!targetBlock || targetBlock.exerciseIds.length < 2) return;
+
+    const [id1, id2] = targetBlock.exerciseIds;
+
+    // Swap in activeBlocks
+    setActiveBlocks((prev) =>
+      prev.map((b) =>
+        b.id === blockId ? { ...b, exerciseIds: [id2, id1] } : b
+      )
+    );
+
+    // Swap in exercises array
+    const updated = [...exercises];
+    const idx1 = updated.findIndex((e) => e.id === id1);
+    const idx2 = updated.findIndex((e) => e.id === id2);
+    if (idx1 !== -1 && idx2 !== -1) {
+      const temp = updated[idx1];
+      updated[idx1] = updated[idx2];
+      updated[idx2] = temp;
+      updateExercisesAndSync(updated);
+    }
+  };
+
+  const handleUpdateBlockRest = (
+    blockId: string,
+    transitionSecs: number,
+    blockRestSecs: number
+  ) => {
+    setActiveBlocks((prev) =>
+      prev.map((b) =>
+        b.id === blockId
+          ? {
+              ...b,
+              transitionRestSeconds: transitionSecs,
+              blockRestSeconds: blockRestSecs
+            }
+          : b
+      )
+    );
+  };
+
   const handleMinimize = () => {
     if (onMinimize) {
       onMinimize();
@@ -442,6 +559,19 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     }))
   };
 
+  // Workout Method Engine: Block Mappings
+  const blockedExerciseIds = useMemo(
+    () => new Set(activeBlocks.flatMap((b) => b.exerciseIds)),
+    [activeBlocks]
+  );
+
+  const availableExercisesForBlock = useMemo(() => {
+    if (!exerciseForBlockAdd) return [];
+    return exercises.filter(
+      (e) => e.id !== exerciseForBlockAdd.id && !blockedExerciseIds.has(e.id)
+    );
+  }, [exercises, exerciseForBlockAdd, blockedExerciseIds]);
+
   return (
     <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex flex-col justify-end md:justify-center items-center">
       <div className="w-full max-w-[500px] h-[100dvh] md:h-[92vh] bg-[#101419] md:border border-[#262a30] md:rounded-3xl flex flex-col overflow-hidden shadow-2xl animate-in slide-in-from-bottom duration-300">
@@ -524,34 +654,139 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
             </div>
           ) : (
             <>
-              {exercises.map((exercise, exIndex) => (
-                <ActiveWorkoutExerciseCard
-                  key={exercise.id || `ex-${exIndex}`}
-                  exercise={exercise}
-                  exIndex={exIndex}
-                  totalExercises={exercises.length}
-                  onOpenFeedback={setFeedbackExercise}
-                  onStartRest={(secs) => {
-                    const restDuration = secs || exercise.restSeconds || defaultRestTime;
-                    setRestSeconds(restDuration);
-                    setRestTotalSeconds(restDuration);
-                    setContextRestSeconds(restDuration, restDuration);
-                    setIsRestPaused(false);
-                    setContextIsRestPaused(false);
-                  }}
-                  onRemoveExercise={handleRemoveExercise}
-                  onEditSetType={(eIdx, sIdx) => setEditingSetType({ exIndex: eIdx, setIndex: sIdx })}
-                  onUpdateSetField={updateSetField}
-                  onToggleSetComplete={toggleSetComplete}
-                  onAddSet={addSetToExercise}
-                  onOpenDetail={setSelectedExerciseForDetail}
-                  onUpdateNotes={handleUpdateNotes}
-                  onConfigureRest={(ex) => {
-                    setExerciseForRestConfig(ex);
-                    setShowRestSettings(true);
-                  }}
-                />
-              ))}
+              {exercises.map((exercise, exIndex) => {
+                // Check if this exercise belongs to a block
+                const currentBlock = activeBlocks.find((b) =>
+                  b.exerciseIds.includes(exercise.id)
+                );
+
+                if (currentBlock) {
+                  // If it's the second exercise in the block, skip standalone rendering
+                  if (currentBlock.exerciseIds[1] === exercise.id) {
+                    return null;
+                  }
+
+                  // It's the first exercise (A1) in the block!
+                  const exA1 = exercise;
+                  const exIndexA1 = exIndex;
+                  const exIndexA2 = exercises.findIndex(
+                    (e) => e.id === currentBlock.exerciseIds[1]
+                  );
+                  const exA2 = exIndexA2 !== -1 ? exercises[exIndexA2] : null;
+
+                  return (
+                    <WorkoutSupersetBlockContainer
+                      key={currentBlock.id}
+                      blockId={currentBlock.id}
+                      blockName={currentBlock.name}
+                      transitionRestSeconds={currentBlock.transitionRestSeconds}
+                      blockRestSeconds={currentBlock.blockRestSeconds}
+                      onOpenRestConfig={() => setBlockForRestConfig(currentBlock)}
+                      onSwapExercises={() => handleSwapBlockExercises(currentBlock.id)}
+                      onRemoveBlock={() => handleRemoveBlock(currentBlock.id)}
+                      exerciseCardA1={
+                        <ActiveWorkoutExerciseCard
+                          exercise={exA1}
+                          exIndex={exIndexA1}
+                          totalExercises={exercises.length}
+                          blockTag="A1"
+                          blockName={currentBlock.name}
+                          onOpenFeedback={setFeedbackExercise}
+                          onStartRest={(secs) => {
+                            const restDuration = secs || exA1.restSeconds || defaultRestTime;
+                            setRestSeconds(restDuration);
+                            setRestTotalSeconds(restDuration);
+                            setContextRestSeconds(restDuration, restDuration);
+                            setIsRestPaused(false);
+                            setContextIsRestPaused(false);
+                          }}
+                          onRemoveExercise={handleRemoveExercise}
+                          onEditSetType={(eIdx, sIdx) =>
+                            setEditingSetType({ exIndex: eIdx, setIndex: sIdx })
+                          }
+                          onUpdateSetField={updateSetField}
+                          onToggleSetComplete={toggleSetComplete}
+                          onAddSet={addSetToExercise}
+                          onOpenDetail={setSelectedExerciseForDetail}
+                          onUpdateNotes={handleUpdateNotes}
+                          onConfigureRest={(ex) => {
+                            setExerciseForRestConfig(ex);
+                            setShowRestSettings(true);
+                          }}
+                          onRemoveFromBlock={() => handleRemoveBlock(currentBlock.id)}
+                        />
+                      }
+                      exerciseCardA2={
+                        exA2 ? (
+                          <ActiveWorkoutExerciseCard
+                            exercise={exA2}
+                            exIndex={exIndexA2}
+                            totalExercises={exercises.length}
+                            blockTag="A2"
+                            blockName={currentBlock.name}
+                            onOpenFeedback={setFeedbackExercise}
+                            onStartRest={(secs) => {
+                              const restDuration = secs || exA2.restSeconds || defaultRestTime;
+                              setRestSeconds(restDuration);
+                              setRestTotalSeconds(restDuration);
+                              setContextRestSeconds(restDuration, restDuration);
+                              setIsRestPaused(false);
+                              setContextIsRestPaused(false);
+                            }}
+                            onRemoveExercise={handleRemoveExercise}
+                            onEditSetType={(eIdx, sIdx) =>
+                              setEditingSetType({ exIndex: eIdx, setIndex: sIdx })
+                            }
+                            onUpdateSetField={updateSetField}
+                            onToggleSetComplete={toggleSetComplete}
+                            onAddSet={addSetToExercise}
+                            onOpenDetail={setSelectedExerciseForDetail}
+                            onUpdateNotes={handleUpdateNotes}
+                            onConfigureRest={(ex) => {
+                              setExerciseForRestConfig(ex);
+                              setShowRestSettings(true);
+                            }}
+                            onRemoveFromBlock={() => handleRemoveBlock(currentBlock.id)}
+                          />
+                        ) : null
+                      }
+                    />
+                  );
+                }
+
+                // Normal standalone exercise
+                return (
+                  <ActiveWorkoutExerciseCard
+                    key={exercise.id || `ex-${exIndex}`}
+                    exercise={exercise}
+                    exIndex={exIndex}
+                    totalExercises={exercises.length}
+                    onOpenFeedback={setFeedbackExercise}
+                    onStartRest={(secs) => {
+                      const restDuration = secs || exercise.restSeconds || defaultRestTime;
+                      setRestSeconds(restDuration);
+                      setRestTotalSeconds(restDuration);
+                      setContextRestSeconds(restDuration, restDuration);
+                      setIsRestPaused(false);
+                      setContextIsRestPaused(false);
+                    }}
+                    onRemoveExercise={handleRemoveExercise}
+                    onEditSetType={(eIdx, sIdx) =>
+                      setEditingSetType({ exIndex: eIdx, setIndex: sIdx })
+                    }
+                    onUpdateSetField={updateSetField}
+                    onToggleSetComplete={toggleSetComplete}
+                    onAddSet={addSetToExercise}
+                    onOpenDetail={setSelectedExerciseForDetail}
+                    onUpdateNotes={handleUpdateNotes}
+                    onConfigureRest={(ex) => {
+                      setExerciseForRestConfig(ex);
+                      setShowRestSettings(true);
+                    }}
+                    onAddToBlock={() => setExerciseForBlockAdd(exercise)}
+                  />
+                );
+              })}
 
               {/* Add Exercise from SOMMA Library */}
               <div className="pt-2 pb-6 space-y-4">
@@ -666,13 +901,17 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
         />
       )}
 
-      {/* Set Type Sheet (Matching Screenshot 2 & 3: W, 1, F, D, Remove, Help Dialog) */}
+      {/* Set Configuration Sheet (Workout Method Engine - Etapa Visual 1) */}
       {editingSetType && (
         <SetTypeSheet
           isOpen={Boolean(editingSetType)}
-          setNumber={exercises[editingSetType.exIndex]?.sets[editingSetType.setIndex]?.setNumber || 1}
+          setNumber={editingSetType.setIndex + 1}
+          currentSet={exercises[editingSetType.exIndex]?.sets[editingSetType.setIndex]}
           currentType={exercises[editingSetType.exIndex]?.sets[editingSetType.setIndex]?.type || 'working'}
+          exerciseName={exercises[editingSetType.exIndex]?.name}
+          exerciseRestSeconds={exercises[editingSetType.exIndex]?.restSeconds || defaultRestTime}
           onClose={() => setEditingSetType(null)}
+          onSaveConfig={handleUpdateSetConfig}
           onSelectType={handleUpdateSetType}
           onRemoveSet={() => handleRemoveSet(editingSetType.exIndex, editingSetType.setIndex)}
         />
@@ -764,6 +1003,29 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
         onClose={() => setShowMuscleDistribution(false)}
         exercises={exercises}
       />
+
+      {/* Add To Block Bottom Sheet (Bi-set / Superset) */}
+      <AddToBlockSheet
+        isOpen={Boolean(exerciseForBlockAdd)}
+        sourceExercise={exerciseForBlockAdd}
+        availableExercises={availableExercisesForBlock}
+        onClose={() => setExerciseForBlockAdd(null)}
+        onConfirmGroup={handleCreateBlock}
+      />
+
+      {/* Block Rest Settings Bottom Sheet */}
+      {blockForRestConfig && (
+        <BlockRestConfigSheet
+          isOpen={Boolean(blockForRestConfig)}
+          blockName={blockForRestConfig.name}
+          currentTransitionRest={blockForRestConfig.transitionRestSeconds}
+          currentBlockRest={blockForRestConfig.blockRestSeconds}
+          onClose={() => setBlockForRestConfig(null)}
+          onSave={(trans, blockRest) =>
+            handleUpdateBlockRest(blockForRestConfig.id, trans, blockRest)
+          }
+        />
+      )}
     </div>
   );
 };

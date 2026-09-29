@@ -11,6 +11,9 @@ export type SetTypeKey =
   | 'rest_pause'
   | 'amrap';
 
+export type SetRole = 'working' | 'warmup' | 'top_set' | 'backoff';
+export type SetMethod = 'normal' | 'dropset' | 'rest_pause' | 'amrap';
+
 export interface SetTypeConfig {
   id: SetTypeKey;
   name: string;
@@ -28,13 +31,17 @@ export interface ExerciseSet {
   id: string;
   setNumber: number;
   type?: SetTypeKey;
+  role?: SetRole;
+  method?: SetMethod;
+  targetRepsRange?: string;
+  rir?: number | null;
+  rpe?: number | null;
   targetWeight?: number;
   targetReps?: number;
   prevWeight?: number;
   prevReps?: number;
   weight: number; // Carga real executada
   reps: number;   // Repetições reais executadas
-  rpe?: number;
   completed: boolean;
   instruction?: string;
   restTimeSeconds?: number;

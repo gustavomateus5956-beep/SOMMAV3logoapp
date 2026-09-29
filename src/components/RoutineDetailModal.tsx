@@ -5,7 +5,8 @@ import {
   Clock, 
   Dumbbell, 
   ShieldCheck, 
-  Timer
+  Timer,
+  Trash2
 } from 'lucide-react';
 import { Routine } from '../types';
 import { ExerciseMedia } from './exercise/ExerciseMedia';
@@ -17,14 +18,17 @@ interface RoutineDetailModalProps {
   routine: Routine | null;
   onClose: () => void;
   onStartRoutine: (routine: Routine) => void;
+  onDeleteRoutine?: (routineId: string) => void;
 }
 
 export const RoutineDetailModal: React.FC<RoutineDetailModalProps> = ({
   routine,
   onClose,
-  onStartRoutine
+  onStartRoutine,
+  onDeleteRoutine
 }) => {
   useScrollLock(!!routine);
+  const [showConfirmDelete, setShowConfirmDelete] = React.useState(false);
 
   if (!routine) return null;
 
@@ -46,15 +50,58 @@ export const RoutineDetailModal: React.FC<RoutineDetailModalProps> = ({
             </span>
           </div>
 
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Fechar visualização de treino"
-            className="w-9 h-9 rounded-full bg-[#262a30] hover:bg-[#31353b] text-[#c2c6d8] hover:text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
-          >
-            <X className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-1.5 shrink-0">
+            {onDeleteRoutine && (
+              <button
+                type="button"
+                onClick={() => setShowConfirmDelete(true)}
+                aria-label={`Excluir rotina ${routine.name}`}
+                className="w-9 h-9 rounded-full bg-[#262a30] hover:bg-[#2d1518] text-[#8c90a1] hover:text-[#ef4444] flex items-center justify-center transition-colors cursor-pointer"
+                title="Excluir rotina"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Fechar visualização de treino"
+              className="w-9 h-9 rounded-full bg-[#262a30] hover:bg-[#31353b] text-[#c2c6d8] hover:text-white flex items-center justify-center transition-colors cursor-pointer shrink-0"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
         </div>
+
+        {/* Modal de Confirmação de Exclusão da Rotina */}
+        {showConfirmDelete && (
+          <div className="p-4 bg-[#2d1518] border-b border-[#ef4444]/30 flex items-center justify-between animate-in fade-in">
+            <div className="flex flex-col">
+              <span className="text-xs font-bold text-white">Excluir esta rotina?</span>
+              <span className="text-[10px] text-[#ef4444]">Esta ação liberará 1 vaga no seu limite Free.</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setShowConfirmDelete(false)}
+                className="px-3 py-1 rounded-lg bg-[#262a30] text-xs text-[#c2c6d8] hover:text-white"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  onDeleteRoutine?.(routine.id);
+                  setShowConfirmDelete(false);
+                  onClose();
+                }}
+                className="px-3 py-1 rounded-lg bg-[#ef4444] text-xs font-bold text-white hover:bg-[#dc2626]"
+              >
+                Sim, excluir
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* 2. Banner de Prescrição Profissional se certificado */}
         {routine.isProfessionalCertified && routine.certifiedBy && (

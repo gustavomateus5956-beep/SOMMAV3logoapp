@@ -5,14 +5,17 @@ import {
   Check,
   Plus
 } from 'lucide-react';
-import { Exercise } from '../../types';
+import { Exercise, SetRole, SetMethod } from '../../types';
 import { ExerciseMedia } from '../exercise/ExerciseMedia';
 import { ExerciseOptionsSheet } from './ExerciseOptionsSheet';
+import { ProfessionalInstructionsSheet } from './ProfessionalInstructionsSheet';
 
 interface ActiveWorkoutExerciseCardProps {
   exercise: Exercise;
   exIndex: number;
   totalExercises: number;
+  blockTag?: string; // e.g. "A1", "A2"
+  blockName?: string;
   onOpenFeedback: (exercise: Exercise) => void;
   onStartRest: (seconds?: number) => void;
   onRemoveExercise: (exIndex: number) => void;
@@ -23,12 +26,16 @@ interface ActiveWorkoutExerciseCardProps {
   onOpenDetail?: (exercise: Exercise) => void;
   onUpdateNotes?: (exIndex: number, notes: string) => void;
   onConfigureRest?: (exercise: Exercise) => void;
+  onAddToBlock?: () => void;
+  onRemoveFromBlock?: () => void;
 }
 
 export const ActiveWorkoutExerciseCard: React.FC<ActiveWorkoutExerciseCardProps> = ({
   exercise,
   exIndex,
   totalExercises,
+  blockTag,
+  blockName,
   onOpenFeedback,
   onStartRest,
   onRemoveExercise,
@@ -38,11 +45,12 @@ export const ActiveWorkoutExerciseCard: React.FC<ActiveWorkoutExerciseCardProps>
   onAddSet,
   onOpenDetail,
   onUpdateNotes,
-  onConfigureRest
+  onConfigureRest,
+  onAddToBlock,
+  onRemoveFromBlock
 }) => {
   const [showOptionsSheet, setShowOptionsSheet] = useState(false);
-  const [isEditingNotes, setIsEditingNotes] = useState(false);
-  const [notesValue, setNotesValue] = useState(exercise.professionalNote || (exercise as any).notes || '');
+  const [showInstructionsSheet, setShowInstructionsSheet] = useState(false);
 
   // Rest duration format (e.g. 120s -> "2min", 90s -> "1min 30s", 45s -> "45s")
   const exerciseRest = exercise.restSeconds ?? (exercise as any).restTimeSeconds ?? 120;
@@ -56,13 +64,6 @@ export const ActiveWorkoutExerciseCard: React.FC<ActiveWorkoutExerciseCardProps>
       return `${mins}min`;
     }
     return `${remainderSecs}s`;
-  };
-
-  const handleNotesBlur = () => {
-    setIsEditingNotes(false);
-    if (onUpdateNotes) {
-      onUpdateNotes(exIndex, notesValue);
-    }
   };
 
   return (
@@ -88,13 +89,20 @@ export const ActiveWorkoutExerciseCard: React.FC<ActiveWorkoutExerciseCardProps>
 
           {/* Exercise Title & Subtitle */}
           <div className="flex flex-col min-w-0">
-            <h3
-              onClick={() => onOpenDetail && onOpenDetail(exercise)}
-              className="text-base sm:text-lg font-bold text-[#0066ff] hover:text-[#38bdf8] transition-colors cursor-pointer truncate leading-tight"
-              title={exercise.name}
-            >
-              {exercise.name}
-            </h3>
+            <div className="flex items-center gap-1.5 min-w-0">
+              {blockTag && (
+                <span className="px-2 py-0.5 rounded-lg bg-[#0066ff]/20 text-[#38bdf8] border border-[#0066ff]/40 text-xs font-mono font-black tracking-wider shrink-0">
+                  {blockTag}
+                </span>
+              )}
+              <h3
+                onClick={() => onOpenDetail && onOpenDetail(exercise)}
+                className="text-base sm:text-lg font-bold text-[#0066ff] hover:text-[#38bdf8] transition-colors cursor-pointer truncate leading-tight"
+                title={exercise.name}
+              >
+                {exercise.name}
+              </h3>
+            </div>
 
             <span className="text-xs text-[#8c90a1] truncate mt-0.5">
               {exercise.muscleGroup}
@@ -120,38 +128,8 @@ export const ActiveWorkoutExerciseCard: React.FC<ActiveWorkoutExerciseCardProps>
         </button>
       </div>
 
-      {/* 2. Notes / Observações (Discreet inline line, no card) */}
-      <div className="mt-2.5 pl-0.5">
-        {isEditingNotes ? (
-          <input
-            type="text"
-            autoFocus
-            value={notesValue}
-            onChange={(e) => setNotesValue(e.target.value)}
-            onBlur={handleNotesBlur}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') handleNotesBlur();
-            }}
-            placeholder="Adicione notas aqui..."
-            className="w-full text-xs text-white bg-[#181c21] border border-[#262a30] rounded-lg px-2.5 py-1.5 outline-none focus:border-[#0066ff] placeholder-[#64748b]"
-          />
-        ) : (
-          <div
-            onClick={() => setIsEditingNotes(true)}
-            className="text-xs text-[#64748b] hover:text-[#8c90a1] transition-colors cursor-pointer truncate py-0.5"
-            title="Clique para editar a nota do exercício"
-          >
-            {notesValue.trim() ? (
-              <span className="text-[#c2c6d8]">{notesValue}</span>
-            ) : (
-              <span>Adicione notas aqui...</span>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* 3. Rest line: [Clock icon] Descanso: 2min */}
-      <div className="mt-2 pl-0.5 flex items-center">
+      {/* 2. Rest line: [Clock icon] Descanso: 2min */}
+      <div className="mt-2.5 pl-0.5 flex items-center">
         <button
           type="button"
           onClick={() => {
@@ -182,108 +160,173 @@ export const ActiveWorkoutExerciseCard: React.FC<ActiveWorkoutExerciseCardProps>
 
         {/* Set Rows */}
         {exercise.sets.map((set, setIndex) => {
-          // Determine badge text and color based on set type
-          let setSymbol = `${setIndex + 1}`;
+          // 1. Resolve role and method with backwards compatibility
+          const effectiveRole: SetRole = set.role || (set.type === 'warmup' ? 'warmup' : 'working');
+          const effectiveMethod: SetMethod =
+            set.method ||
+            (set.type === 'dropset'
+              ? 'dropset'
+              : set.type === 'rest_pause'
+              ? 'rest_pause'
+              : set.type === 'amrap'
+              ? 'amrap'
+              : 'normal');
+
+          // 2. Count ordinals per role up to this set
+          let countForRole = 0;
+          for (let i = 0; i <= setIndex; i++) {
+            const s = exercise.sets[i];
+            const r: SetRole = s.role || (s.type === 'warmup' ? 'warmup' : 'working');
+            if (r === effectiveRole) {
+              countForRole++;
+            }
+          }
+
+          let setSymbol = `${countForRole}`;
           let symbolStyle = 'text-white bg-[#181c21] border-[#262a30] hover:border-[#0066ff]';
 
-          if (set.type === 'warmup') {
-            setSymbol = 'W';
-            symbolStyle = 'text-[#fbbf24] bg-[#fbbf24]/10 border-[#fbbf24]/40';
-          } else if (set.type === 'failure') {
-            setSymbol = 'F';
-            symbolStyle = 'text-[#ff5c5c] bg-[#ff5c5c]/10 border-[#ff5c5c]/40';
-          } else if (set.type === 'dropset') {
-            setSymbol = 'D';
-            symbolStyle = 'text-[#0066ff] bg-[#0066ff]/10 border-[#0066ff]/40';
+          if (effectiveRole === 'warmup') {
+            setSymbol = `A${countForRole}`;
+            symbolStyle = 'text-[#fbbf24] bg-[#fbbf24]/10 border-[#fbbf24]/40 hover:border-[#fbbf24]';
+          } else if (effectiveRole === 'top_set') {
+            setSymbol = `T${countForRole}`;
+            symbolStyle = 'text-[#38bdf8] bg-[#38bdf8]/10 border-[#38bdf8]/40 hover:border-[#38bdf8]';
+          } else if (effectiveRole === 'backoff') {
+            setSymbol = `B${countForRole}`;
+            symbolStyle = 'text-[#c084fc] bg-[#c084fc]/10 border-[#c084fc]/40 hover:border-[#c084fc]';
+          } else {
+            // effectiveRole === 'working'
+            setSymbol = `${countForRole}`;
+            if (effectiveMethod === 'dropset') {
+              symbolStyle = 'text-[#0066ff] bg-[#0066ff]/10 border-[#0066ff]/40 hover:border-[#0066ff]';
+            } else if (effectiveMethod === 'rest_pause') {
+              symbolStyle = 'text-[#4edea3] bg-[#4edea3]/10 border-[#4edea3]/40 hover:border-[#4edea3]';
+            } else if (effectiveMethod === 'amrap') {
+              symbolStyle = 'text-[#f43f5e] bg-[#f43f5e]/10 border-[#f43f5e]/40 hover:border-[#f43f5e]';
+            }
+          }
+
+          // 3. Discreet summary tokens (only rendered if there is relevant config)
+          const summaryTokens: string[] = [];
+          if (effectiveMethod === 'dropset') summaryTokens.push('DROP SET');
+          else if (effectiveMethod === 'rest_pause') summaryTokens.push('REST-PAUSE');
+          else if (effectiveMethod === 'amrap') summaryTokens.push('AMRAP');
+
+          if (effectiveRole === 'top_set') summaryTokens.push('TOP SET');
+          else if (effectiveRole === 'backoff') summaryTokens.push('BACK-OFF');
+
+          if (set.targetRepsRange && set.targetRepsRange.trim()) {
+            summaryTokens.push(set.targetRepsRange);
+          }
+
+          if (set.rir !== undefined && set.rir !== null) {
+            summaryTokens.push(`RIR ${set.rir}`);
+          } else if (set.rpe !== undefined && set.rpe !== null) {
+            summaryTokens.push(`RPE ${set.rpe}`);
+          }
+
+          if (set.restTimeSeconds && set.restTimeSeconds > 0 && set.restTimeSeconds !== exerciseRest) {
+            summaryTokens.push(`${set.restTimeSeconds}s`);
           }
 
           return (
             <div
               key={set.id || `set-${setIndex}`}
-              className={`grid grid-cols-12 gap-2 items-center rounded-xl p-1 transition-colors ${
+              className={`rounded-xl p-1 transition-colors ${
                 set.completed ? 'bg-[#4edea3]/5' : ''
               }`}
             >
-              {/* SÉRIE: Clickable set badge */}
-              <div className="col-span-2 flex items-center justify-center">
-                <button
-                  type="button"
-                  onClick={() => onEditSetType(exIndex, setIndex)}
-                  className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl border flex items-center justify-center font-bold text-sm transition-all cursor-pointer active:scale-95 ${symbolStyle}`}
-                  title="Alterar tipo de série"
-                  aria-label={`Série ${setSymbol}`}
-                >
-                  <span className="tabular-nums">{setSymbol}</span>
-                </button>
-              </div>
+              <div className="grid grid-cols-12 gap-2 items-center">
+                {/* SÉRIE: Clickable set badge */}
+                <div className="col-span-2 flex items-center justify-center">
+                  <button
+                    type="button"
+                    onClick={() => onEditSetType(exIndex, setIndex)}
+                    className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl border flex items-center justify-center font-bold text-sm transition-all cursor-pointer active:scale-95 ${symbolStyle}`}
+                    title="Configurar série (Função, Método, Meta)"
+                    aria-label={`Série ${setSymbol}`}
+                  >
+                    <span className="tabular-nums font-mono">{setSymbol}</span>
+                  </button>
+                </div>
 
-              {/* ANTERIOR: Previous performance */}
-              <div className="col-span-3 flex flex-col items-center justify-center text-center">
-                {set.prevWeight || set.targetWeight ? (
-                  <span className="text-xs sm:text-sm text-[#8c90a1] tabular-nums font-medium truncate">
-                    {set.prevWeight || set.targetWeight}kg × {set.prevReps || set.targetReps}
-                  </span>
-                ) : (
-                  <span className="text-xs text-[#4b5563]">-</span>
-                )}
-              </div>
+                {/* ANTERIOR: Previous performance */}
+                <div className="col-span-3 flex flex-col items-center justify-center text-center">
+                  {set.prevWeight || set.targetWeight ? (
+                    <span className="text-xs sm:text-sm text-[#8c90a1] tabular-nums font-medium truncate">
+                      {set.prevWeight || set.targetWeight}kg × {set.prevReps || set.targetReps}
+                    </span>
+                  ) : (
+                    <span className="text-xs text-[#4b5563]">-</span>
+                  )}
+                </div>
 
-              {/* KG: Weight Input */}
-              <div className="col-span-3">
-                <input
-                  type="number"
-                  step="0.5"
-                  value={set.weight === 0 ? '' : set.weight}
-                  placeholder="0"
-                  onChange={(e) =>
-                    onUpdateSetField(
-                      exIndex,
-                      setIndex,
-                      'weight',
-                      parseFloat(e.target.value) || 0
-                    )
-                  }
-                  className="w-full h-10 sm:h-11 bg-[#181c21] border border-[#262a30] focus:border-[#0066ff] rounded-xl text-center text-sm sm:text-base font-bold text-white tabular-nums outline-none transition-colors"
-                />
-              </div>
-
-              {/* REPS: Reps Input */}
-              <div className="col-span-2">
-                <input
-                  type="number"
-                  min="0"
-                  value={set.reps === 0 ? '' : set.reps}
-                  placeholder="0"
-                  onChange={(e) =>
-                    onUpdateSetField(
-                      exIndex,
-                      setIndex,
-                      'reps',
-                      parseInt(e.target.value, 10) || 0
-                    )
-                  }
-                  className="w-full h-10 sm:h-11 bg-[#181c21] border border-[#262a30] focus:border-[#0066ff] rounded-xl text-center text-sm sm:text-base font-bold text-white tabular-nums outline-none transition-colors"
-                />
-              </div>
-
-              {/* CHECK: Complete Set Button */}
-              <div className="col-span-2 flex justify-center">
-                <button
-                  type="button"
-                  onClick={() => onToggleSetComplete(exIndex, setIndex)}
-                  className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center transition-all cursor-pointer active:scale-95 ${
-                    set.completed
-                      ? 'bg-[#4edea3] text-[#101419] shadow-sm shadow-[#4edea3]/30'
-                      : 'bg-[#181c21] border border-[#262a30] text-[#64748b] hover:border-[#4edea3]/50 hover:text-white'
-                  }`}
-                  title={set.completed ? 'Desmarcar série' : 'Concluir série'}
-                  aria-label={set.completed ? 'Série concluída' : 'Concluir série'}
-                >
-                  <Check
-                    className={`w-5 h-5 ${set.completed ? 'stroke-[3]' : 'stroke-[2]'}`}
+                {/* KG: Weight Input */}
+                <div className="col-span-3">
+                  <input
+                    type="number"
+                    step="0.5"
+                    value={set.weight === 0 ? '' : set.weight}
+                    placeholder="0"
+                    onChange={(e) =>
+                      onUpdateSetField(
+                        exIndex,
+                        setIndex,
+                        'weight',
+                        parseFloat(e.target.value) || 0
+                      )
+                    }
+                    className="w-full h-10 sm:h-11 bg-[#181c21] border border-[#262a30] focus:border-[#0066ff] rounded-xl text-center text-sm sm:text-base font-bold text-white tabular-nums outline-none transition-colors"
                   />
-                </button>
+                </div>
+
+                {/* REPS: Reps Input */}
+                <div className="col-span-2">
+                  <input
+                    type="number"
+                    min="0"
+                    value={set.reps === 0 ? '' : set.reps}
+                    placeholder="0"
+                    onChange={(e) =>
+                      onUpdateSetField(
+                        exIndex,
+                        setIndex,
+                        'reps',
+                        parseInt(e.target.value, 10) || 0
+                      )
+                    }
+                    className="w-full h-10 sm:h-11 bg-[#181c21] border border-[#262a30] focus:border-[#0066ff] rounded-xl text-center text-sm sm:text-base font-bold text-white tabular-nums outline-none transition-colors"
+                  />
+                </div>
+
+                {/* CHECK: Complete Set Button */}
+                <div className="col-span-2 flex justify-center">
+                  <button
+                    type="button"
+                    onClick={() => onToggleSetComplete(exIndex, setIndex)}
+                    className={`w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center transition-all cursor-pointer active:scale-95 ${
+                      set.completed
+                        ? 'bg-[#4edea3] text-[#101419] shadow-sm shadow-[#4edea3]/30'
+                        : 'bg-[#181c21] border border-[#262a30] text-[#64748b] hover:border-[#4edea3]/50 hover:text-white'
+                    }`}
+                    title={set.completed ? 'Desmarcar série' : 'Concluir série'}
+                    aria-label={set.completed ? 'Série concluída' : 'Concluir série'}
+                  >
+                    <Check
+                      className={`w-5 h-5 ${set.completed ? 'stroke-[3]' : 'stroke-[2]'}`}
+                    />
+                  </button>
+                </div>
               </div>
+
+              {/* Discreet Configuration Summary below row */}
+              {summaryTokens.length > 0 && (
+                <div className="pt-1 pb-0.5 px-2 flex items-center gap-1.5 text-[10px] font-semibold text-[#8c90a1] truncate">
+                  <span className="text-[#38bdf8] font-mono tracking-tight font-medium">
+                    {summaryTokens.join(' • ')}
+                  </span>
+                </div>
+              )}
             </div>
           );
         })}
@@ -304,9 +347,12 @@ export const ActiveWorkoutExerciseCard: React.FC<ActiveWorkoutExerciseCardProps>
         isOpen={showOptionsSheet}
         exercise={exercise}
         totalExercises={totalExercises}
+        isInBlock={Boolean(blockTag)}
+        blockName={blockName}
         onClose={() => setShowOptionsSheet(false)}
         onOpenDetail={() => onOpenDetail && onOpenDetail(exercise)}
         onOpenFeedback={() => onOpenFeedback(exercise)}
+        onOpenInstructions={() => setShowInstructionsSheet(true)}
         onConfigureRest={() => {
           if (onConfigureRest) {
             onConfigureRest(exercise);
@@ -315,6 +361,20 @@ export const ActiveWorkoutExerciseCard: React.FC<ActiveWorkoutExerciseCardProps>
           }
         }}
         onRemoveExercise={() => onRemoveExercise(exIndex)}
+        onAddToBlock={onAddToBlock}
+        onRemoveFromBlock={onRemoveFromBlock}
+      />
+
+      {/* Professional Instructions Bottom Sheet */}
+      <ProfessionalInstructionsSheet
+        isOpen={showInstructionsSheet}
+        exercise={exercise}
+        coachName={(exercise as any).coachName || (exercise as any).certifiedBy?.professionalName}
+        onClose={() => setShowInstructionsSheet(false)}
+        onOpenFeedback={() => {
+          setShowInstructionsSheet(false);
+          onOpenFeedback(exercise);
+        }}
       />
     </div>
   );
