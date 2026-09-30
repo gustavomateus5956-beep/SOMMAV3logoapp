@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { X, Trash2, Check, Clock, Target, Gauge, HelpCircle } from 'lucide-react';
+import { X, Trash2, Check, Clock, Target, Gauge, HelpCircle, Sliders, ShieldCheck } from 'lucide-react';
 import { SetTypeKey, SetRole, SetMethod, ExerciseSet } from '../../types';
 import { useScrollLock } from '../../hooks/useScrollLock';
 import { SetMethodHelpSheet } from './SetMethodHelpSheet';
+import { MethodSummary } from './MethodSummary';
+import { MethodPrescriptionSheet } from './MethodPrescriptionSheet';
 
 export interface SetTypeSheetProps {
   isOpen: boolean;
@@ -11,6 +13,7 @@ export interface SetTypeSheetProps {
   currentType?: SetTypeKey;
   exerciseName?: string;
   exerciseRestSeconds?: number;
+  isProfessionalRoutine?: boolean;
   onClose: () => void;
   onSaveConfig?: (config: {
     role: SetRole;
@@ -20,6 +23,7 @@ export interface SetTypeSheetProps {
     rpe?: number | null;
     restTimeSeconds?: number;
     type?: SetTypeKey;
+    configuredSet?: ExerciseSet;
   }) => void;
   onSelectType?: (type: SetTypeKey) => void;
   onRemoveSet: () => void;
@@ -122,6 +126,7 @@ export const SetTypeSheet: React.FC<SetTypeSheetProps> = ({
   currentType = 'working',
   exerciseName,
   exerciseRestSeconds = 120,
+  isProfessionalRoutine = false,
   onClose,
   onSaveConfig,
   onSelectType,
@@ -155,6 +160,9 @@ export const SetTypeSheet: React.FC<SetTypeSheetProps> = ({
     currentSet?.restTimeSeconds || exerciseRestSeconds
   );
 
+  const [configuredSet, setConfiguredSet] = useState<ExerciseSet | undefined>(currentSet);
+  const [showPrescriptionSheet, setShowPrescriptionSheet] = useState<boolean>(false);
+
   // Mini Bottom Sheet de Ajuda [?] para Função e Método
   const [activeHelp, setActiveHelp] = useState<{
     title: string;
@@ -175,6 +183,7 @@ export const SetTypeSheet: React.FC<SetTypeSheetProps> = ({
 
       setSelectedRole(role);
       setSelectedMethod(method);
+      setConfiguredSet(currentSet);
       setTargetRepsRange(
         currentSet?.targetRepsRange || (currentSet?.targetReps ? `${currentSet.targetReps}` : '')
       );
@@ -207,7 +216,8 @@ export const SetTypeSheet: React.FC<SetTypeSheetProps> = ({
         rir: selectedRir,
         rpe: selectedRpe,
         restTimeSeconds: restSeconds,
-        type: mappedType
+        type: mappedType,
+        configuredSet
       });
     } else if (onSelectType) {
       onSelectType(mappedType);
@@ -381,6 +391,42 @@ export const SetTypeSheet: React.FC<SetTypeSheetProps> = ({
                 );
               })}
             </div>
+
+            {/* Configuração Avançada do Método (Section 3 & 5) */}
+            {selectedMethod !== 'normal' && (
+              <div className="mt-3 p-3.5 rounded-2xl bg-[#181c21] border border-[#262a30] space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+                    <Sliders className="w-3.5 h-3.5 text-[#0066ff]" />
+                    <span>Prescrição do Método</span>
+                  </span>
+                  <MethodSummary set={configuredSet || { method: selectedMethod, type: selectedMethod as any }} />
+                </div>
+
+                {isProfessionalRoutine ? (
+                  <div className="p-2.5 rounded-xl bg-[#0066ff]/10 border border-[#0066ff]/20 flex items-start gap-2 text-xs text-[#b3c5ff]">
+                    <ShieldCheck className="w-4 h-4 text-[#38bdf8] shrink-0 mt-0.5" />
+                    <span>
+                      Prescrição protegida pelo especialista: as regras técnicas (drops, pausas e reduções) foram definidas na rotina. O aluno apenas executa durante o treino ativo.
+                    </span>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-2">
+                    <p className="text-[11px] text-[#8c90a1]">
+                      Configure número de etapas, tipo e percentual de redução, pausas e regras de carga desta série.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setShowPrescriptionSheet(true)}
+                      className="w-full h-9 rounded-xl bg-[#14181f] hover:bg-[#20252c] border border-[#262a30] hover:border-[#0066ff] text-xs font-bold text-[#38bdf8] flex items-center justify-center gap-2 transition-all cursor-pointer"
+                    >
+                      <Sliders className="w-3.5 h-3.5" />
+                      Configurar Prescrição Técnica do Método
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* 3. SEÇÃO META (Repetições, RIR, RPE, Descanso) */}
@@ -569,6 +615,28 @@ export const SetTypeSheet: React.FC<SetTypeSheetProps> = ({
           categoryLabel={activeHelp.categoryLabel}
           description={activeHelp.description}
           onClose={() => setActiveHelp(null)}
+        />
+      )}
+
+      {/* Sheet de Prescrição do Método (Profissional / Criação da Rotina) */}
+      {showPrescriptionSheet && (configuredSet || currentSet) && (
+        <MethodPrescriptionSheet
+          isOpen={showPrescriptionSheet}
+          set={configuredSet || currentSet!}
+          exerciseName={exerciseName}
+          isProfessionalRoutine={isProfessionalRoutine}
+          onClose={() => setShowPrescriptionSheet(false)}
+          onSavePrescription={(updatedSet) => {
+            setConfiguredSet(updatedSet);
+            const nextMethod = updatedSet.prescription?.method ?? selectedMethod;
+            setSelectedMethod(nextMethod);
+            if (updatedSet.prescription?.repsRange) {
+              setTargetRepsRange(updatedSet.prescription.repsRange);
+            }
+            if (updatedSet.prescription?.rir !== undefined) {
+              setSelectedRir(updatedSet.prescription.rir);
+            }
+          }}
         />
       )}
     </div>

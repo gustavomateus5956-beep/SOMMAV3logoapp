@@ -13,6 +13,7 @@ import { ExerciseMedia } from './exercise/ExerciseMedia';
 import { ExerciseGuidanceSection } from './ExerciseGuidanceSection';
 import { getSetTypeConfig } from '../data/setTypes';
 import { useScrollLock } from '../hooks/useScrollLock';
+import { MethodSummary } from './active-workout/MethodSummary';
 
 interface RoutineDetailModalProps {
   routine: Routine | null;
@@ -263,6 +264,12 @@ export const RoutineDetailModal: React.FC<RoutineDetailModalProps> = ({
                           <div className="col-span-4 text-right font-semibold text-[#b3c5ff] tabular-nums">
                             {targetReps > 0 ? `${targetReps} reps` : 'Até a falha'}
                           </div>
+
+                          {(set.type === 'dropset' || set.type === 'rest_pause' || set.method === 'dropset' || set.method === 'rest_pause') && (
+                            <div className="col-span-12 pt-1 pb-0.5">
+                              <MethodSummary set={set} />
+                            </div>
+                          )}
                         </div>
                       );
                     })}

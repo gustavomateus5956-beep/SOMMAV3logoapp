@@ -1,12 +1,11 @@
 import { isSetCompleted, workoutMetrics, isPrimaryPr } from '../features/workout-engine/setMetrics';
-import { CompoundSetEditor } from './active-workout/CompoundSetEditor';
 import { createSuperset, swapBlockMembers, dissolveBlock, removeBlockMember, updateBlockRest, addExercise, removeExercise, toCompletedExerciseLog } from '../features/workout-engine/workoutStructure';
 import { toVisualBlock } from '../features/workout-engine/blocks';
 import { updatePerformance, updatePrescription, toCompletedSetLog } from '../features/workout-engine/setAdapter';
 import type { VisualWorkoutBlock } from '../features/workout-engine/contracts';
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Plus, Trash2, Dumbbell } from 'lucide-react';
-import { Routine, Exercise, WorkoutSessionRecord, CompletedExerciseLog, SetTypeKey, SetRole, SetMethod } from '../types';
+import { Routine, Exercise, ExerciseSet, WorkoutSessionRecord, CompletedExerciseLog, SetTypeKey, SetRole, SetMethod } from '../types';
 import { ExportCardModal, WorkoutExportData } from './ExportCardModal';
 import { ExerciseLibraryModal } from './ExerciseLibraryModal';
 import { repositories } from '../data';
@@ -79,7 +78,6 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
   const [showExportModal, setShowExportModal] = useState(false);
   const [showExerciseLibrary, setShowExerciseLibrary] = useState(false);
   const [editingSetType, setEditingSetType] = useState<{ exIndex: number; setIndex: number } | null>(null);
-  const [editingCompound, setEditingCompound] = useState<{ exerciseId: string; setId: string } | null>(null);
   const [feedbackExercise, setFeedbackExercise] = useState<Exercise | null>(null);
   const [selectedExerciseForDetail, setSelectedExerciseForDetail] = useState<Exercise | null>(null);
   const [showRestSettings, setShowRestSettings] = useState(false);
@@ -149,13 +147,15 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     setShowExerciseLibrary(false);
   };
 
-  const openCompound = (exIndex: number, setIndex: number) => setEditingCompound({ exerciseId: exercises[exIndex].id, setId: exercises[exIndex].sets[setIndex].id });
-  const compoundExercise = exercises.find(ex => ex.id === editingCompound?.exerciseId);
-  const compoundSet = compoundExercise?.sets.find(set => set.id === editingCompound?.setId);
   const toggleSetComplete = (exIndex: number, setIndex: number) => {
-    const set = exercises[exIndex].sets[setIndex];
-    if (set.performance?.segments?.length || ['dropset', 'rest_pause'].includes(set.prescription?.method ?? set.method ?? set.type ?? 'normal')) {
-      openCompound(exIndex, setIndex); return;
+    const set = exercises[exIndex]?.sets[setIndex];
+    if (!set) return;
+    const isCompound = ['dropset', 'rest_pause'].includes(
+      set.prescription?.method ?? set.method ?? set.type ?? 'normal'
+    );
+    if (isCompound) {
+      // Drop Set and Rest-Pause sets are executed inline directly within ActiveWorkoutExerciseCard
+      return;
     }
     const updated = [...exercises];
     const targetEx = { ...updated[exIndex] };
@@ -195,6 +195,28 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     targetEx.sets = sets;
     updated[exIndex] = targetEx;
     updateExercisesAndSync(updated);
+  };
+
+  const handleUpdateCompoundSet = (exIndex: number, setIndex: number, nextSet: ExerciseSet) => {
+    const targetExercise = exercises[exIndex];
+    if (!targetExercise) return;
+    const priorSet = targetExercise.sets[setIndex];
+    const updated = exercises.map((ex, eIdx) =>
+      eIdx === exIndex
+        ? {
+            ...ex,
+            sets: ex.sets.map((s, sIdx) => (sIdx === setIndex ? nextSet : s))
+          }
+        : ex
+    );
+
+    // If the compound set transitioned to completed:
+    if (nextSet.completed && !priorSet?.completed) {
+      const rest = targetExercise.restSeconds ?? (targetExercise as any).restTimeSeconds ?? defaultRestTime;
+      completeSetInContext(updated, exIndex, setIndex, rest);
+    } else {
+      updateExercisesAndSync(updated);
+    }
   };
 
   const addSetToExercise = (exIndex: number) => {
@@ -294,6 +316,14 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     updateExercisesAndSync(updated);
   };
 
+  const isProfessionalRoutine = useMemo(() => {
+    return Boolean(
+      routine?.isProfessionalCertified ||
+      routine?.certifiedBy ||
+      exercises.some((e) => Boolean(e.professionalNote))
+    );
+  }, [routine, exercises]);
+
   const handleUpdateSetConfig = (config: {
     role: SetRole;
     method: SetMethod;
@@ -302,16 +332,21 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     rpe?: number | null;
     restTimeSeconds?: number;
     type?: SetTypeKey;
+    configuredSet?: ExerciseSet;
   }) => {
     if (!editingSetType) return;
     const { exIndex, setIndex } = editingSetType;
     const updated = [...exercises];
     const targetEx = { ...updated[exIndex] };
     const sets = [...targetEx.sets];
-    sets[setIndex] = updatePrescription({ ...sets[setIndex], type: config.type ?? sets[setIndex].type }, {
-      role: config.role, method: config.method, repsRange: config.targetRepsRange,
-      rir: config.rir, rpe: config.rpe, restSeconds: config.restTimeSeconds
-    });
+    if (config.configuredSet) {
+      sets[setIndex] = config.configuredSet;
+    } else {
+      sets[setIndex] = updatePrescription({ ...sets[setIndex], type: config.type ?? sets[setIndex].type }, {
+        role: config.role, method: config.method, repsRange: config.targetRepsRange,
+        rir: config.rir, rpe: config.rpe, restSeconds: config.restTimeSeconds
+      });
+    }
     targetEx.sets = sets;
     updated[exIndex] = targetEx;
     updateExercisesAndSync(updated);
@@ -438,17 +473,6 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex flex-col justify-end md:justify-center items-center">
       <div className="w-full max-w-[500px] h-[100dvh] md:h-[92vh] bg-[#101419] md:border border-[#262a30] md:rounded-3xl flex flex-col overflow-hidden shadow-2xl animate-in slide-in-from-bottom duration-300">
         
-        {compoundSet && compoundExercise && <CompoundSetEditor key={compoundSet.id} set={compoundSet}
-          onClose={() => setEditingCompound(null)}
-          onSave={nextSet => {
-            const updated = exercises.map(ex => ex.id === compoundExercise.id
-              ? { ...ex, sets: ex.sets.map(set => set.id === nextSet.id ? nextSet : set) } : ex);
-            if (nextSet.completed && !compoundSet.completed) {
-              // The existing global post-set rest only; no intra-set timer or scheduler.
-              const rest = compoundExercise.restSeconds ?? (compoundExercise as any).restTimeSeconds ?? defaultRestTime;
-              completeSetInContext(updated, exercises.indexOf(compoundExercise), compoundExercise.sets.indexOf(compoundSet), rest);
-            } else updateExercisesAndSync(updated);
-          }} />}
         {/* Top Sticky Bar: [Voltar] TREINO [Timer] [CONCLUIR] + Sub-Stats Horizontal Row */}
         <ActiveWorkoutHeader
           isTimerPaused={isTimerPaused}
@@ -579,7 +603,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
                           }
                           onUpdateSetField={updateSetField}
                           onToggleSetComplete={toggleSetComplete}
-                    onEditCompound={openCompound}
+                          onUpdateCompoundSet={handleUpdateCompoundSet}
                           onAddSet={addSetToExercise}
                           onOpenDetail={setSelectedExerciseForDetail}
                           onUpdateNotes={handleUpdateNotes}
@@ -613,7 +637,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
                             }
                             onUpdateSetField={updateSetField}
                             onToggleSetComplete={toggleSetComplete}
-                    onEditCompound={openCompound}
+                            onUpdateCompoundSet={handleUpdateCompoundSet}
                             onAddSet={addSetToExercise}
                             onOpenDetail={setSelectedExerciseForDetail}
                             onUpdateNotes={handleUpdateNotes}
@@ -651,7 +675,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
                     }
                     onUpdateSetField={updateSetField}
                     onToggleSetComplete={toggleSetComplete}
-                    onEditCompound={openCompound}
+                    onUpdateCompoundSet={handleUpdateCompoundSet}
                     onAddSet={addSetToExercise}
                     onOpenDetail={setSelectedExerciseForDetail}
                     onUpdateNotes={handleUpdateNotes}
@@ -786,6 +810,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
           currentType={exercises[editingSetType.exIndex]?.sets[editingSetType.setIndex]?.type || 'working'}
           exerciseName={exercises[editingSetType.exIndex]?.name}
           exerciseRestSeconds={exercises[editingSetType.exIndex]?.restSeconds || defaultRestTime}
+          isProfessionalRoutine={isProfessionalRoutine}
           onClose={() => setEditingSetType(null)}
           onSaveConfig={handleUpdateSetConfig}
           onSelectType={handleUpdateSetType}
