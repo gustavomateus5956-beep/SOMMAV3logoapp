@@ -1,3 +1,6 @@
+import type { SetPrescription, SetPerformance, WorkoutBlock } from './features/workout-engine/contracts';
+import type { NutritionSnapshot } from './features/nutrition/nutritionSnapshot';
+
 export type MainTabType = 'inicio' | 'treino' | 'dieta' | 'pass' | 'perfil';
 export type SecondaryViewType = 'evolucao' | 'comunidade' | 'profissionais';
 export type TabType = MainTabType | SecondaryViewType;
@@ -28,6 +31,8 @@ export interface SetTypeConfig {
 }
 
 export interface ExerciseSet {
+  prescription?: SetPrescription;
+  performance?: SetPerformance;
   id: string;
   setNumber: number;
   type?: SetTypeKey;
@@ -79,6 +84,8 @@ export interface ExternalExerciseResult {
 }
 
 export interface Exercise {
+  exerciseInstanceId?: string;
+  legacyExerciseId?: string;
   id: string;
   name: string;
   originalName?: string;
@@ -125,6 +132,8 @@ export interface RoutineCertificate {
 }
 
 export interface Routine {
+  fromHistory?: boolean;
+  blocks?: WorkoutBlock[];
   id: string;
   name: string;
   category: string;
@@ -138,6 +147,15 @@ export interface Routine {
 }
 
 export interface CompletedSetLog {
+  setId?: string;
+  role?: SetRole;
+  method?: SetMethod;
+  targetRepsRange?: string;
+  rir?: number | null;
+  rpe?: number | null;
+  restTimeSeconds?: number;
+  prescription?: SetPrescription;
+  performance?: SetPerformance;
   setNumber: number;
   type?: SetTypeKey;
   targetWeight?: number;
@@ -151,7 +169,11 @@ export interface CompletedSetLog {
   instruction?: string;
 }
 
-export interface CompletedExerciseLog {
+export interface CompletedExerciseLog extends Omit<Exercise, 'id' | 'name' | 'sets' | 'muscleGroup'> {
+  exerciseInstanceId?: string;
+  legacyExerciseId?: string;
+  catalogRef?: Exercise['catalogRef'];
+  restSeconds?: number;
   exerciseId: string;
   exerciseName: string;
   muscleGroup: string;
@@ -160,6 +182,13 @@ export interface CompletedExerciseLog {
 }
 
 export interface WorkoutSessionRecord {
+  /** Stage 3 snapshot; absent in old history, never backfilled. */
+  metricsVersion?: 1;
+  totalPrescribedSets?: number;
+  totalPerformedSegments?: number;
+  totalPerformedReps?: number;
+  workoutEngineVersion?: 1;
+  blocks?: WorkoutBlock[];
   id: string;
   userId: string;
   routineId?: string;
@@ -198,10 +227,13 @@ export interface MealFoodEntry {
   name: string;
   portion: number; // quantity of servingUnit or grams
   portionDisplay: string; // e.g. "180g" or "2 fatias"
-  calories: number;
-  protein: number;
-  carbs: number;
-  fats: number;
+  /** New catalog entries use g; old entries retain their original interpretation. */
+  portionUnit?: 'g';
+  calories?: number;
+  protein?: number;
+  carbs?: number;
+  fats?: number;
+  snapshot?: NutritionSnapshot;
 }
 
 export interface DailyMeal {
@@ -492,4 +524,3 @@ export interface UserProfile {
   streakDays?: number;
   linkedProfessionalIds?: string[];
 }
-

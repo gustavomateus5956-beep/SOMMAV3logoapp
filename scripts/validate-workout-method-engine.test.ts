@@ -297,28 +297,20 @@ test('12. Textos educativos do botão [?] cobrem todas as funções e métodos c
   assert.ok(!methodTexts.amrap.includes('falha obrigatória'), 'Não trata AMRAP automaticamente como falha');
 });
 
-test('13. Visibilidade condicional de "Instruções do profissional" no menu de 3 pontos', () => {
+test('13. Visibilidade condicional de "Instruções do profissional" usa somente professionalNote', () => {
   const hasInstructions = (ex: { professionalNote?: string; instruction?: string; notes?: string }) => {
-    return Boolean(
-      ex.professionalNote?.trim() ||
-      ex.instruction?.trim() ||
-      ex.notes?.trim()
-    );
+    return Boolean(ex.professionalNote?.trim());
   };
 
   const exWithNote = {
     professionalNote: 'Seu foco hoje é controle de movimento. Não aumente a carga caso perca a amplitude.'
   };
-  const exWithoutNote = {
-    professionalNote: ''
-  };
-  const exWithEmptySpaces = {
-    professionalNote: '   '
-  };
 
-  assert.equal(hasInstructions(exWithNote), true, 'Exibe item no menu para exercício com instrução');
-  assert.equal(hasInstructions(exWithoutNote), false, 'Oculta item para exercício sem instrução');
-  assert.equal(hasInstructions(exWithEmptySpaces), false, 'Oculta item para texto com apenas espaços em branco');
+  assert.equal(hasInstructions(exWithNote), true, 'Exibe item quando professionalNote tem texto');
+  assert.equal(hasInstructions({ professionalNote: '' }), false, 'Oculta item quando professionalNote está vazio');
+  assert.equal(hasInstructions({ professionalNote: '   ' }), false, 'Oculta item para professionalNote com espaços');
+  assert.equal(hasInstructions({ instruction: 'Instrução técnica geral' }), false, 'Não usa instruction como fallback');
+  assert.equal(hasInstructions({ notes: 'Nota genérica' }), false, 'Não usa notes como fallback');
 });
 
 

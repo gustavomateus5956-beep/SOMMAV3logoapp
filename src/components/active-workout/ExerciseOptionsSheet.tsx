@@ -38,12 +38,7 @@ export const ExerciseOptionsSheet: React.FC<ExerciseOptionsSheetProps> = ({
 
   if (!isOpen) return null;
 
-  const hasInstructions = Boolean(
-    exercise.professionalNote?.trim() ||
-    (exercise as any).instruction?.trim() ||
-    (exercise as any).instructions?.trim() ||
-    (exercise as any).notes?.trim()
-  );
+  const hasInstructions = Boolean(exercise.professionalNote?.trim());
 
   return (
     <div

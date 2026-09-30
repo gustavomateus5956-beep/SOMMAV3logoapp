@@ -1,3 +1,4 @@
+import { normalizeSession } from '../../features/workout-engine/serialization';
 import { IWorkoutRepository, PreviousExercisePerformance } from '../../core/repositories/IWorkoutRepository';
 import { WorkoutSessionRecord } from '../../types';
 import { storageService } from '../../services/storageService';
@@ -10,7 +11,7 @@ import { DataAccessError } from '../../core/errors/dataErrors';
 export class LocalWorkoutRepository implements IWorkoutRepository {
   async getWorkoutHistory(userId: string): Promise<WorkoutSessionRecord[]> {
     try {
-      return storageService.getWorkoutSessions(userId);
+      return storageService.getWorkoutSessions(userId).map(normalizeSession);
     } catch (error) {
       throw new DataAccessError(
         `Falha ao recuperar histórico de treinos do usuário "${userId}".`,
@@ -26,7 +27,7 @@ export class LocalWorkoutRepository implements IWorkoutRepository {
 
   async saveWorkoutSession(userId: string, session: WorkoutSessionRecord): Promise<void> {
     try {
-      storageService.saveWorkoutSession(userId, session);
+      storageService.saveWorkoutSession(userId, normalizeSession(session));
     } catch (error) {
       throw new DataAccessError(
         `Falha ao salvar sessão de treino para o usuário "${userId}".`,

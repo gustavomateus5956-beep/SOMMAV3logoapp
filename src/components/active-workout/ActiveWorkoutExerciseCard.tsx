@@ -1,3 +1,4 @@
+import { setExecutionState, executionLabels, setMetrics } from '../../features/workout-engine/setMetrics';
 import React, { useState } from 'react';
 import {
   Timer,
@@ -22,6 +23,7 @@ interface ActiveWorkoutExerciseCardProps {
   onEditSetType: (exIndex: number, setIndex: number) => void;
   onUpdateSetField: (exIndex: number, setIndex: number, field: 'weight' | 'reps', value: number) => void;
   onToggleSetComplete: (exIndex: number, setIndex: number) => void;
+  onEditCompound?: (exIndex: number, setIndex: number) => void;
   onAddSet: (exIndex: number) => void;
   onOpenDetail?: (exercise: Exercise) => void;
   onUpdateNotes?: (exIndex: number, notes: string) => void;
@@ -43,6 +45,7 @@ export const ActiveWorkoutExerciseCard: React.FC<ActiveWorkoutExerciseCardProps>
   onUpdateSetField,
   onToggleSetComplete,
   onAddSet,
+  onEditCompound,
   onOpenDetail,
   onUpdateNotes,
   onConfigureRest,
@@ -241,6 +244,7 @@ export const ActiveWorkoutExerciseCard: React.FC<ActiveWorkoutExerciseCardProps>
                 <div className="col-span-2 flex items-center justify-center">
                   <button
                     type="button"
+                    disabled={Boolean(set.performance?.segments?.length)}
                     onClick={() => onEditSetType(exIndex, setIndex)}
                     className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl border flex items-center justify-center font-bold text-sm transition-all cursor-pointer active:scale-95 ${symbolStyle}`}
                     title="Configurar série (Função, Método, Meta)"
@@ -266,6 +270,7 @@ export const ActiveWorkoutExerciseCard: React.FC<ActiveWorkoutExerciseCardProps>
                   <input
                     type="number"
                     step="0.5"
+                    disabled={Boolean(set.performance?.segments?.length)}
                     value={set.weight === 0 ? '' : set.weight}
                     placeholder="0"
                     onChange={(e) =>
@@ -285,6 +290,7 @@ export const ActiveWorkoutExerciseCard: React.FC<ActiveWorkoutExerciseCardProps>
                   <input
                     type="number"
                     min="0"
+                    disabled={Boolean(set.performance?.segments?.length)}
                     value={set.reps === 0 ? '' : set.reps}
                     placeholder="0"
                     onChange={(e) =>
@@ -309,8 +315,8 @@ export const ActiveWorkoutExerciseCard: React.FC<ActiveWorkoutExerciseCardProps>
                         ? 'bg-[#4edea3] text-[#101419] shadow-sm shadow-[#4edea3]/30'
                         : 'bg-[#181c21] border border-[#262a30] text-[#64748b] hover:border-[#4edea3]/50 hover:text-white'
                     }`}
-                    title={set.completed ? 'Desmarcar série' : 'Concluir série'}
-                    aria-label={set.completed ? 'Série concluída' : 'Concluir série'}
+                    title={effectiveMethod === 'dropset' || effectiveMethod === 'rest_pause' ? 'Editar etapas da série' : set.completed ? 'Desmarcar série' : 'Concluir série'}
+                    aria-label={effectiveMethod === 'dropset' || effectiveMethod === 'rest_pause' ? 'Editar etapas da série' : set.completed ? 'Série concluída' : 'Concluir série'}
                   >
                     <Check
                       className={`w-5 h-5 ${set.completed ? 'stroke-[3]' : 'stroke-[2]'}`}
@@ -319,6 +325,11 @@ export const ActiveWorkoutExerciseCard: React.FC<ActiveWorkoutExerciseCardProps>
                 </div>
               </div>
 
+              {(effectiveMethod === 'dropset' || effectiveMethod === 'rest_pause') && onEditCompound && (
+                <button type="button" className="px-2 py-2 text-xs text-[#38bdf8] text-left" onClick={() => onEditCompound(exIndex, setIndex)}>
+                  Registrar etapas · {executionLabels[setExecutionState(set)]}{set.performance?.interrupted ? ' · interrompida' : ''} · {setMetrics(set).performedSegments} executadas
+                </button>
+              )}
               {/* Discreet Configuration Summary below row */}
               {summaryTokens.length > 0 && (
                 <div className="pt-1 pb-0.5 px-2 flex items-center gap-1.5 text-[10px] font-semibold text-[#8c90a1] truncate">

@@ -9,7 +9,13 @@
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
-    "test:catalog": "tsx --test scripts/validate-somma-catalog.test.ts"
+    "test:catalog": "tsx --test scripts/validate-somma-catalog.test.ts",
+    "test:nutrition": "tsx --test scripts/validate-nutrition-foundation.test.ts scripts/validate-nutrition-catalog.test.ts scripts/validate-nutrition-service.test.ts",
+    "validate:nutrition": "tsx scripts/validate-somma-nutrition.ts",
+    "test:workout-method": "tsx --test scripts/validate-workout-method-engine.test.ts",
+    "test:routine-limit": "tsx --test scripts/validate-routine-limit.test.ts",
+    "test:workout-visual": "tsx --test scripts/validate-workout-method-engine.test.ts scripts/validate-routine-limit.test.ts",
+    "test:workout-engine": "tsx --test scripts/validate-workout-foundation.test.ts scripts/validate-workout-method-engine.test.ts scripts/validate-workout-rest.test.ts scripts/validate-muscle-map.test.ts scripts/validate-routine-limit.test.ts scripts/validate-workout-blocks.test.ts scripts/validate-compound-sets.test.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

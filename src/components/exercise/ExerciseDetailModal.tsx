@@ -1,3 +1,4 @@
+import { setMetrics, primaryPerformance, isSetCompleted } from '../../features/workout-engine/setMetrics';
 import React, { useState, useMemo, useEffect } from 'react';
 import {
   ChevronLeft,
@@ -140,11 +141,13 @@ export const ExerciseDetailModal: React.FC<ExerciseDetailModalProps> = ({
         let best1Rm = 0;
 
         match.sets.forEach((s) => {
-          if (s.completed !== false) {
-            const w = s.weight || 0;
-            const r = s.reps || 0;
+          if (session.metricsVersion === 1) vol += setMetrics(s).volume;
+          if (session.metricsVersion === 1 ? isSetCompleted(s) : s.completed !== false) {
+            const main = session.metricsVersion === 1 ? primaryPerformance(s) : { weightKg: s.weight, reps: s.reps };
+            const w = main?.weightKg || 0;
+            const r = main?.reps || 0;
             if (w > maxW) maxW = w;
-            vol += w * r;
+            if (session.metricsVersion !== 1) vol += w * r;
             // Epley 1RM Formula: w * (1 + r / 30)
             const oneRm = Math.round(w * (1 + r / 30));
             if (oneRm > best1Rm) best1Rm = oneRm;

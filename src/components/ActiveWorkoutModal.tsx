@@ -1,3 +1,9 @@
+import { isSetCompleted, workoutMetrics, isPrimaryPr } from '../features/workout-engine/setMetrics';
+import { CompoundSetEditor } from './active-workout/CompoundSetEditor';
+import { createSuperset, swapBlockMembers, dissolveBlock, removeBlockMember, updateBlockRest, addExercise, removeExercise, toCompletedExerciseLog } from '../features/workout-engine/workoutStructure';
+import { toVisualBlock } from '../features/workout-engine/blocks';
+import { updatePerformance, updatePrescription, toCompletedSetLog } from '../features/workout-engine/setAdapter';
+import type { VisualWorkoutBlock } from '../features/workout-engine/contracts';
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Plus, Trash2, Dumbbell } from 'lucide-react';
 import { Routine, Exercise, WorkoutSessionRecord, CompletedExerciseLog, SetTypeKey, SetRole, SetMethod } from '../types';
@@ -22,14 +28,7 @@ import { AddToBlockSheet } from './active-workout/AddToBlockSheet';
 import { BlockRestConfigSheet } from './active-workout/BlockRestConfigSheet';
 import { WorkoutSupersetBlockContainer } from './active-workout/WorkoutSupersetBlockContainer';
 
-export interface WorkoutBlockLocal {
-  id: string;
-  name: string;
-  type: 'superset' | 'biset';
-  exerciseIds: string[];
-  transitionRestSeconds: number;
-  blockRestSeconds: number;
-}
+export type WorkoutBlockLocal = VisualWorkoutBlock;
 
 interface ActiveWorkoutModalProps {
   routine: Routine | null;
@@ -44,7 +43,7 @@ interface ActiveWorkoutModalProps {
 }
 
 export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
-  routine,
+  routine: routineProp,
   onClose,
   onMinimize,
   onFinishWorkout
@@ -55,6 +54,8 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     workoutStatus,
     minimizeWorkout,
     updateExercises: syncExercisesToContext,
+    updateWorkoutStructure,
+    setWorkoutName,
     setRestSeconds: setContextRestSeconds,
     adjustRestSeconds: contextAdjustRestSeconds,
     skipRest: contextSkipRest,
@@ -68,30 +69,25 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
 
   const [seconds, setSeconds] = useState(activeSession?.seconds || 0);
   const [isTimerPaused, setIsTimerPaused] = useState(activeSession?.isTimerPaused || false);
-  const [exercises, setExercises] = useState<Exercise[]>(() => {
-    if (activeSession && activeSession.exercises && activeSession.exercises.length > 0) {
-      return activeSession.exercises;
-    }
-    return [];
-  });
-  const [workoutName, setWorkoutName] = useState(
-    activeSession?.workoutName || routine?.name || 'Treino Personalizado'
-  );
-  const [isFinished, setIsFinished] = useState(false);
-  const [finalWorkoutSeconds, setFinalWorkoutSeconds] = useState<number | null>(null);
+  const exercises = activeSession?.exercises ?? [];
+  const routine = activeSession?.routine ?? routineProp;
+  const workoutName = activeSession?.workoutName ?? routine?.name ?? 'Treino Vazio';
+  const [isFinished, setIsFinished] = useState(workoutStatus === 'completed');
+  const [finalWorkoutSeconds, setFinalWorkoutSeconds] = useState<number | null>(activeSession?.finalDurationSeconds ?? null);
   const [showIncompleteConfirm, setShowIncompleteConfirm] = useState(false);
   const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
   const [showExportModal, setShowExportModal] = useState(false);
   const [showExerciseLibrary, setShowExerciseLibrary] = useState(false);
   const [editingSetType, setEditingSetType] = useState<{ exIndex: number; setIndex: number } | null>(null);
+  const [editingCompound, setEditingCompound] = useState<{ exerciseId: string; setId: string } | null>(null);
   const [feedbackExercise, setFeedbackExercise] = useState<Exercise | null>(null);
   const [selectedExerciseForDetail, setSelectedExerciseForDetail] = useState<Exercise | null>(null);
   const [showRestSettings, setShowRestSettings] = useState(false);
   const [exerciseForRestConfig, setExerciseForRestConfig] = useState<Exercise | null>(null);
   const [showMuscleDistribution, setShowMuscleDistribution] = useState(false);
 
-  // Workout Method Engine: Local Blocks (Bi-set / Superset)
-  const [activeBlocks, setActiveBlocks] = useState<WorkoutBlockLocal[]>([]);
+  // Visual projection only; WorkoutContext owns the canonical blocks.
+  const activeBlocks = useMemo(() => (activeSession?.blocks ?? []).filter(b => b.type === 'SUPERSET').map(toVisualBlock), [activeSession?.blocks]);
   const [exerciseForBlockAdd, setExerciseForBlockAdd] = useState<Exercise | null>(null);
   const [blockForRestConfig, setBlockForRestConfig] = useState<WorkoutBlockLocal | null>(null);
 
@@ -120,55 +116,8 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     workoutStatus
   ]);
 
-  // Initialize exercises with previous performance references
-  useEffect(() => {
-    let isMounted = true;
-    if (routine && routine.exercises.length > 0) {
-      const cloned = JSON.parse(JSON.stringify(routine.exercises)) as Exercise[];
-      // Enrich with previous exercise data if available for current user
-      if (user?.id) {
-        Promise.all(
-          cloned.map(async (ex) => {
-            try {
-              const past = await repositories.workout.getLastExercisePerformance(user.id, ex.name);
-              if (past && past.sets.length > 0) {
-                ex.sets.forEach((set, idx) => {
-                  if (past.sets[idx]) {
-                    set.prevWeight = past.sets[idx].weight;
-                    set.prevReps = past.sets[idx].reps;
-                  }
-                });
-              }
-            } catch (err) {
-              console.error(`Erro ao buscar performance anterior para "${ex.name}":`, err);
-            }
-          })
-        ).then(() => {
-          if (isMounted) {
-            setExercises(cloned);
-            setWorkoutName(routine.name);
-          }
-        });
-      } else {
-        setExercises(cloned);
-        setWorkoutName(routine.name);
-      }
-    } else if (!activeSession?.exercises?.length && exercises.length === 0) {
-      // Empty workout initial state: start empty without pre-filled exercises
-      setExercises([]);
-      setWorkoutName('Treino Vazio');
-    }
-
-    return () => {
-      isMounted = false;
-    };
-  }, [routine, user?.id]);
-
-  // Sync state to WorkoutContext whenever exercises change
-  const updateExercisesAndSync = (newExercises: Exercise[]) => {
-    setExercises(newExercises);
-    syncExercisesToContext(newExercises);
-  };
+  // Exercises and blocks belong exclusively to WorkoutContext, including modal remounts.
+  const updateExercisesAndSync = (newExercises: Exercise[]) => syncExercisesToContext(newExercises);
 
   const formatTimer = (totalSecs: number) => {
     const mins = Math.floor(totalSecs / 60);
@@ -177,8 +126,8 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
   };
 
   const handleRemoveExercise = (exIndex: number) => {
-    const updated = exercises.filter((_, idx) => idx !== exIndex);
-    updateExercisesAndSync(updated);
+    const id = exercises[exIndex].exerciseInstanceId!;
+    updateWorkoutStructure(current => removeExercise(current, id));
   };
 
   const handleAddExerciseFromLibrary = (exerciseData: Exercise) => {
@@ -196,22 +145,26 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
         }
       ]
     };
-    updateExercisesAndSync([...exercises, newEx]);
+    updateWorkoutStructure(current => addExercise(current, newEx));
     setShowExerciseLibrary(false);
   };
 
+  const openCompound = (exIndex: number, setIndex: number) => setEditingCompound({ exerciseId: exercises[exIndex].id, setId: exercises[exIndex].sets[setIndex].id });
+  const compoundExercise = exercises.find(ex => ex.id === editingCompound?.exerciseId);
+  const compoundSet = compoundExercise?.sets.find(set => set.id === editingCompound?.setId);
   const toggleSetComplete = (exIndex: number, setIndex: number) => {
+    const set = exercises[exIndex].sets[setIndex];
+    if (set.performance?.segments?.length || ['dropset', 'rest_pause'].includes(set.prescription?.method ?? set.method ?? set.type ?? 'normal')) {
+      openCompound(exIndex, setIndex); return;
+    }
     const updated = [...exercises];
     const targetEx = { ...updated[exIndex] };
     const sets = [...targetEx.sets];
     const currentStatus = sets[setIndex].completed;
-    sets[setIndex] = {
-      ...sets[setIndex],
-      completed: !currentStatus
-    };
+    sets[setIndex] = updatePerformance(sets[setIndex], { completed: !currentStatus, weightKg: sets[setIndex].weight, reps: sets[setIndex].reps });
     targetEx.sets = sets;
     updated[exIndex] = targetEx;
-    setExercises(updated);
+
 
     // If completing the set, start rest timer using this exercise's individual rest configuration
     const targetRest = !currentStatus
@@ -238,10 +191,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     const updated = [...exercises];
     const targetEx = { ...updated[exIndex] };
     const sets = [...targetEx.sets];
-    sets[setIndex] = {
-      ...sets[setIndex],
-      [field]: value
-    };
+    sets[setIndex] = updatePerformance(sets[setIndex], field === 'weight' ? { weightKg: value } : { reps: value });
     targetEx.sets = sets;
     updated[exIndex] = targetEx;
     updateExercisesAndSync(updated);
@@ -251,6 +201,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     const updated = [...exercises];
     const targetEx = { ...updated[exIndex] };
     const prevSet = targetEx.sets[targetEx.sets.length - 1];
+    targetEx.sets = [...targetEx.sets];
     targetEx.sets.push({
       id: `s-${Date.now()}-${targetEx.sets.length + 1}`,
       setNumber: targetEx.sets.length + 1,
@@ -261,15 +212,16 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
       reps: prevSet?.reps || 10,
       completed: false
     });
+    updated[exIndex] = targetEx;
     updateExercisesAndSync(updated);
   };
 
   const handleRemoveSet = (exIndex: number, setIndex: number) => {
     const updated = [...exercises];
     if (updated[exIndex]?.sets?.length > 1) {
-      updated[exIndex].sets = updated[exIndex].sets
+      updated[exIndex] = { ...updated[exIndex], sets: updated[exIndex].sets
         .filter((_, idx) => idx !== setIndex)
-        .map((s, idx) => ({ ...s, setNumber: idx + 1 }));
+        .map((s, idx) => ({ ...s, setNumber: idx + 1 })) };
       updateExercisesAndSync(updated);
     }
   };
@@ -285,24 +237,8 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     }
   };
 
-  // Metrics calculation
-  let totalVolume = 0;
-  let totalCompletedSets = 0;
-  let totalSetsCount = 0;
-  let detectedPrs = 0;
-
-  exercises.forEach((ex) => {
-    ex.sets.forEach((set) => {
-      totalSetsCount++;
-      if (set.completed) {
-        totalVolume += (set.weight || 0) * (set.reps || 0);
-        totalCompletedSets++;
-        if (set.prevWeight && set.weight > set.prevWeight && set.reps >= (set.prevReps || 0)) {
-          detectedPrs++;
-        }
-      }
-    });
-  });
+  const metrics = workoutMetrics(exercises);
+  const { volume: totalVolume, completedSets: totalCompletedSets, prescribedSets: totalSetsCount, prs: detectedPrs } = metrics;
 
   const progressPercentage =
     totalSetsCount > 0 ? Math.round((totalCompletedSets / totalSetsCount) * 100) : 0;
@@ -349,10 +285,10 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     const updated = [...exercises];
     const targetEx = { ...updated[exIndex] };
     const sets = [...targetEx.sets];
-    sets[setIndex] = {
-      ...sets[setIndex],
-      type
-    };
+    sets[setIndex] = updatePrescription({ ...sets[setIndex], type }, {
+      role: type === 'warmup' ? 'warmup' : 'working',
+      method: type === 'dropset' || type === 'rest_pause' || type === 'amrap' ? type : 'normal'
+    });
     targetEx.sets = sets;
     updated[exIndex] = targetEx;
     updateExercisesAndSync(updated);
@@ -372,91 +308,26 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     const updated = [...exercises];
     const targetEx = { ...updated[exIndex] };
     const sets = [...targetEx.sets];
-    sets[setIndex] = {
-      ...sets[setIndex],
-      ...config
-    };
+    sets[setIndex] = updatePrescription({ ...sets[setIndex], type: config.type ?? sets[setIndex].type }, {
+      role: config.role, method: config.method, repsRange: config.targetRepsRange,
+      rir: config.rir, rpe: config.rpe, restSeconds: config.restTimeSeconds
+    });
     targetEx.sets = sets;
     updated[exIndex] = targetEx;
     updateExercisesAndSync(updated);
   };
 
-  // Workout Method Engine: Block Handlers (Bi-set / Superset)
+  // Canonical block operations update members, order and exercises atomically.
   const handleCreateBlock = (secondExerciseId: string, blockType: 'superset' | 'biset') => {
     if (!exerciseForBlockAdd) return;
-    const newBlockId = `block-${Date.now()}`;
-    const blockNumber = activeBlocks.length + 1;
-    const newBlock: WorkoutBlockLocal = {
-      id: newBlockId,
-      name: `SUPERSET ${blockNumber}`,
-      type: blockType,
-      exerciseIds: [exerciseForBlockAdd.id, secondExerciseId],
-      transitionRestSeconds: 0,
-      blockRestSeconds: 90
-    };
-
-    // Reposition second exercise adjacent to the first in exercises list
-    const updated = [...exercises];
-    const sourceIdx = updated.findIndex((e) => e.id === exerciseForBlockAdd.id);
-    const targetIdx = updated.findIndex((e) => e.id === secondExerciseId);
-
-    if (sourceIdx !== -1 && targetIdx !== -1 && targetIdx !== sourceIdx + 1) {
-      const [targetEx] = updated.splice(targetIdx, 1);
-      const insertAt = targetIdx < sourceIdx ? sourceIdx : sourceIdx + 1;
-      updated.splice(insertAt, 0, targetEx);
-      updateExercisesAndSync(updated);
-    }
-
-    setActiveBlocks((prev) => [...prev, newBlock]);
+    const first = exerciseForBlockAdd.exerciseInstanceId!;
+    updateWorkoutStructure(current => createSuperset(current, first, secondExerciseId, blockType));
     setExerciseForBlockAdd(null);
   };
-
-  const handleRemoveBlock = (blockId: string) => {
-    setActiveBlocks((prev) => prev.filter((b) => b.id !== blockId));
-  };
-
-  const handleSwapBlockExercises = (blockId: string) => {
-    const targetBlock = activeBlocks.find((b) => b.id === blockId);
-    if (!targetBlock || targetBlock.exerciseIds.length < 2) return;
-
-    const [id1, id2] = targetBlock.exerciseIds;
-
-    // Swap in activeBlocks
-    setActiveBlocks((prev) =>
-      prev.map((b) =>
-        b.id === blockId ? { ...b, exerciseIds: [id2, id1] } : b
-      )
-    );
-
-    // Swap in exercises array
-    const updated = [...exercises];
-    const idx1 = updated.findIndex((e) => e.id === id1);
-    const idx2 = updated.findIndex((e) => e.id === id2);
-    if (idx1 !== -1 && idx2 !== -1) {
-      const temp = updated[idx1];
-      updated[idx1] = updated[idx2];
-      updated[idx2] = temp;
-      updateExercisesAndSync(updated);
-    }
-  };
-
-  const handleUpdateBlockRest = (
-    blockId: string,
-    transitionSecs: number,
-    blockRestSecs: number
-  ) => {
-    setActiveBlocks((prev) =>
-      prev.map((b) =>
-        b.id === blockId
-          ? {
-              ...b,
-              transitionRestSeconds: transitionSecs,
-              blockRestSeconds: blockRestSecs
-            }
-          : b
-      )
-    );
-  };
+  const handleRemoveBlock = (blockId: string) => updateWorkoutStructure(current => dissolveBlock(current, blockId));
+  const handleSwapBlockExercises = (blockId: string) => updateWorkoutStructure(current => swapBlockMembers(current, blockId));
+  const handleUpdateBlockRest = (blockId: string, transitionSecs: number, blockRestSecs: number) =>
+    updateWorkoutStructure(current => updateBlockRest(current, blockId, transitionSecs, blockRestSecs));
 
   const handleMinimize = () => {
     if (onMinimize) {
@@ -484,26 +355,17 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     const now = new Date();
 
     const completedExercises: CompletedExerciseLog[] = exercises.map((ex) => ({
-      exerciseId: ex.id,
+      ...toCompletedExerciseLog(ex),
       exerciseName: ex.name,
       muscleGroup: ex.muscleGroup,
       professionalNote: ex.professionalNote,
-      sets: ex.sets.map((s) => ({
-        setNumber: s.setNumber,
-        type: s.type || 'working',
-        targetWeight: s.targetWeight,
-        targetReps: s.targetReps,
-        weight: s.weight,
-        reps: s.reps,
-        completed: s.completed,
-        prevWeight: s.prevWeight,
-        prevReps: s.prevReps,
-        isPr: Boolean(s.prevWeight && s.weight > s.prevWeight && s.reps >= (s.prevReps || 0)),
-        instruction: s.instruction
-      }))
+      sets: ex.sets.map((s) => toCompletedSetLog(s, isPrimaryPr(s)))
     }));
 
     const sessionRecord: WorkoutSessionRecord = {
+      workoutEngineVersion: 1, metricsVersion: 1,
+      totalPrescribedSets: metrics.prescribedSets, totalPerformedSegments: metrics.performedSegments, totalPerformedReps: metrics.performedReps,
+      blocks: structuredClone(activeSession?.blocks ?? []),
       id: `workout-session-${Date.now()}`,
       userId: user?.id || 'user_lucas_default',
       routineId: routine?.id,
@@ -555,7 +417,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     prsCount: detectedPrs,
     exercisesPreview: exercises.slice(0, 4).map((ex) => ({
       name: ex.name,
-      detail: `${ex.sets.filter((s) => s.completed).length}/${ex.sets.length} séries • ${ex.muscleGroup}`
+      detail: `${ex.sets.filter(isSetCompleted).length}/${ex.sets.length} séries • ${ex.muscleGroup}`
     }))
   };
 
@@ -576,6 +438,17 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex flex-col justify-end md:justify-center items-center">
       <div className="w-full max-w-[500px] h-[100dvh] md:h-[92vh] bg-[#101419] md:border border-[#262a30] md:rounded-3xl flex flex-col overflow-hidden shadow-2xl animate-in slide-in-from-bottom duration-300">
         
+        {compoundSet && compoundExercise && <CompoundSetEditor key={compoundSet.id} set={compoundSet}
+          onClose={() => setEditingCompound(null)}
+          onSave={nextSet => {
+            const updated = exercises.map(ex => ex.id === compoundExercise.id
+              ? { ...ex, sets: ex.sets.map(set => set.id === nextSet.id ? nextSet : set) } : ex);
+            if (nextSet.completed && !compoundSet.completed) {
+              // The existing global post-set rest only; no intra-set timer or scheduler.
+              const rest = compoundExercise.restSeconds ?? (compoundExercise as any).restTimeSeconds ?? defaultRestTime;
+              completeSetInContext(updated, exercises.indexOf(compoundExercise), compoundExercise.sets.indexOf(compoundSet), rest);
+            } else updateExercisesAndSync(updated);
+          }} />}
         {/* Top Sticky Bar: [Voltar] TREINO [Timer] [CONCLUIR] + Sub-Stats Horizontal Row */}
         <ActiveWorkoutHeader
           isTimerPaused={isTimerPaused}
@@ -706,6 +579,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
                           }
                           onUpdateSetField={updateSetField}
                           onToggleSetComplete={toggleSetComplete}
+                    onEditCompound={openCompound}
                           onAddSet={addSetToExercise}
                           onOpenDetail={setSelectedExerciseForDetail}
                           onUpdateNotes={handleUpdateNotes}
@@ -713,7 +587,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
                             setExerciseForRestConfig(ex);
                             setShowRestSettings(true);
                           }}
-                          onRemoveFromBlock={() => handleRemoveBlock(currentBlock.id)}
+                          onRemoveFromBlock={() => updateWorkoutStructure(current => removeBlockMember(current, currentBlock.id, exA1.exerciseInstanceId!))}
                         />
                       }
                       exerciseCardA2={
@@ -739,6 +613,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
                             }
                             onUpdateSetField={updateSetField}
                             onToggleSetComplete={toggleSetComplete}
+                    onEditCompound={openCompound}
                             onAddSet={addSetToExercise}
                             onOpenDetail={setSelectedExerciseForDetail}
                             onUpdateNotes={handleUpdateNotes}
@@ -776,6 +651,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
                     }
                     onUpdateSetField={updateSetField}
                     onToggleSetComplete={toggleSetComplete}
+                    onEditCompound={openCompound}
                     onAddSet={addSetToExercise}
                     onOpenDetail={setSelectedExerciseForDetail}
                     onUpdateNotes={handleUpdateNotes}
@@ -935,7 +811,7 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
             const updated = [...exercises];
             const foundIdx = updated.findIndex((e) => e.id === exerciseForRestConfig.id);
             if (foundIdx >= 0) {
-              updated[foundIdx].restSeconds = selectedSecs;
+              updated[foundIdx] = { ...updated[foundIdx], restSeconds: selectedSecs };
               (updated[foundIdx] as any).restTimeSeconds = selectedSecs;
               updateExercisesAndSync(updated);
             }
@@ -1029,3 +905,4 @@ export const ActiveWorkoutModal: React.FC<ActiveWorkoutModalProps> = ({
     </div>
   );
 };
+

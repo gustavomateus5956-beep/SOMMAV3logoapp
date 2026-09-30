@@ -1,3 +1,4 @@
+import { orderedSegments, segmentLabels, segmentWasPerformed, setExecutionState, executionLabels, isSetCompleted } from '../features/workout-engine/setMetrics';
 import React, { useState, useMemo } from 'react';
 import { X, Calendar, Clock, Dumbbell, Award, Share2, Instagram, CheckCircle2, RotateCcw, ShieldCheck } from 'lucide-react';
 import { WorkoutSessionRecord, Routine } from '../types';
@@ -36,7 +37,7 @@ export const WorkoutSessionDetailModal: React.FC<WorkoutSessionDetailModalProps>
     prsCount: session.prsCount || 0,
     exercisesPreview: session.exercises.slice(0, 3).map((ex) => ({
       name: ex.exerciseName,
-      detail: `${ex.sets.filter((s) => s.completed).length} séries concluídas`
+      detail: `${ex.sets.filter(isSetCompleted).length} séries concluídas`
     }))
   };
 
@@ -139,7 +140,7 @@ export const WorkoutSessionDetailModal: React.FC<WorkoutSessionDetailModalProps>
 
           {session.exercises.map((exercise, exIndex) => (
             <div
-              key={exercise.exerciseId || `ex-${exIndex}`}
+              key={exercise.exerciseInstanceId ?? exercise.exerciseId ?? `ex-${exIndex}`}
               className="bg-[#1c2025] rounded-xl p-3.5 border border-[#262a30] shadow-sm"
             >
               <div className="flex items-center justify-between mb-2">
@@ -147,7 +148,10 @@ export const WorkoutSessionDetailModal: React.FC<WorkoutSessionDetailModalProps>
                   <span className="w-5 h-5 rounded-md bg-[#0066ff]/20 text-[#0066ff] text-xs font-black flex items-center justify-center">
                     {exIndex + 1}
                   </span>
-                  <h4 className="text-sm font-bold text-white">{exercise.exerciseName}</h4>
+                  <h4 className="text-sm font-bold text-white">{(() => {
+                    const block = session.blocks?.find(b => b.type === 'SUPERSET' && b.exerciseIds.includes(exercise.exerciseInstanceId ?? ''));
+                    return block ? `${block.name ?? 'SUPERSET'} · A${block.exerciseIds.indexOf(exercise.exerciseInstanceId!) + 1} · ${exercise.exerciseName}` : exercise.exerciseName;
+                  })()}</h4>
                 </div>
                 <span className="text-[11px] text-[#8c90a1]">{exercise.muscleGroup}</span>
               </div>
@@ -170,8 +174,9 @@ export const WorkoutSessionDetailModal: React.FC<WorkoutSessionDetailModalProps>
                 </div>
 
                 {exercise.sets.map((set, sIdx) => {
-                  const setTypeConfig = getSetTypeConfig(set.type);
-                  const isSpecial = set.type && set.type !== 'working';
+                  const effectiveType = set.prescription?.method && set.prescription.method !== 'normal' ? set.prescription.method : set.type;
+                  const setTypeConfig = getSetTypeConfig(effectiveType);
+                  const isSpecial = effectiveType && effectiveType !== 'working';
 
                   return (
                     <div key={`set-${sIdx}`} className="flex flex-col gap-0.5">
@@ -185,7 +190,7 @@ export const WorkoutSessionDetailModal: React.FC<WorkoutSessionDetailModalProps>
                             }`}
                             title={setTypeConfig.name}
                           >
-                            <SetTypeIcon type={set.type} className="w-3 h-3" />
+                            <SetTypeIcon type={effectiveType} className="w-3 h-3" />
                             <span>{set.setNumber}</span>
                           </span>
                         </div>
@@ -204,19 +209,28 @@ export const WorkoutSessionDetailModal: React.FC<WorkoutSessionDetailModalProps>
                         </div>
 
                         <div className="col-span-3 text-center font-bold text-white tabular-nums">
-                          {set.weight}k × {set.reps}
+                          {set.performance?.segments?.length ? 'Ver etapas ↓' : (set.completed ? <>{set.weight}k × {set.reps}</> : '—')}
                         </div>
 
                         <div className="col-span-3 flex items-center justify-center gap-1">
-                          {set.isPr ? (
+                          {isSetCompleted(set) && set.isPr ? (
                             <span className="text-[9px] font-black px-1.5 py-0.5 rounded bg-[#ffb59d]/20 text-[#ffb59d] border border-[#ffb59d]/30">
                               PR
                             </span>
                           ) : (
-                            <CheckCircle2 className="w-4 h-4 text-[#4edea3]" />
+                            <span className="text-[10px]">{executionLabels[setExecutionState(set)]}{set.performance?.interrupted ? ' · interrompida' : ''}</span>
                           )}
                         </div>
                       </div>
+                      {Boolean(set.performance?.segments?.length) && <div className="px-3 py-2 text-xs text-[#c2c6d8] space-y-1">
+                        <div className="font-bold">{setTypeConfig.name}</div>
+                        {orderedSegments(set.performance).map(segment => <div key={segment.id}>
+                          {segment.kind !== 'PRIMARY' ? '↳ ' : ''}{segmentLabels[segment.kind]}: {segment.weightKg?.toLocaleString('pt-BR') ?? '—'} kg × {segment.reps ?? '—'}
+                          {segment.rir != null ? ' · RIR ' + segment.rir : ''}{segment.rpe != null ? ' · RPE ' + segment.rpe : ''}
+                          {segment.restBeforeSeconds != null ? ' · pausa ' + segment.restBeforeSeconds + ' s' : ''}
+                          {' · '}{segmentWasPerformed(segment, set.performance!) ? 'executada' : 'não executada'}
+                        </div>)}
+                      </div>}
                     </div>
                   );
                 })}

@@ -293,6 +293,17 @@ class StorageService {
   /**
    * Get all completed workout sessions for a given user.
    */
+  /** Versioned active draft, scoped to the same local user as history. */
+  public getActiveWorkoutDraft(userId: string): string | null {
+    return localStorage.getItem('somma_active_workout_v1_' + userId);
+  }
+  public saveActiveWorkoutDraft(userId: string, json: string): void {
+    localStorage.setItem('somma_active_workout_v1_' + userId, json);
+  }
+  public clearActiveWorkoutDraft(userId: string): void {
+    localStorage.removeItem('somma_active_workout_v1_' + userId);
+  }
+
   public getWorkoutSessions(userId: string): WorkoutSessionRecord[] {
     try {
       const storageKey = `${STORAGE_KEYS.WORKOUTS_PREFIX}${userId}`;

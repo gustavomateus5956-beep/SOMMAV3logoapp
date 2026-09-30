@@ -1,66 +1,88 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Search, X, Plus, Utensils, Check, Flame, ChevronRight, Calculator } from 'lucide-react';
-import { SOLID_FOOD_DATABASE } from '../data/dietData';
-import { FoodItem, MealFoodEntry } from '../types';
+import type { MealFoodEntry } from '../types';
+import type { Food } from '../features/nutrition/food';
+import { NutritionCatalogService, nutritionCatalogService } from '../features/nutrition/NutritionCatalogService';
+import { toLegacyFoodItem, toLegacyMacros, toMealFoodEntry, displayNutrient, type CatalogFoodItem } from '../features/nutrition/legacyFoodAdapter';
 
 interface AddFoodModalProps {
   mealName: string;
   onClose: () => void;
   onAddFood: (entry: MealFoodEntry) => void;
+  service?: NutritionCatalogService;
 }
-
-const CATEGORIES = ['Todos', 'Proteínas', 'Carboidratos', 'Gorduras Boas', 'Frutas & Vegetais', 'Laticínios', 'Suplementos'];
 
 export const AddFoodModal: React.FC<AddFoodModalProps> = ({
   mealName,
   onClose,
-  onAddFood
+  onAddFood,
+  service = nutritionCatalogService
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('Todos');
-  const [selectedFood, setSelectedFood] = useState<FoodItem | null>(null);
-  const [portionGrams, setPortionGrams] = useState<number>(100);
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedRecord, setSelectedRecord] = useState<Food | null>(null);
+  const selectedFood = selectedRecord ? toLegacyFoodItem(selectedRecord) : null;
+  const [portionInput, setPortionInput] = useState('100');
+  const portionGrams = Number(portionInput);
+  const [foods, setFoods] = useState<Food[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasNextPage, setHasNextPage] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [searchError, setSearchError] = useState('');
+  const [searchAttempt, setSearchAttempt] = useState(0);
+  const [addError, setAddError] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
+  const confirmRequest = useRef<AbortController | null>(null);
+  const categories = useMemo(() => [{ id: '', label: 'Todos' }, ...service.getCategories()], [service]);
+  const filteredFoods = foods.map(toLegacyFoodItem);
 
-  const filteredFoods = useMemo(() => {
-    return SOLID_FOOD_DATABASE.filter((food) => {
-      const matchesSearch = food.name.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesCat = selectedCategory === 'Todos' || food.category === selectedCategory;
-      return matchesSearch && matchesCat;
-    });
-  }, [searchQuery, selectedCategory]);
+  useEffect(() => {
+    const controller = new AbortController();
+    setLoading(true); setSearchError('');
+    service.search(searchQuery, { category: selectedCategory || undefined, page, limit: 30, signal: controller.signal })
+      .then(result => {
+        if (controller.signal.aborted) return;
+        setFoods(previous => page === 1 ? result.items : [...previous, ...result.items]);
+        setHasNextPage(result.hasNextPage);
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) setSearchError('Não foi possível carregar os alimentos. Tente novamente.');
+      })
+      .finally(() => { if (!controller.signal.aborted) setLoading(false); });
+    return () => controller.abort();
+  }, [searchQuery, selectedCategory, page, service, searchAttempt]);
 
-  const handleSelectFood = (food: FoodItem) => {
-    setSelectedFood(food);
-    setPortionGrams(food.servingSize);
+  useEffect(() => () => confirmRequest.current?.abort(), []);
+
+  const resetSearch = () => { setPage(1); setFoods([]); setHasNextPage(false); setLoading(true); };
+  const handleSelectFood = (food: CatalogFoodItem) => {
+    setSelectedRecord(foods.find(record => record.id === food.id) ?? null);
+    setPortionInput('100'); setAddError('');
   };
 
   // Calculate scaled macros based on chosen portion
   const calculatedMacros = useMemo(() => {
-    if (!selectedFood) return { cal: 0, prot: 0, carb: 0, fat: 0 };
-    const ratio = portionGrams / selectedFood.servingSize;
-    return {
-      cal: Math.round(selectedFood.calories * ratio),
-      prot: parseFloat((selectedFood.protein * ratio).toFixed(1)),
-      carb: parseFloat((selectedFood.carbs * ratio).toFixed(1)),
-      fat: parseFloat((selectedFood.fats * ratio).toFixed(1))
-    };
-  }, [selectedFood, portionGrams]);
+    if (!selectedRecord) return { values: {}, error: '' };
+    try {
+      return { values: toLegacyMacros(service.calculateForFood(selectedRecord, { amount: portionGrams, unit: 'g' }).nutrition), error: '' };
+    } catch (error) {
+      return { values: {}, error: error instanceof Error ? error.message : 'Quantidade inválida.' };
+    }
+  }, [selectedRecord, portionGrams, service]);
 
-  const handleConfirmAdd = () => {
-    if (!selectedFood) return;
-    const entry: MealFoodEntry = {
-      id: `mfe-${Date.now()}`,
-      foodId: selectedFood.id,
-      name: selectedFood.name,
-      portion: portionGrams,
-      portionDisplay: `${portionGrams}${selectedFood.servingUnit}`,
-      calories: calculatedMacros.cal,
-      protein: calculatedMacros.prot,
-      carbs: calculatedMacros.carb,
-      fats: calculatedMacros.fat
-    };
-    onAddFood(entry);
-    onClose();
+  const handleConfirmAdd = async () => {
+    if (!selectedRecord || calculatedMacros.error || confirmRequest.current) return;
+    const controller = new AbortController(); confirmRequest.current = controller;
+    setIsSaving(true); setAddError('');
+    try {
+      const snapshot = await service.createSnapshot(selectedRecord.id, { amount: portionGrams, unit: 'g' }, controller.signal);
+      if (controller.signal.aborted) return;
+      onAddFood(toMealFoodEntry(snapshot)); onClose();
+    } catch (error) {
+      if (!controller.signal.aborted) setAddError(error instanceof Error ? error.message : 'Não foi possível adicionar o alimento.');
+    } finally {
+      if (!controller.signal.aborted) { confirmRequest.current = null; setIsSaving(false); }
+    }
   };
 
   return (
@@ -80,7 +102,8 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
           </div>
 
           <button
-            onClick={onClose}
+            onClick={() => { confirmRequest.current?.abort(); onClose(); }}
+            aria-label="Fechar adicionar alimento"
             className="w-8 h-8 rounded-full bg-[#1c2025] hover:bg-[#262a30] text-[#c2c6d8] hover:text-white flex items-center justify-center transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
@@ -95,27 +118,27 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
               <Search className="w-4 h-4 text-[#8c90a1] absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="Pesquisar alimento (ex: Frango, Arroz, Ovo, Whey, Batata)..."
+                placeholder="Pesquisar alimento (ex: Frango, Arroz, Ovo, Feijão, Batata)..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => { setSearchQuery(e.target.value); resetSearch(); }}
                 className="w-full h-11 pl-10 pr-4 rounded-xl bg-[#101419] border border-[#262a30] text-white text-xs sm:text-sm placeholder-[#8c90a1] focus:border-[#0066ff] outline-none"
               />
             </div>
 
             {/* Categories */}
             <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
-              {CATEGORIES.map((cat) => (
+              {categories.map((cat) => (
                 <button
-                  key={cat}
+                  key={cat.id}
                   type="button"
-                  onClick={() => setSelectedCategory(cat)}
+                  onClick={() => { if (selectedCategory !== cat.id) { setSelectedCategory(cat.id); resetSearch(); } }}
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
-                    selectedCategory === cat
+                    selectedCategory === cat.id
                       ? 'bg-[#0066ff] text-white'
                       : 'bg-[#181c21] text-[#8c90a1] hover:text-white'
                   }`}
                 >
-                  {cat}
+                  {cat.label}
                 </button>
               ))}
             </div>
@@ -134,15 +157,15 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
                       {food.name}
                     </h4>
                     <span className="text-[11px] text-[#8c90a1] mt-0.5">
-                      Base: {food.servingSize}{food.servingUnit} • {food.calories} kcal
+                      Base: {food.servingSize}{food.servingUnit} • {displayNutrient(food.calories, 0)} kcal
                     </span>
                   </div>
 
                   {/* Quick Macro chips */}
                   <div className="flex items-center gap-2">
                     <div className="flex flex-col items-end text-[10px]">
-                      <span className="font-bold text-[#b3c5ff]">P: {food.protein}g</span>
-                      <span className="text-[#8c90a1]">C: {food.carbs}g • G: {food.fats}g</span>
+                      <span className="font-bold text-[#b3c5ff]">P: {displayNutrient(food.protein)}g</span>
+                      <span className="text-[#8c90a1]">C: {displayNutrient(food.carbs)}g • G: {displayNutrient(food.fats)}g</span>
                     </div>
                     <div className="w-8 h-8 rounded-xl bg-[#262a30] text-[#c2c6d8] group-hover:bg-[#0066ff] group-hover:text-white flex items-center justify-center transition-colors">
                       <ChevronRight className="w-4 h-4" />
@@ -150,6 +173,10 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
                   </div>
                 </div>
               ))}
+              {loading && <p role="status" className="text-xs text-[#8c90a1]">Carregando alimentos…</p>}
+              {searchError && <><p role="alert" className="text-xs text-[#ffb59d]">{searchError}</p><button type="button" onClick={() => setSearchAttempt(attempt => attempt + 1)} className="w-full h-10 rounded-xl bg-[#262a30] text-white text-xs font-bold">Tentar novamente</button></>}
+              {!loading && !searchError && foods.length === 0 && <p role="status" className="text-xs text-[#8c90a1]">Nenhum alimento encontrado.</p>}
+              {!loading && hasNextPage && !searchError && <button type="button" onClick={() => { setLoading(true); setPage(p => p + 1); }} className="w-full h-10 rounded-xl bg-[#262a30] text-white text-xs font-bold">Carregar mais</button>}
             </div>
           </>
         ) : (
@@ -161,7 +188,7 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
               </span>
               <h4 className="text-base font-black text-white">{selectedFood.name}</h4>
               <p className="text-xs text-[#8c90a1]">
-                Tabela de referência: {selectedFood.servingSize}{selectedFood.servingUnit} ({selectedFood.calories} kcal)
+                {selectedRecord?.source === 'taco' ? 'TACO/NEPA–UNICAMP (2011)' : 'Tabela de referência'}: {selectedFood.servingSize}{selectedFood.servingUnit} ({displayNutrient(selectedFood.calories, 0)} kcal)
               </p>
             </div>
 
@@ -175,20 +202,26 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
               <div className="flex items-center gap-3">
                 <button
                   type="button"
-                  onClick={() => setPortionGrams((p) => Math.max(10, p - 25))}
+                  disabled={isSaving}
+                  onClick={() => setPortionInput(String(Math.max(10, (Number.isFinite(portionGrams) ? portionGrams : 100) - 25)))}
                   className="w-11 h-11 rounded-xl bg-[#262a30] text-white font-bold text-lg hover:bg-[#31353b]"
                 >
                   -
                 </button>
                 <input
                   type="number"
-                  value={portionGrams}
-                  onChange={(e) => setPortionGrams(Math.max(1, Number(e.target.value) || 0))}
+                  aria-label="Quantidade em gramas"
+                  min="0"
+                  step="any"
+                  disabled={isSaving}
+                  value={portionInput}
+                  onChange={(e) => setPortionInput(e.target.value)}
                   className="flex-1 h-11 text-center bg-[#181c21] border border-[#262a30] rounded-xl text-white font-extrabold text-base focus:border-[#0066ff] outline-none"
                 />
                 <button
                   type="button"
-                  onClick={() => setPortionGrams((p) => p + 25)}
+                  disabled={isSaving}
+                  onClick={() => setPortionInput(String((Number.isFinite(portionGrams) ? portionGrams : 100) + 25))}
                   className="w-11 h-11 rounded-xl bg-[#262a30] text-white font-bold text-lg hover:bg-[#31353b]"
                 >
                   +
@@ -201,7 +234,8 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
                   <button
                     key={preset}
                     type="button"
-                    onClick={() => setPortionGrams(preset)}
+                    disabled={isSaving}
+                    onClick={() => setPortionInput(String(preset))}
                     className={`flex-1 py-1.5 rounded-lg text-xs font-bold border transition-colors ${
                       portionGrams === preset
                         ? 'bg-[#0066ff]/20 text-[#b3c5ff] border-[#0066ff]'
@@ -215,34 +249,36 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
             </div>
 
             {/* Calculated Macros Result */}
-            <div className="grid grid-cols-4 gap-2">
+            <div className="grid grid-cols-4 gap-2" title="— indica nutriente não informado na fonte; não significa zero.">
               <div className="bg-[#181c21] p-2.5 rounded-xl text-center border border-[#262a30]">
                 <span className="text-[10px] font-bold text-[#8c90a1] uppercase block">Calorias</span>
-                <span className="text-base font-black text-white">{calculatedMacros.cal}</span>
+                <span className="text-base font-black text-white">{displayNutrient(calculatedMacros.values.calories, 0)}</span>
                 <span className="text-[9px] text-[#8c90a1]">kcal</span>
               </div>
               <div className="bg-[#181c21] p-2.5 rounded-xl text-center border border-[#262a30]">
                 <span className="text-[10px] font-bold text-[#0066ff] uppercase block">Proteínas</span>
-                <span className="text-base font-black text-[#b3c5ff]">{calculatedMacros.prot}</span>
+                <span className="text-base font-black text-[#b3c5ff]">{displayNutrient(calculatedMacros.values.protein)}</span>
                 <span className="text-[9px] text-[#8c90a1]">g</span>
               </div>
               <div className="bg-[#181c21] p-2.5 rounded-xl text-center border border-[#262a30]">
                 <span className="text-[10px] font-bold text-[#4edea3] uppercase block">Carbos</span>
-                <span className="text-base font-black text-[#4edea3]">{calculatedMacros.carb}</span>
+                <span className="text-base font-black text-[#4edea3]">{displayNutrient(calculatedMacros.values.carbs)}</span>
                 <span className="text-[9px] text-[#8c90a1]">g</span>
               </div>
               <div className="bg-[#181c21] p-2.5 rounded-xl text-center border border-[#262a30]">
                 <span className="text-[10px] font-bold text-[#ffb59d] uppercase block">Gorduras</span>
-                <span className="text-base font-black text-[#ffb59d]">{calculatedMacros.fat}</span>
+                <span className="text-base font-black text-[#ffb59d]">{displayNutrient(calculatedMacros.values.fats)}</span>
                 <span className="text-[9px] text-[#8c90a1]">g</span>
               </div>
             </div>
 
             {/* Action buttons */}
+            {(calculatedMacros.error || addError) && <p role="alert" className="text-xs text-[#ffb59d]">{calculatedMacros.error || addError}</p>}
             <div className="flex gap-2 pt-2">
               <button
                 type="button"
-                onClick={() => setSelectedFood(null)}
+                disabled={isSaving}
+                onClick={() => setSelectedRecord(null)}
                 className="flex-1 h-12 rounded-xl bg-[#262a30] hover:bg-[#31353b] text-white text-xs font-bold transition-all cursor-pointer"
               >
                 Voltar à Lista
@@ -250,6 +286,7 @@ export const AddFoodModal: React.FC<AddFoodModalProps> = ({
               <button
                 type="button"
                 onClick={handleConfirmAdd}
+                disabled={isSaving || Boolean(calculatedMacros.error)}
                 className="flex-1 h-12 rounded-xl bg-[#0066ff] hover:bg-[#0054d6] text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-lg shadow-[#0066ff]/20 cursor-pointer"
               >
                 <Plus className="w-4 h-4" />

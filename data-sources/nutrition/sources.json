@@ -1,0 +1,87 @@
+{
+  "reviewedAt": "2026-09-28",
+  "sources": [
+    {
+      "id": "taco-4-2011",
+      "publisher": "NEPA/UNICAMP",
+      "version": "4ª edição revisada e ampliada, 2011",
+      "url": "https://www.nepa.unicamp.br/arquivo/uploads/taco-4a-edicao/taco-4a-edicao-2/",
+      "landingPage": "https://nepa.unicamp.br/publicacoes/",
+      "termsUrl": "https://www.nepa.unicamp.br/arquivo/uploads/taco-4-edicao-ampliada-e-revisada/taco_4_edicao_ampliada_e_revisada/",
+      "termsPages": "PDF pages 4–5 (printed ii–iii)",
+      "terms": "É permitida a reprodução parcial ou total desta obra, desde que citada a fonte.",
+      "redistribution": "allowed-with-attribution",
+      "commercialRestriction": "No commercial restriction stated in this reproduction grant; not represented as CC or public domain.",
+      "attribution": "NEPA/UNICAMP. Tabela Brasileira de Composição de Alimentos – TACO. 4. ed. rev. e ampl. Campinas: NEPA/UNICAMP, 2011.",
+      "retrievedAt": "2026-09-28",
+      "sha256": "a66b8ec528daeabc63bc2b015fc9bd8c6d76b941c2fc0ed93a4311d449302d14",
+      "termsSha256": "2002aec5615b5b1395aaa8fa675635bbb7f712c33f278af5e332f1cac8f108c8",
+      "localFile": "data-sources/nutrition/taco-4-2011.xlsx"
+    },
+    {
+      "id": "pof-2008-2009-composition",
+      "publisher": "IBGE",
+      "version": "POF 2008–2009; publication 2011",
+      "url": "https://ftp.ibge.gov.br/Orcamentos_Familiares/Pesquisa_de_Orcamentos_Familiares_2008_2009/Tabelas_de_Composicao_Nutricional_dos_Alimentos_Consumidos_no_Brasil/tabelacompleta.zip",
+      "retrievedAt": "2026-09-28",
+      "sha256": "3aa01426f16f8041ce830de2dda7e5003806b437917cb829f8cefe84a0ac21e0",
+      "redistribution": "excluded-pending-clearance",
+      "included": 0,
+      "auditedRows": 1971,
+      "uniqueFoodCodes": 1121,
+      "duplicateKeys": 0,
+      "referenceCodeCounts": {
+        "8.0": 51,
+        "1.0": 1752,
+        "2.0": 127,
+        "6.0": 5,
+        "7.0": 10,
+        "3.0": 20,
+        "5.0": 4,
+        "9.0": 1,
+        "4.0": 1
+      },
+      "reason": "Official public availability is not sufficient evidence of commercial redistribution rights for this mixed-source compilation. No POF rows distributed.",
+      "licenseEvidence": [
+        "https://biblioteca.ibge.gov.br/visualizacao/livros/liv50002.pdf",
+        "https://www.ncc.umn.edu/wp-content/uploads/2015/10/Research-EUA.pdf"
+      ]
+    },
+    {
+      "id": "pof-2008-2009-householdMeasures",
+      "publisher": "IBGE",
+      "version": "POF 2008–2009; publication 2011",
+      "url": "https://ftp.ibge.gov.br/Orcamentos_Familiares/Pesquisa_de_Orcamentos_Familiares_2008_2009/Tabela_de_Medidas_Referidas_para_os_Alimentos_Consumidos_no_Brasil/tabelamedidas_bd.zip",
+      "retrievedAt": "2026-09-28",
+      "sha256": "3d0ff06acf0b55c22a621f57e6fb218d4505af204ed2be1571bfbe02fbab17c9",
+      "redistribution": "excluded-pending-clearance",
+      "included": 0,
+      "auditedRows": 11801,
+      "uniqueFoodCodes": 1119,
+      "duplicateKeys": 0,
+      "referenceCodeCounts": {
+        "1.0": 5028,
+        "15.0": 4764,
+        "2.0": 725,
+        "3.0": 31,
+        "14.0": 371,
+        "4.0": 69,
+        "5.0": 231,
+        "7.0": 306,
+        "8.0": 149,
+        "9.0": 93,
+        "10.0": 1,
+        "11.0": 1,
+        "6.0": 19,
+        "12.0": 1,
+        "missing": 6,
+        "13.0": 6
+      },
+      "reason": "Official public availability is not sufficient evidence of commercial redistribution rights for this mixed-source compilation. No POF rows distributed.",
+      "licenseEvidence": [
+        "https://biblioteca.ibge.gov.br/visualizacao/livros/liv50002.pdf",
+        "https://www.ncc.umn.edu/wp-content/uploads/2015/10/Research-EUA.pdf"
+      ]
+    }
+  ]
+}

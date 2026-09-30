@@ -1,3 +1,4 @@
+import { isSetCompleted } from '../workout-engine/setMetrics';
 import type { MuscleGroup, MuscleMapValues, MuscleMapValue } from '@musclemap/core';
 import type { Exercise, CompletedExerciseLog } from '../../types';
 
@@ -399,7 +400,7 @@ export function calculateWorkoutMuscleScores(
     }
 
     const sets = ex.sets || [];
-    const completedSetsCount = sets.filter((s) => s.completed).length;
+    const completedSetsCount = sets.filter(isSetCompleted).length;
     const plannedSetsCount = sets.length > 0 ? sets.length : 3;
 
     if (sets.length > 0) {

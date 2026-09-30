@@ -1,3 +1,5 @@
+import { repeatWorkoutRoutine } from '../features/workout-engine/workoutStructure';
+import { repeatHistoricalSet } from '../features/workout-engine/setAdapter';
 import React, { useState, useEffect } from 'react';
 import { Flame } from 'lucide-react';
 import { Routine, Exercise, WorkoutSessionRecord, TabType } from '../types';
@@ -61,7 +63,7 @@ export const WorkoutView: React.FC<WorkoutViewProps> = ({
 
   useEffect(() => {
     loadUserSessions();
-  }, [user?.id]);
+  }, [user?.id, workoutStatus]);
 
   // Check if today's workout was completed today
   const todaySession = historySessions.find((s) => s.dateDisplay === 'Hoje' || s.dateDisplay.toLowerCase().includes('hoje'));
@@ -135,29 +137,8 @@ export const WorkoutView: React.FC<WorkoutViewProps> = ({
   };
 
   const handleRepeatHistoricalSession = (session: WorkoutSessionRecord) => {
-    const routineFromHistory: Routine = {
-      id: session.routineId || `routine-${Date.now()}`,
-      name: session.routineName,
-      category: session.muscleGroups || 'Treino',
-      muscleGroups: session.muscleGroups,
-      lastSession: session.dateDisplay,
-      exercisesCount: session.exercises.length,
-      estimatedMinutes: session.durationMinutes,
-      exercises: session.exercises.map((ex) => ({
-        id: ex.exerciseId,
-        name: ex.exerciseName,
-        muscleGroup: ex.muscleGroup,
-        sets: ex.sets.map((s, sIdx) => ({
-          id: `s-${sIdx}`,
-          setNumber: s.setNumber,
-          prevWeight: s.weight,
-          prevReps: s.reps,
-          weight: s.weight,
-          reps: s.reps,
-          completed: false
-        }))
-      }))
-    };
+    const routineFromHistory = repeatWorkoutRoutine(session);
+    setSelectedHistorySession(null);
     onStartRoutine(routineFromHistory);
   };
 

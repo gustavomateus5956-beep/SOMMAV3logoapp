@@ -22,11 +22,7 @@ export const ProfessionalInstructionsSheet: React.FC<ProfessionalInstructionsShe
 
   if (!isOpen) return null;
 
-  const instructionText =
-    exercise.professionalNote ||
-    (exercise as any).instruction ||
-    (exercise as any).notes ||
-    '';
+  const instructionText = exercise.professionalNote?.trim() || '';
 
   return (
     <div

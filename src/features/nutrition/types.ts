@@ -73,13 +73,9 @@ export interface FoodSearchQueryOptions {
  * Interface contratual para provedores de alimentos (IFoodProvider).
  * Futuramente implementada por SommaFoodProvider, FatSecretProvider, OpenFoodFactsProvider, etc.
  */
-export interface IFoodProvider {
-  readonly providerId: FoodDatabaseSource;
-  readonly displayName: string;
-  search(query: string, options?: FoodSearchQueryOptions): Promise<FoodItemModel[]>;
-  getByBarcode?(barcode: string): Promise<FoodItemModel | null>;
-  getById?(id: string): Promise<FoodItemModel | null>;
-}
+export type { IFoodProvider } from './food';
+// FoodItemModel/NutrientProfile above remain available for compatibility.
+// New catalog code uses Food/Nutrition from ./food. UI migration is a later stage.
 
 /**
  * Modos de entrada alimentar previstos para a SOMMA Intelligence

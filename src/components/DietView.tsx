@@ -15,6 +15,7 @@ import { NutritionPlan, DailyMeal, MealFoodEntry } from '../types';
 import { AddFoodModal } from './AddFoodModal';
 import { PageHeader } from './PageHeader';
 import { useUser } from '../context/UserContext';
+import { sumMealNutrition, displayNutrient, nutrientPercent, remainingNutrient } from '../features/nutrition/legacyFoodAdapter';
 import { NutritionPlanInfoSheet } from './nutrition/NutritionPlanInfoSheet';
 import type { NutritionPlanStrategyData } from '../features/nutrition/types';
 
@@ -38,7 +39,6 @@ export const DietView: React.FC = () => {
   const [supplementStack, setSupplementStack] = useState(INITIAL_NUTRITION_PLAN.supplementStack);
   const [showPlanInfoSheet, setShowPlanInfoSheet] = useState(false);
 
-  // Dados da estratégia nutricional para o NutritionPlanInfoSheet
   const planStrategyData: NutritionPlanStrategyData = useMemo(() => ({
     goal: user?.goal || nutritionPlan.objective || 'Hipertrofia e Força',
     calorieTarget: nutritionPlan.targetCalories,
@@ -123,38 +123,17 @@ export const DietView: React.FC = () => {
   };
 
   // Calculate total consumed macros across completed meals
-  const consumedTotals = useMemo(() => {
-    let calories = 0;
-    let protein = 0;
-    let carbs = 0;
-    let fats = 0;
+  const consumedTotals = useMemo(() => sumMealNutrition(
+    nutritionPlan.meals.filter(meal => meal.completed).flatMap(meal => meal.foods)
+  ), [nutritionPlan]);
 
-    nutritionPlan.meals.forEach((meal) => {
-      if (meal.completed) {
-        meal.foods.forEach((food) => {
-          calories += food.calories;
-          protein += food.protein;
-          carbs += food.carbs;
-          fats += food.fats;
-        });
-      }
-    });
-
-    return {
-      calories: Math.round(calories),
-      protein: parseFloat(protein.toFixed(1)),
-      carbs: parseFloat(carbs.toFixed(1)),
-      fats: parseFloat(fats.toFixed(1))
-    };
-  }, [nutritionPlan]);
-
-  const caloriesPercent = Math.min(100, Math.round((consumedTotals.calories / nutritionPlan.targetCalories) * 100));
-  const proteinPercent = Math.min(100, Math.round((consumedTotals.protein / nutritionPlan.targetProtein) * 100));
-  const carbsPercent = Math.min(100, Math.round((consumedTotals.carbs / nutritionPlan.targetCarbs) * 100));
-  const fatsPercent = Math.min(100, Math.round((consumedTotals.fats / nutritionPlan.targetFats) * 100));
+  const caloriesPercent = nutrientPercent(consumedTotals.calories, nutritionPlan.targetCalories);
+  const proteinPercent = nutrientPercent(consumedTotals.protein, nutritionPlan.targetProtein);
+  const carbsPercent = nutrientPercent(consumedTotals.carbs, nutritionPlan.targetCarbs);
+  const fatsPercent = nutrientPercent(consumedTotals.fats, nutritionPlan.targetFats);
   const waterPercent = Math.min(100, Math.round((waterConsumedMl / nutritionPlan.targetWaterMl) * 100));
 
-  const remainingCalories = Math.max(0, nutritionPlan.targetCalories - consumedTotals.calories);
+  const remainingCalories = remainingNutrient(consumedTotals.calories, nutritionPlan.targetCalories);
 
   // Completed meals count
   const completedMealsCount = useMemo(() => {
@@ -217,7 +196,7 @@ export const DietView: React.FC = () => {
 
   return (
     <div className="flex flex-col w-full pb-24 md:pb-12 gap-4">
-      {/* 1. Header: Mesma hierarquia limpa e direta de Treino */}
+      {/* 1. Header: hierarquia limpa e direta */}
       <PageHeader
         title="Dieta"
         badge={
@@ -237,7 +216,7 @@ export const DietView: React.FC = () => {
       />
 
       {/* 2. Resumo Nutricional Principal (Balanço Calórico e Macros) */}
-      <section className="bg-[#181c21] rounded-3xl p-5 border border-[#262a30] flex flex-col gap-5 shadow-sm">
+      <section className="bg-[#181c21] rounded-3xl p-5 border border-[#262a30] flex flex-col gap-5 shadow-sm" title="— indica que falta um nutriente na fonte de algum alimento consumido; o total afetado não está disponível.">
         {/* Topo do Resumo: Calorias Consumidas vs Meta e Restante */}
         <div className="flex items-start justify-between">
           <div className="flex flex-col">
@@ -246,7 +225,7 @@ export const DietView: React.FC = () => {
             </span>
             <div className="flex items-baseline gap-1.5 mt-1">
               <span className="text-3xl font-black text-white tabular-nums tracking-tight">
-                {consumedTotals.calories.toLocaleString()}
+                {consumedTotals.calories === undefined ? '—' : Math.round(consumedTotals.calories).toLocaleString()}
               </span>
               <span className="text-sm font-semibold text-[#8c90a1]">
                 / {nutritionPlan.targetCalories.toLocaleString()} kcal
@@ -262,7 +241,7 @@ export const DietView: React.FC = () => {
               Restante
             </span>
             <span className="text-base font-bold text-white tabular-nums mt-1 block">
-              {remainingCalories.toLocaleString()} kcal
+              {remainingCalories === undefined ? '—' : Math.round(remainingCalories).toLocaleString()} kcal
             </span>
           </div>
         </div>
@@ -271,7 +250,7 @@ export const DietView: React.FC = () => {
         <div className="w-full bg-[#101419] h-2.5 rounded-full overflow-hidden p-0.5 border border-[#262a30]/80">
           <div
             className="h-full rounded-full bg-[#0066ff] transition-all duration-500"
-            style={{ width: `${caloriesPercent}%` }}
+            style={{ width: caloriesPercent === undefined ? undefined : `${caloriesPercent}%`, visibility: caloriesPercent === undefined ? 'hidden' : undefined }}
           />
         </div>
 
@@ -288,14 +267,14 @@ export const DietView: React.FC = () => {
                 <span className="font-bold text-white">Proteína</span>
               </div>
               <span className="font-semibold text-white tabular-nums">
-                {consumedTotals.protein}g{' '}
+                {displayNutrient(consumedTotals.protein)}g{' '}
                 <span className="text-[#8c90a1]">/ {nutritionPlan.targetProtein}g</span>
               </span>
             </div>
             <div className="w-full bg-[#101419] h-2 rounded-full overflow-hidden border border-[#262a30]/60">
               <div
                 className="h-full bg-[#0066ff] rounded-full transition-all duration-300"
-                style={{ width: `${proteinPercent}%` }}
+                style={{ width: proteinPercent === undefined ? undefined : `${proteinPercent}%`, visibility: proteinPercent === undefined ? 'hidden' : undefined }}
               />
             </div>
           </div>
@@ -308,14 +287,14 @@ export const DietView: React.FC = () => {
                 <span className="font-bold text-white">Carboidratos</span>
               </div>
               <span className="font-semibold text-white tabular-nums">
-                {consumedTotals.carbs}g{' '}
+                {displayNutrient(consumedTotals.carbs)}g{' '}
                 <span className="text-[#8c90a1]">/ {nutritionPlan.targetCarbs}g</span>
               </span>
             </div>
             <div className="w-full bg-[#101419] h-2 rounded-full overflow-hidden border border-[#262a30]/60">
               <div
                 className="h-full bg-[#4edea3] rounded-full transition-all duration-300"
-                style={{ width: `${carbsPercent}%` }}
+                style={{ width: carbsPercent === undefined ? undefined : `${carbsPercent}%`, visibility: carbsPercent === undefined ? 'hidden' : undefined }}
               />
             </div>
           </div>
@@ -328,14 +307,14 @@ export const DietView: React.FC = () => {
                 <span className="font-bold text-white">Gorduras</span>
               </div>
               <span className="font-semibold text-white tabular-nums">
-                {consumedTotals.fats}g{' '}
+                {displayNutrient(consumedTotals.fats)}g{' '}
                 <span className="text-[#8c90a1]">/ {nutritionPlan.targetFats}g</span>
               </span>
             </div>
             <div className="w-full bg-[#101419] h-2 rounded-full overflow-hidden border border-[#262a30]/60">
               <div
                 className="h-full bg-[#ffb59d] rounded-full transition-all duration-300"
-                style={{ width: `${fatsPercent}%` }}
+                style={{ width: fatsPercent === undefined ? undefined : `${fatsPercent}%`, visibility: fatsPercent === undefined ? 'hidden' : undefined }}
               />
             </div>
           </div>
@@ -402,10 +381,7 @@ export const DietView: React.FC = () => {
         <div className="flex flex-col gap-2.5">
           {nutritionPlan.meals.map((meal) => {
             const isExpanded = expandedMealIds.includes(meal.id);
-            const mealCals = meal.foods.reduce((acc, f) => acc + f.calories, 0);
-            const mealProt = meal.foods.reduce((acc, f) => acc + f.protein, 0);
-            const mealCarbs = meal.foods.reduce((acc, f) => acc + f.carbs, 0);
-            const mealFats = meal.foods.reduce((acc, f) => acc + f.fats, 0);
+            const { calories: mealCals, protein: mealProt, carbs: mealCarbs, fats: mealFats } = sumMealNutrition(meal.foods);
             const friendlyName = formatMealDisplayName(meal.name);
 
             return (
@@ -459,7 +435,7 @@ export const DietView: React.FC = () => {
                   {/* Calorias da Refeição e Chevron */}
                   <div className="flex items-center gap-2.5 shrink-0">
                     <span className="text-xs sm:text-sm font-bold text-white tabular-nums">
-                      {mealCals} kcal
+                      {displayNutrient(mealCals, 0)} kcal
                     </span>
                     <div className="text-[#8c90a1]">
                       {isExpanded ? (
@@ -478,7 +454,7 @@ export const DietView: React.FC = () => {
                     <div className="flex items-center justify-between text-[11px] text-[#8c90a1] pt-1">
                       <span>Total da refeição</span>
                       <span className="font-semibold text-[#c2c6d8] tabular-nums">
-                        P: {mealProt.toFixed(0)}g • C: {mealCarbs.toFixed(0)}g • G: {mealFats.toFixed(0)}g
+                        P: {displayNutrient(mealProt, 0)}g • C: {displayNutrient(mealCarbs, 0)}g • G: {displayNutrient(mealFats, 0)}g
                       </span>
                     </div>
 
@@ -496,11 +472,11 @@ export const DietView: React.FC = () => {
                             <div className="flex items-center gap-1.5 mt-0.5 text-[11px] text-[#8c90a1] flex-wrap">
                               <span>{food.portionDisplay}</span>
                               <span>•</span>
-                              <span className="text-[#c2c6d8] font-medium">{food.calories} kcal</span>
+                              <span className="text-[#c2c6d8] font-medium">{displayNutrient(food.calories, 0)} kcal</span>
                               <span>•</span>
-                              <span className="text-[#0066ff]">P {food.protein}g</span>
-                              <span className="text-[#4edea3]">C {food.carbs}g</span>
-                              <span className="text-[#ffb59d]">G {food.fats}g</span>
+                              <span className="text-[#0066ff]">P {displayNutrient(food.protein)}g</span>
+                              <span className="text-[#4edea3]">C {displayNutrient(food.carbs)}g</span>
+                              <span className="text-[#ffb59d]">G {displayNutrient(food.fats)}g</span>
                             </div>
                           </div>
 
@@ -667,7 +643,6 @@ export const DietView: React.FC = () => {
         />
       )}
 
-      {/* Informações da Estratégia Nutricional */}
       <NutritionPlanInfoSheet
         isOpen={showPlanInfoSheet}
         onClose={() => setShowPlanInfoSheet(false)}

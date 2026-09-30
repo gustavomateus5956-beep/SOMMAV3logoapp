@@ -1,0 +1,2991 @@
+{
+  "version": "1.0.0",
+  "normalization": "NFD; remove combining accents; lowercase; collapse whitespace",
+  "entries": [
+    {
+      "id": "somma:taco:4:0001",
+      "category": "cereais-e-derivados",
+      "text": "arroz integral cozido arroz, integral, cozido"
+    },
+    {
+      "id": "somma:taco:4:0002",
+      "category": "cereais-e-derivados",
+      "text": "arroz integral cru arroz, integral, cru"
+    },
+    {
+      "id": "somma:taco:4:0003",
+      "category": "cereais-e-derivados",
+      "text": "arroz branco tipo 1 cozido arroz, tipo 1, cozido"
+    },
+    {
+      "id": "somma:taco:4:0004",
+      "category": "cereais-e-derivados",
+      "text": "arroz branco tipo 1 cru arroz, tipo 1, cru"
+    },
+    {
+      "id": "somma:taco:4:0005",
+      "category": "cereais-e-derivados",
+      "text": "arroz branco tipo 2 cozido arroz, tipo 2, cozido"
+    },
+    {
+      "id": "somma:taco:4:0006",
+      "category": "cereais-e-derivados",
+      "text": "arroz branco tipo 2 cru arroz, tipo 2, cru"
+    },
+    {
+      "id": "somma:taco:4:0007",
+      "category": "cereais-e-derivados",
+      "text": "aveia flocos crua aveia, flocos, crua"
+    },
+    {
+      "id": "somma:taco:4:0008",
+      "category": "cereais-e-derivados",
+      "text": "biscoito doce maisena biscoito, doce, maisena"
+    },
+    {
+      "id": "somma:taco:4:0009",
+      "category": "cereais-e-derivados",
+      "text": "biscoito doce recheado com chocolate biscoito, doce, recheado com chocolate"
+    },
+    {
+      "id": "somma:taco:4:0010",
+      "category": "cereais-e-derivados",
+      "text": "biscoito doce recheado com morango biscoito, doce, recheado com morango"
+    },
+    {
+      "id": "somma:taco:4:0011",
+      "category": "cereais-e-derivados",
+      "text": "biscoito doce wafer recheado de chocolate biscoito, doce, wafer, recheado de chocolate"
+    },
+    {
+      "id": "somma:taco:4:0012",
+      "category": "cereais-e-derivados",
+      "text": "biscoito doce wafer recheado de morango biscoito, doce, wafer, recheado de morango"
+    },
+    {
+      "id": "somma:taco:4:0013",
+      "category": "cereais-e-derivados",
+      "text": "biscoito salgado cream cracker biscoito, salgado, cream cracker"
+    },
+    {
+      "id": "somma:taco:4:0014",
+      "category": "cereais-e-derivados",
+      "text": "bolo mistura para bolo, mistura para"
+    },
+    {
+      "id": "somma:taco:4:0015",
+      "category": "cereais-e-derivados",
+      "text": "bolo pronto aipim bolo, pronto, aipim"
+    },
+    {
+      "id": "somma:taco:4:0016",
+      "category": "cereais-e-derivados",
+      "text": "bolo pronto chocolate bolo, pronto, chocolate"
+    },
+    {
+      "id": "somma:taco:4:0017",
+      "category": "cereais-e-derivados",
+      "text": "bolo pronto coco bolo, pronto, coco"
+    },
+    {
+      "id": "somma:taco:4:0018",
+      "category": "cereais-e-derivados",
+      "text": "bolo pronto milho bolo, pronto, milho"
+    },
+    {
+      "id": "somma:taco:4:0019",
+      "category": "cereais-e-derivados",
+      "text": "canjica branca crua canjica, branca, crua"
+    },
+    {
+      "id": "somma:taco:4:0020",
+      "category": "cereais-e-derivados",
+      "text": "canjica com leite integral canjica, com leite integral"
+    },
+    {
+      "id": "somma:taco:4:0021",
+      "category": "cereais-e-derivados",
+      "text": "cereais milho flocos com sal cereais, milho, flocos, com sal"
+    },
+    {
+      "id": "somma:taco:4:0022",
+      "category": "cereais-e-derivados",
+      "text": "cereais milho flocos sem sal cereais, milho, flocos, sem sal"
+    },
+    {
+      "id": "somma:taco:4:0023",
+      "category": "cereais-e-derivados",
+      "text": "cereais mingau milho infantil cereais, mingau, milho, infantil"
+    },
+    {
+      "id": "somma:taco:4:0024",
+      "category": "cereais-e-derivados",
+      "text": "cereais mistura para vitamina trigo cevada e aveia cereais, mistura para vitamina, trigo, cevada e aveia"
+    },
+    {
+      "id": "somma:taco:4:0025",
+      "category": "cereais-e-derivados",
+      "text": "cereal matinal milho cereal matinal, milho"
+    },
+    {
+      "id": "somma:taco:4:0026",
+      "category": "cereais-e-derivados",
+      "text": "cereal matinal milho acucar cereal matinal, milho, acucar"
+    },
+    {
+      "id": "somma:taco:4:0027",
+      "category": "cereais-e-derivados",
+      "text": "creme de arroz po creme de arroz, po"
+    },
+    {
+      "id": "somma:taco:4:0028",
+      "category": "cereais-e-derivados",
+      "text": "creme de milho po creme de milho, po"
+    },
+    {
+      "id": "somma:taco:4:0029",
+      "category": "cereais-e-derivados",
+      "text": "curau milho verde curau, milho verde"
+    },
+    {
+      "id": "somma:taco:4:0030",
+      "category": "cereais-e-derivados",
+      "text": "curau milho verde mistura para curau, milho verde, mistura para"
+    },
+    {
+      "id": "somma:taco:4:0031",
+      "category": "cereais-e-derivados",
+      "text": "farinha de arroz enriquecida farinha, de arroz, enriquecida"
+    },
+    {
+      "id": "somma:taco:4:0032",
+      "category": "cereais-e-derivados",
+      "text": "farinha de centeio integral farinha, de centeio, integral"
+    },
+    {
+      "id": "somma:taco:4:0033",
+      "category": "cereais-e-derivados",
+      "text": "farinha de milho amarela farinha, de milho, amarela"
+    },
+    {
+      "id": "somma:taco:4:0034",
+      "category": "cereais-e-derivados",
+      "text": "farinha de rosca farinha, de rosca"
+    },
+    {
+      "id": "somma:taco:4:0035",
+      "category": "cereais-e-derivados",
+      "text": "farinha de trigo farinha, de trigo"
+    },
+    {
+      "id": "somma:taco:4:0036",
+      "category": "cereais-e-derivados",
+      "text": "farinha lactea de cereais farinha, lactea, de cereais"
+    },
+    {
+      "id": "somma:taco:4:0037",
+      "category": "cereais-e-derivados",
+      "text": "lasanha massa fresca cozida lasanha, massa fresca, cozida"
+    },
+    {
+      "id": "somma:taco:4:0038",
+      "category": "cereais-e-derivados",
+      "text": "lasanha massa fresca crua lasanha, massa fresca, crua"
+    },
+    {
+      "id": "somma:taco:4:0039",
+      "category": "cereais-e-derivados",
+      "text": "macarrao instantaneo macarrao, instantaneo"
+    },
+    {
+      "id": "somma:taco:4:0040",
+      "category": "cereais-e-derivados",
+      "text": "macarrao trigo cru macarrao, trigo, cru"
+    },
+    {
+      "id": "somma:taco:4:0041",
+      "category": "cereais-e-derivados",
+      "text": "macarrao trigo cru com ovos macarrao, trigo, cru, com ovos"
+    },
+    {
+      "id": "somma:taco:4:0042",
+      "category": "cereais-e-derivados",
+      "text": "milho amido cru milho, amido, cru"
+    },
+    {
+      "id": "somma:taco:4:0043",
+      "category": "cereais-e-derivados",
+      "text": "milho fuba cru milho, fuba, cru"
+    },
+    {
+      "id": "somma:taco:4:0044",
+      "category": "cereais-e-derivados",
+      "text": "milho verde cru milho, verde, cru"
+    },
+    {
+      "id": "somma:taco:4:0045",
+      "category": "cereais-e-derivados",
+      "text": "milho verde enlatado drenado milho, verde, enlatado, drenado"
+    },
+    {
+      "id": "somma:taco:4:0046",
+      "category": "cereais-e-derivados",
+      "text": "mingau tradicional po mingau tradicional, po"
+    },
+    {
+      "id": "somma:taco:4:0047",
+      "category": "cereais-e-derivados",
+      "text": "pamonha barra para cozimento pre-cozida pamonha, barra para cozimento, pre-cozida"
+    },
+    {
+      "id": "somma:taco:4:0048",
+      "category": "cereais-e-derivados",
+      "text": "pao de forma de aveia pao, aveia, forma"
+    },
+    {
+      "id": "somma:taco:4:0049",
+      "category": "cereais-e-derivados",
+      "text": "pao de soja pao, de soja"
+    },
+    {
+      "id": "somma:taco:4:0050",
+      "category": "cereais-e-derivados",
+      "text": "pao de forma com gluten pao, gluten, forma"
+    },
+    {
+      "id": "somma:taco:4:0051",
+      "category": "cereais-e-derivados",
+      "text": "pao de forma de milho pao, milho, forma"
+    },
+    {
+      "id": "somma:taco:4:0052",
+      "category": "cereais-e-derivados",
+      "text": "pao de forma integral de trigo pao, trigo, forma, integral"
+    },
+    {
+      "id": "somma:taco:4:0053",
+      "category": "cereais-e-derivados",
+      "text": "pao frances de trigo pao, trigo, frances pao de sal de trigo"
+    },
+    {
+      "id": "somma:taco:4:0054",
+      "category": "cereais-e-derivados",
+      "text": "pao sovado de trigo pao, trigo, sovado"
+    },
+    {
+      "id": "somma:taco:4:0055",
+      "category": "cereais-e-derivados",
+      "text": "pastel de carne cru pastel, de carne, cru"
+    },
+    {
+      "id": "somma:taco:4:0056",
+      "category": "cereais-e-derivados",
+      "text": "pastel de carne frito pastel, de carne, frito"
+    },
+    {
+      "id": "somma:taco:4:0057",
+      "category": "cereais-e-derivados",
+      "text": "pastel de queijo cru pastel, de queijo, cru"
+    },
+    {
+      "id": "somma:taco:4:0058",
+      "category": "cereais-e-derivados",
+      "text": "pastel de queijo frito pastel, de queijo, frito"
+    },
+    {
+      "id": "somma:taco:4:0059",
+      "category": "cereais-e-derivados",
+      "text": "pastel massa crua pastel, massa, crua"
+    },
+    {
+      "id": "somma:taco:4:0060",
+      "category": "cereais-e-derivados",
+      "text": "pastel massa frita pastel, massa, frita"
+    },
+    {
+      "id": "somma:taco:4:0061",
+      "category": "cereais-e-derivados",
+      "text": "pipoca com oleo de soja sem sal pipoca, com oleo de soja, sem sal"
+    },
+    {
+      "id": "somma:taco:4:0062",
+      "category": "cereais-e-derivados",
+      "text": "polenta pre-cozida polenta, pre-cozida"
+    },
+    {
+      "id": "somma:taco:4:0063",
+      "category": "cereais-e-derivados",
+      "text": "torrada pao frances torrada, pao frances"
+    },
+    {
+      "id": "somma:taco:4:0064",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "abobora cabotian cozida abobora, cabotian, cozida jerimum cabotian cozida"
+    },
+    {
+      "id": "somma:taco:4:0065",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "abobora cabotian crua abobora, cabotian, crua jerimum cabotian crua"
+    },
+    {
+      "id": "somma:taco:4:0066",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "abobora menina brasileira crua abobora, menina brasileira, crua jerimum menina brasileira crua"
+    },
+    {
+      "id": "somma:taco:4:0067",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "abobora moranga crua abobora, moranga, crua jerimum moranga crua"
+    },
+    {
+      "id": "somma:taco:4:0068",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "abobora moranga refogada abobora, moranga, refogada jerimum moranga refogada"
+    },
+    {
+      "id": "somma:taco:4:0069",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "abobora pescoco crua abobora, pescoco, crua jerimum pescoco crua"
+    },
+    {
+      "id": "somma:taco:4:0070",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "abobrinha italiana cozida abobrinha, italiana, cozida"
+    },
+    {
+      "id": "somma:taco:4:0071",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "abobrinha italiana crua abobrinha, italiana, crua"
+    },
+    {
+      "id": "somma:taco:4:0072",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "abobrinha italiana refogada abobrinha, italiana, refogada"
+    },
+    {
+      "id": "somma:taco:4:0073",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "abobrinha paulista crua abobrinha, paulista, crua"
+    },
+    {
+      "id": "somma:taco:4:0074",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "acelga crua acelga, crua"
+    },
+    {
+      "id": "somma:taco:4:0075",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "agriao cru agriao, cru"
+    },
+    {
+      "id": "somma:taco:4:0076",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "aipo cru aipo, cru"
+    },
+    {
+      "id": "somma:taco:4:0077",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "alface americana crua alface, americana, crua"
+    },
+    {
+      "id": "somma:taco:4:0078",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "alface crespa crua alface, crespa, crua"
+    },
+    {
+      "id": "somma:taco:4:0079",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "alface lisa crua alface, lisa, crua"
+    },
+    {
+      "id": "somma:taco:4:0080",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "alface roxa crua alface, roxa, crua"
+    },
+    {
+      "id": "somma:taco:4:0081",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "alfavaca crua alfavaca, crua"
+    },
+    {
+      "id": "somma:taco:4:0082",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "alho cru alho, cru"
+    },
+    {
+      "id": "somma:taco:4:0083",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "alho-poro cru alho-poro, cru"
+    },
+    {
+      "id": "somma:taco:4:0084",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "almeirao cru almeirao, cru"
+    },
+    {
+      "id": "somma:taco:4:0085",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "almeirao refogado almeirao, refogado"
+    },
+    {
+      "id": "somma:taco:4:0086",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "batata baroa cozida batata, baroa, cozida"
+    },
+    {
+      "id": "somma:taco:4:0087",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "batata baroa crua batata, baroa, crua"
+    },
+    {
+      "id": "somma:taco:4:0088",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "batata-doce cozida batata, doce, cozida"
+    },
+    {
+      "id": "somma:taco:4:0089",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "batata-doce crua batata, doce, crua"
+    },
+    {
+      "id": "somma:taco:4:0090",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "batata frita tipo chips industrializada batata, frita, tipo chips, industrializada"
+    },
+    {
+      "id": "somma:taco:4:0091",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "batata inglesa cozida batata, inglesa, cozida"
+    },
+    {
+      "id": "somma:taco:4:0092",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "batata inglesa crua batata, inglesa, crua"
+    },
+    {
+      "id": "somma:taco:4:0093",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "batata inglesa frita batata, inglesa, frita"
+    },
+    {
+      "id": "somma:taco:4:0094",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "batata inglesa saute batata, inglesa, saute"
+    },
+    {
+      "id": "somma:taco:4:0095",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "berinjela cozida berinjela, cozida"
+    },
+    {
+      "id": "somma:taco:4:0096",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "berinjela crua berinjela, crua"
+    },
+    {
+      "id": "somma:taco:4:0097",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "beterraba cozida beterraba, cozida"
+    },
+    {
+      "id": "somma:taco:4:0098",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "beterraba crua beterraba, crua"
+    },
+    {
+      "id": "somma:taco:4:0099",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "biscoito polvilho doce biscoito, polvilho doce"
+    },
+    {
+      "id": "somma:taco:4:0100",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "brocolis cozido brocolis, cozido"
+    },
+    {
+      "id": "somma:taco:4:0101",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "brocolis cru brocolis, cru"
+    },
+    {
+      "id": "somma:taco:4:0102",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "cara cozido cara, cozido"
+    },
+    {
+      "id": "somma:taco:4:0103",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "cara cru cara, cru"
+    },
+    {
+      "id": "somma:taco:4:0104",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "caruru cru caruru, cru"
+    },
+    {
+      "id": "somma:taco:4:0105",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "catalonha crua catalonha, crua"
+    },
+    {
+      "id": "somma:taco:4:0106",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "catalonha refogada catalonha, refogada"
+    },
+    {
+      "id": "somma:taco:4:0107",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "cebola crua cebola, crua"
+    },
+    {
+      "id": "somma:taco:4:0108",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "cebolinha crua cebolinha, crua"
+    },
+    {
+      "id": "somma:taco:4:0109",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "cenoura cozida cenoura, cozida"
+    },
+    {
+      "id": "somma:taco:4:0110",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "cenoura crua cenoura, crua"
+    },
+    {
+      "id": "somma:taco:4:0111",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "chicoria crua chicoria, crua"
+    },
+    {
+      "id": "somma:taco:4:0112",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "chuchu cozido chuchu, cozido"
+    },
+    {
+      "id": "somma:taco:4:0113",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "chuchu cru chuchu, cru"
+    },
+    {
+      "id": "somma:taco:4:0114",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "coentro folhas desidratadas coentro, folhas desidratadas"
+    },
+    {
+      "id": "somma:taco:4:0115",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "couve manteiga crua couve, manteiga, crua"
+    },
+    {
+      "id": "somma:taco:4:0116",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "couve manteiga refogada couve, manteiga, refogada"
+    },
+    {
+      "id": "somma:taco:4:0117",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "couve-flor crua couve-flor, crua couve flor crua"
+    },
+    {
+      "id": "somma:taco:4:0118",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "couve-flor cozida couve-flor, cozida couve flor cozida"
+    },
+    {
+      "id": "somma:taco:4:0119",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "espinafre nova zelandia cru espinafre, nova zelandia, cru"
+    },
+    {
+      "id": "somma:taco:4:0120",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "espinafre nova zelandia refogado espinafre, nova zelandia, refogado"
+    },
+    {
+      "id": "somma:taco:4:0121",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "farinha de mandioca crua farinha, de mandioca, crua farinha de aipim crua farinha de macaxeira crua"
+    },
+    {
+      "id": "somma:taco:4:0122",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "farinha de mandioca torrada farinha, de mandioca, torrada farinha de aipim torrada farinha de macaxeira torrada"
+    },
+    {
+      "id": "somma:taco:4:0123",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "farinha de puba farinha, de puba"
+    },
+    {
+      "id": "somma:taco:4:0124",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "fecula de mandioca fecula, de mandioca fecula de aipim fecula de macaxeira"
+    },
+    {
+      "id": "somma:taco:4:0125",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "feijao broto cru feijao, broto, cru"
+    },
+    {
+      "id": "somma:taco:4:0126",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "inhame cru inhame, cru"
+    },
+    {
+      "id": "somma:taco:4:0127",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "jilo cru jilo, cru"
+    },
+    {
+      "id": "somma:taco:4:0128",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "jurubeba crua jurubeba, crua"
+    },
+    {
+      "id": "somma:taco:4:0129",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "mandioca cozida mandioca, cozida aipim cozida macaxeira cozida"
+    },
+    {
+      "id": "somma:taco:4:0130",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "mandioca crua mandioca, crua aipim crua macaxeira crua"
+    },
+    {
+      "id": "somma:taco:4:0131",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "farofa de mandioca temperada mandioca, farofa, temperada farofa de aipim temperada farofa de macaxeira temperada"
+    },
+    {
+      "id": "somma:taco:4:0132",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "mandioca frita mandioca, frita aipim frita macaxeira frita"
+    },
+    {
+      "id": "somma:taco:4:0133",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "manjericao cru manjericao, cru"
+    },
+    {
+      "id": "somma:taco:4:0134",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "maxixe cru maxixe, cru"
+    },
+    {
+      "id": "somma:taco:4:0135",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "mostarda folha crua mostarda, folha, crua"
+    },
+    {
+      "id": "somma:taco:4:0136",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "nhoque batata cozido nhoque, batata, cozido"
+    },
+    {
+      "id": "somma:taco:4:0137",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "nabo cru nabo, cru"
+    },
+    {
+      "id": "somma:taco:4:0138",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "palmito jucara em conserva palmito, jucara, em conserva"
+    },
+    {
+      "id": "somma:taco:4:0139",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "palmito pupunha em conserva palmito, pupunha, em conserva"
+    },
+    {
+      "id": "somma:taco:4:0140",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "pao de queijo assado pao, de queijo, assado"
+    },
+    {
+      "id": "somma:taco:4:0141",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "pao de queijo cru pao, de queijo, cru"
+    },
+    {
+      "id": "somma:taco:4:0142",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "pepino cru pepino, cru"
+    },
+    {
+      "id": "somma:taco:4:0143",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "pimentao amarelo cru pimentao, amarelo, cru"
+    },
+    {
+      "id": "somma:taco:4:0144",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "pimentao verde cru pimentao, verde, cru"
+    },
+    {
+      "id": "somma:taco:4:0145",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "pimentao vermelho cru pimentao, vermelho, cru"
+    },
+    {
+      "id": "somma:taco:4:0146",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "polvilho doce polvilho, doce"
+    },
+    {
+      "id": "somma:taco:4:0147",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "quiabo cru quiabo, cru"
+    },
+    {
+      "id": "somma:taco:4:0148",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "rabanete cru rabanete, cru"
+    },
+    {
+      "id": "somma:taco:4:0149",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "repolho branco cru repolho, branco, cru"
+    },
+    {
+      "id": "somma:taco:4:0150",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "repolho roxo cru repolho, roxo, cru"
+    },
+    {
+      "id": "somma:taco:4:0151",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "repolho roxo refogado repolho, roxo, refogado"
+    },
+    {
+      "id": "somma:taco:4:0152",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "rucula crua rucula, crua"
+    },
+    {
+      "id": "somma:taco:4:0153",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "salsa crua salsa, crua"
+    },
+    {
+      "id": "somma:taco:4:0154",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "seleta de legumes enlatada seleta de legumes, enlatada"
+    },
+    {
+      "id": "somma:taco:4:0155",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "serralha crua serralha, crua"
+    },
+    {
+      "id": "somma:taco:4:0156",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "taioba crua taioba, crua"
+    },
+    {
+      "id": "somma:taco:4:0157",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "tomate com semente cru tomate, com semente, cru"
+    },
+    {
+      "id": "somma:taco:4:0158",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "tomate extrato tomate, extrato"
+    },
+    {
+      "id": "somma:taco:4:0159",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "tomate molho industrializado tomate, molho industrializado"
+    },
+    {
+      "id": "somma:taco:4:0160",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "tomate pure tomate, pure"
+    },
+    {
+      "id": "somma:taco:4:0161",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "tomate salada tomate, salada"
+    },
+    {
+      "id": "somma:taco:4:0162",
+      "category": "verduras-hortalicas-e-derivados",
+      "text": "vagem crua vagem, crua"
+    },
+    {
+      "id": "somma:taco:4:0163",
+      "category": "frutas-e-derivados",
+      "text": "abacate cru abacate, cru"
+    },
+    {
+      "id": "somma:taco:4:0164",
+      "category": "frutas-e-derivados",
+      "text": "abacaxi cru abacaxi, cru"
+    },
+    {
+      "id": "somma:taco:4:0165",
+      "category": "frutas-e-derivados",
+      "text": "abacaxi polpa congelada abacaxi, polpa, congelada"
+    },
+    {
+      "id": "somma:taco:4:0166",
+      "category": "frutas-e-derivados",
+      "text": "abiu cru abiu, cru"
+    },
+    {
+      "id": "somma:taco:4:0167",
+      "category": "frutas-e-derivados",
+      "text": "acai polpa com xarope de guarana e glucose acai, polpa, com xarope de guarana e glucose"
+    },
+    {
+      "id": "somma:taco:4:0168",
+      "category": "frutas-e-derivados",
+      "text": "acai polpa congelada acai, polpa, congelada"
+    },
+    {
+      "id": "somma:taco:4:0169",
+      "category": "frutas-e-derivados",
+      "text": "acerola crua acerola, crua"
+    },
+    {
+      "id": "somma:taco:4:0170",
+      "category": "frutas-e-derivados",
+      "text": "acerola polpa congelada acerola, polpa, congelada"
+    },
+    {
+      "id": "somma:taco:4:0171",
+      "category": "frutas-e-derivados",
+      "text": "ameixa calda enlatada ameixa, calda, enlatada"
+    },
+    {
+      "id": "somma:taco:4:0172",
+      "category": "frutas-e-derivados",
+      "text": "ameixa crua ameixa, crua"
+    },
+    {
+      "id": "somma:taco:4:0173",
+      "category": "frutas-e-derivados",
+      "text": "ameixa em calda enlatada drenada ameixa, em calda, enlatada, drenada"
+    },
+    {
+      "id": "somma:taco:4:0174",
+      "category": "frutas-e-derivados",
+      "text": "atemoia crua atemoia, crua"
+    },
+    {
+      "id": "somma:taco:4:0175",
+      "category": "frutas-e-derivados",
+      "text": "banana da terra crua banana, da terra, crua"
+    },
+    {
+      "id": "somma:taco:4:0176",
+      "category": "frutas-e-derivados",
+      "text": "banana doce em barra banana, doce em barra"
+    },
+    {
+      "id": "somma:taco:4:0177",
+      "category": "frutas-e-derivados",
+      "text": "banana figo crua banana, figo, crua"
+    },
+    {
+      "id": "somma:taco:4:0178",
+      "category": "frutas-e-derivados",
+      "text": "banana maca crua banana, maca, crua"
+    },
+    {
+      "id": "somma:taco:4:0179",
+      "category": "frutas-e-derivados",
+      "text": "banana-nanica crua banana, nanica, crua"
+    },
+    {
+      "id": "somma:taco:4:0180",
+      "category": "frutas-e-derivados",
+      "text": "banana ouro crua banana, ouro, crua"
+    },
+    {
+      "id": "somma:taco:4:0181",
+      "category": "frutas-e-derivados",
+      "text": "banana pacova crua banana, pacova, crua"
+    },
+    {
+      "id": "somma:taco:4:0182",
+      "category": "frutas-e-derivados",
+      "text": "banana-prata crua banana, prata, crua"
+    },
+    {
+      "id": "somma:taco:4:0183",
+      "category": "frutas-e-derivados",
+      "text": "cacau cru cacau, cru"
+    },
+    {
+      "id": "somma:taco:4:0184",
+      "category": "frutas-e-derivados",
+      "text": "caja-manga cru caja-manga, cru"
+    },
+    {
+      "id": "somma:taco:4:0185",
+      "category": "frutas-e-derivados",
+      "text": "caja polpa congelada caja, polpa, congelada"
+    },
+    {
+      "id": "somma:taco:4:0186",
+      "category": "frutas-e-derivados",
+      "text": "caju cru caju, cru"
+    },
+    {
+      "id": "somma:taco:4:0187",
+      "category": "frutas-e-derivados",
+      "text": "caju polpa congelada caju, polpa, congelada"
+    },
+    {
+      "id": "somma:taco:4:0188",
+      "category": "frutas-e-derivados",
+      "text": "caju suco concentrado envasado caju, suco concentrado, envasado"
+    },
+    {
+      "id": "somma:taco:4:0189",
+      "category": "frutas-e-derivados",
+      "text": "caqui chocolate cru caqui, chocolate, cru"
+    },
+    {
+      "id": "somma:taco:4:0190",
+      "category": "frutas-e-derivados",
+      "text": "carambola crua carambola, crua"
+    },
+    {
+      "id": "somma:taco:4:0191",
+      "category": "frutas-e-derivados",
+      "text": "ciriguela crua ciriguela, crua"
+    },
+    {
+      "id": "somma:taco:4:0192",
+      "category": "frutas-e-derivados",
+      "text": "cupuacu cru cupuacu, cru"
+    },
+    {
+      "id": "somma:taco:4:0193",
+      "category": "frutas-e-derivados",
+      "text": "cupuacu polpa congelada cupuacu, polpa, congelada"
+    },
+    {
+      "id": "somma:taco:4:0194",
+      "category": "frutas-e-derivados",
+      "text": "figo cru figo, cru"
+    },
+    {
+      "id": "somma:taco:4:0195",
+      "category": "frutas-e-derivados",
+      "text": "figo enlatado em calda figo, enlatado, em calda"
+    },
+    {
+      "id": "somma:taco:4:0196",
+      "category": "frutas-e-derivados",
+      "text": "fruta-pao crua fruta-pao, crua"
+    },
+    {
+      "id": "somma:taco:4:0197",
+      "category": "frutas-e-derivados",
+      "text": "goiaba branca com casca crua goiaba, branca, com casca, crua"
+    },
+    {
+      "id": "somma:taco:4:0198",
+      "category": "frutas-e-derivados",
+      "text": "goiaba doce em pasta goiaba, doce em pasta"
+    },
+    {
+      "id": "somma:taco:4:0199",
+      "category": "frutas-e-derivados",
+      "text": "goiaba doce cascao goiaba, doce, cascao"
+    },
+    {
+      "id": "somma:taco:4:0200",
+      "category": "frutas-e-derivados",
+      "text": "goiaba vermelha com casca crua goiaba, vermelha, com casca, crua"
+    },
+    {
+      "id": "somma:taco:4:0201",
+      "category": "frutas-e-derivados",
+      "text": "graviola crua graviola, crua"
+    },
+    {
+      "id": "somma:taco:4:0202",
+      "category": "frutas-e-derivados",
+      "text": "graviola polpa congelada graviola, polpa, congelada"
+    },
+    {
+      "id": "somma:taco:4:0203",
+      "category": "frutas-e-derivados",
+      "text": "jabuticaba crua jabuticaba, crua"
+    },
+    {
+      "id": "somma:taco:4:0204",
+      "category": "frutas-e-derivados",
+      "text": "jaca crua jaca, crua"
+    },
+    {
+      "id": "somma:taco:4:0205",
+      "category": "frutas-e-derivados",
+      "text": "jambo cru jambo, cru"
+    },
+    {
+      "id": "somma:taco:4:0206",
+      "category": "frutas-e-derivados",
+      "text": "jamelao cru jamelao, cru"
+    },
+    {
+      "id": "somma:taco:4:0207",
+      "category": "frutas-e-derivados",
+      "text": "kiwi cru kiwi, cru"
+    },
+    {
+      "id": "somma:taco:4:0208",
+      "category": "frutas-e-derivados",
+      "text": "laranja baia crua laranja, baia, crua"
+    },
+    {
+      "id": "somma:taco:4:0209",
+      "category": "frutas-e-derivados",
+      "text": "laranja baia suco laranja, baia, suco"
+    },
+    {
+      "id": "somma:taco:4:0210",
+      "category": "frutas-e-derivados",
+      "text": "laranja da terra crua laranja, da terra, crua"
+    },
+    {
+      "id": "somma:taco:4:0211",
+      "category": "frutas-e-derivados",
+      "text": "laranja da terra suco laranja, da terra, suco"
+    },
+    {
+      "id": "somma:taco:4:0212",
+      "category": "frutas-e-derivados",
+      "text": "laranja lima crua laranja, lima, crua"
+    },
+    {
+      "id": "somma:taco:4:0213",
+      "category": "frutas-e-derivados",
+      "text": "laranja lima suco laranja, lima, suco"
+    },
+    {
+      "id": "somma:taco:4:0214",
+      "category": "frutas-e-derivados",
+      "text": "laranja pera crua laranja, pera, crua"
+    },
+    {
+      "id": "somma:taco:4:0215",
+      "category": "frutas-e-derivados",
+      "text": "laranja pera suco laranja, pera, suco"
+    },
+    {
+      "id": "somma:taco:4:0216",
+      "category": "frutas-e-derivados",
+      "text": "laranja valencia crua laranja, valencia, crua"
+    },
+    {
+      "id": "somma:taco:4:0217",
+      "category": "frutas-e-derivados",
+      "text": "laranja valencia suco laranja, valencia, suco"
+    },
+    {
+      "id": "somma:taco:4:0218",
+      "category": "frutas-e-derivados",
+      "text": "limao cravo suco limao, cravo, suco"
+    },
+    {
+      "id": "somma:taco:4:0219",
+      "category": "frutas-e-derivados",
+      "text": "limao galego suco limao, galego, suco"
+    },
+    {
+      "id": "somma:taco:4:0220",
+      "category": "frutas-e-derivados",
+      "text": "limao tahiti cru limao, tahiti, cru"
+    },
+    {
+      "id": "somma:taco:4:0221",
+      "category": "frutas-e-derivados",
+      "text": "maca argentina com casca crua maca, argentina, com casca, crua"
+    },
+    {
+      "id": "somma:taco:4:0222",
+      "category": "frutas-e-derivados",
+      "text": "maca fuji com casca crua maca, fuji, com casca, crua"
+    },
+    {
+      "id": "somma:taco:4:0223",
+      "category": "frutas-e-derivados",
+      "text": "macauba crua macauba, crua"
+    },
+    {
+      "id": "somma:taco:4:0224",
+      "category": "frutas-e-derivados",
+      "text": "mamao doce em calda drenado mamao, doce em calda, drenado"
+    },
+    {
+      "id": "somma:taco:4:0225",
+      "category": "frutas-e-derivados",
+      "text": "mamao formosa cru mamao, formosa, cru"
+    },
+    {
+      "id": "somma:taco:4:0226",
+      "category": "frutas-e-derivados",
+      "text": "mamao papaia cru mamao, papaia, cru"
+    },
+    {
+      "id": "somma:taco:4:0227",
+      "category": "frutas-e-derivados",
+      "text": "mamao verde doce em calda drenado mamao verde, doce em calda, drenado"
+    },
+    {
+      "id": "somma:taco:4:0228",
+      "category": "frutas-e-derivados",
+      "text": "manga haden crua manga, haden, crua"
+    },
+    {
+      "id": "somma:taco:4:0229",
+      "category": "frutas-e-derivados",
+      "text": "manga palmer crua manga, palmer, crua"
+    },
+    {
+      "id": "somma:taco:4:0230",
+      "category": "frutas-e-derivados",
+      "text": "manga polpa congelada manga, polpa, congelada"
+    },
+    {
+      "id": "somma:taco:4:0231",
+      "category": "frutas-e-derivados",
+      "text": "manga tommy atkins crua manga, tommy atkins, crua"
+    },
+    {
+      "id": "somma:taco:4:0232",
+      "category": "frutas-e-derivados",
+      "text": "maracuja cru maracuja, cru"
+    },
+    {
+      "id": "somma:taco:4:0233",
+      "category": "frutas-e-derivados",
+      "text": "maracuja polpa congelada maracuja, polpa, congelada"
+    },
+    {
+      "id": "somma:taco:4:0234",
+      "category": "frutas-e-derivados",
+      "text": "maracuja suco concentrado envasado maracuja, suco concentrado, envasado"
+    },
+    {
+      "id": "somma:taco:4:0235",
+      "category": "frutas-e-derivados",
+      "text": "melancia crua melancia, crua"
+    },
+    {
+      "id": "somma:taco:4:0236",
+      "category": "frutas-e-derivados",
+      "text": "melao cru melao, cru"
+    },
+    {
+      "id": "somma:taco:4:0237",
+      "category": "frutas-e-derivados",
+      "text": "mexerica murcote crua mexerica, murcote, crua"
+    },
+    {
+      "id": "somma:taco:4:0238",
+      "category": "frutas-e-derivados",
+      "text": "mexerica rio crua mexerica, rio, crua"
+    },
+    {
+      "id": "somma:taco:4:0239",
+      "category": "frutas-e-derivados",
+      "text": "morango cru morango, cru"
+    },
+    {
+      "id": "somma:taco:4:0240",
+      "category": "frutas-e-derivados",
+      "text": "nespera crua nespera, crua"
+    },
+    {
+      "id": "somma:taco:4:0241",
+      "category": "frutas-e-derivados",
+      "text": "pequi cru pequi, cru"
+    },
+    {
+      "id": "somma:taco:4:0242",
+      "category": "frutas-e-derivados",
+      "text": "pera park crua pera, park, crua"
+    },
+    {
+      "id": "somma:taco:4:0243",
+      "category": "frutas-e-derivados",
+      "text": "pera williams crua pera, williams, crua"
+    },
+    {
+      "id": "somma:taco:4:0244",
+      "category": "frutas-e-derivados",
+      "text": "pessego aurora cru pessego, aurora, cru"
+    },
+    {
+      "id": "somma:taco:4:0245",
+      "category": "frutas-e-derivados",
+      "text": "pessego enlatado em calda pessego, enlatado, em calda"
+    },
+    {
+      "id": "somma:taco:4:0246",
+      "category": "frutas-e-derivados",
+      "text": "pinha crua pinha, crua"
+    },
+    {
+      "id": "somma:taco:4:0247",
+      "category": "frutas-e-derivados",
+      "text": "pitanga crua pitanga, crua"
+    },
+    {
+      "id": "somma:taco:4:0248",
+      "category": "frutas-e-derivados",
+      "text": "pitanga polpa congelada pitanga, polpa, congelada"
+    },
+    {
+      "id": "somma:taco:4:0249",
+      "category": "frutas-e-derivados",
+      "text": "roma crua roma, crua"
+    },
+    {
+      "id": "somma:taco:4:0250",
+      "category": "frutas-e-derivados",
+      "text": "tamarindo cru tamarindo, cru"
+    },
+    {
+      "id": "somma:taco:4:0251",
+      "category": "frutas-e-derivados",
+      "text": "tangerina ponca crua tangerina, ponca, crua mexerica ponca crua"
+    },
+    {
+      "id": "somma:taco:4:0252",
+      "category": "frutas-e-derivados",
+      "text": "tangerina ponca suco tangerina, ponca, suco mexerica ponca suco"
+    },
+    {
+      "id": "somma:taco:4:0253",
+      "category": "frutas-e-derivados",
+      "text": "tucuma cru tucuma, cru"
+    },
+    {
+      "id": "somma:taco:4:0254",
+      "category": "frutas-e-derivados",
+      "text": "umbu cru umbu, cru"
+    },
+    {
+      "id": "somma:taco:4:0255",
+      "category": "frutas-e-derivados",
+      "text": "umbu polpa congelada umbu, polpa, congelada"
+    },
+    {
+      "id": "somma:taco:4:0256",
+      "category": "frutas-e-derivados",
+      "text": "uva italia crua uva, italia, crua"
+    },
+    {
+      "id": "somma:taco:4:0257",
+      "category": "frutas-e-derivados",
+      "text": "uva rubi crua uva, rubi, crua"
+    },
+    {
+      "id": "somma:taco:4:0258",
+      "category": "frutas-e-derivados",
+      "text": "uva suco concentrado envasado uva, suco concentrado, envasado"
+    },
+    {
+      "id": "somma:taco:4:0259",
+      "category": "gorduras-e-oleos",
+      "text": "azeite de dende azeite, de dende"
+    },
+    {
+      "id": "somma:taco:4:0260",
+      "category": "gorduras-e-oleos",
+      "text": "azeite de oliva extra virgem azeite, de oliva, extra virgem"
+    },
+    {
+      "id": "somma:taco:4:0261",
+      "category": "gorduras-e-oleos",
+      "text": "manteiga com sal manteiga, com sal"
+    },
+    {
+      "id": "somma:taco:4:0262",
+      "category": "gorduras-e-oleos",
+      "text": "manteiga sem sal manteiga, sem sal"
+    },
+    {
+      "id": "somma:taco:4:0263",
+      "category": "gorduras-e-oleos",
+      "text": "margarina com oleo hidrogenado com sal (65% de lipideos) margarina, com oleo hidrogenado, com sal (65% de lipideos)"
+    },
+    {
+      "id": "somma:taco:4:0264",
+      "category": "gorduras-e-oleos",
+      "text": "margarina com oleo hidrogenado sem sal (80% de lipideos) margarina, com oleo hidrogenado, sem sal (80% de lipideos)"
+    },
+    {
+      "id": "somma:taco:4:0265",
+      "category": "gorduras-e-oleos",
+      "text": "margarina com oleo interesterificado com sal (65%de lipideos) margarina, com oleo interesterificado, com sal (65%de lipideos)"
+    },
+    {
+      "id": "somma:taco:4:0266",
+      "category": "gorduras-e-oleos",
+      "text": "margarina com oleo interesterificado sem sal (65% de lipideos) margarina, com oleo interesterificado, sem sal (65% de lipideos)"
+    },
+    {
+      "id": "somma:taco:4:0267",
+      "category": "gorduras-e-oleos",
+      "text": "oleo de babacu oleo, de babacu"
+    },
+    {
+      "id": "somma:taco:4:0268",
+      "category": "gorduras-e-oleos",
+      "text": "oleo de canola oleo, de canola"
+    },
+    {
+      "id": "somma:taco:4:0269",
+      "category": "gorduras-e-oleos",
+      "text": "oleo de girassol oleo, de girassol"
+    },
+    {
+      "id": "somma:taco:4:0270",
+      "category": "gorduras-e-oleos",
+      "text": "oleo de milho oleo, de milho"
+    },
+    {
+      "id": "somma:taco:4:0271",
+      "category": "gorduras-e-oleos",
+      "text": "oleo de pequi oleo, de pequi"
+    },
+    {
+      "id": "somma:taco:4:0272",
+      "category": "gorduras-e-oleos",
+      "text": "oleo de soja oleo, de soja"
+    },
+    {
+      "id": "somma:taco:4:0273",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "abadejo file congelado assado abadejo, file, congelado, assado"
+    },
+    {
+      "id": "somma:taco:4:0274",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "abadejo file congelado cozido abadejo, file, congelado,cozido"
+    },
+    {
+      "id": "somma:taco:4:0275",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "abadejo file congelado cru abadejo, file, congelado, cru"
+    },
+    {
+      "id": "somma:taco:4:0276",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "abadejo file congelado grelhado abadejo, file, congelado, grelhado"
+    },
+    {
+      "id": "somma:taco:4:0277",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "atum conserva em oleo atum, conserva em oleo"
+    },
+    {
+      "id": "somma:taco:4:0278",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "atum fresco cru atum, fresco, cru"
+    },
+    {
+      "id": "somma:taco:4:0279",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "bacalhau salgado cru bacalhau, salgado, cru"
+    },
+    {
+      "id": "somma:taco:4:0280",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "bacalhau salgado refogado bacalhau, salgado, refogado"
+    },
+    {
+      "id": "somma:taco:4:0281",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "cacao posta com farinha de trigo frita cacao, posta, com farinha de trigo, frita"
+    },
+    {
+      "id": "somma:taco:4:0282",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "cacao posta cozida cacao, posta, cozida"
+    },
+    {
+      "id": "somma:taco:4:0283",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "cacao posta crua cacao, posta, crua"
+    },
+    {
+      "id": "somma:taco:4:0284",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "camarao rio grande grande cozido camarao, rio grande, grande, cozido"
+    },
+    {
+      "id": "somma:taco:4:0285",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "camarao rio grande grande cru camarao, rio grande, grande, cru"
+    },
+    {
+      "id": "somma:taco:4:0286",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "camarao sete barbas sem cabeca com casca frito camarao, sete barbas, sem cabeca, com casca, frito"
+    },
+    {
+      "id": "somma:taco:4:0287",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "caranguejo cozido caranguejo, cozido"
+    },
+    {
+      "id": "somma:taco:4:0288",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "corimba cru corimba, cru"
+    },
+    {
+      "id": "somma:taco:4:0289",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "corimbata assado corimbata, assado"
+    },
+    {
+      "id": "somma:taco:4:0290",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "corimbata cozido corimbata, cozido"
+    },
+    {
+      "id": "somma:taco:4:0291",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "corvina de agua doce crua corvina de agua doce, crua"
+    },
+    {
+      "id": "somma:taco:4:0292",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "corvina do mar crua corvina do mar, crua"
+    },
+    {
+      "id": "somma:taco:4:0293",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "corvina grande assada corvina grande, assada"
+    },
+    {
+      "id": "somma:taco:4:0294",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "corvina grande cozida corvina grande, cozida"
+    },
+    {
+      "id": "somma:taco:4:0295",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "dourada de agua doce fresca dourada de agua doce, fresca"
+    },
+    {
+      "id": "somma:taco:4:0296",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "lambari congelado cru lambari, congelado, cru"
+    },
+    {
+      "id": "somma:taco:4:0297",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "lambari congelado frito lambari, congelado, frito"
+    },
+    {
+      "id": "somma:taco:4:0298",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "lambari fresco cru lambari, fresco, cru"
+    },
+    {
+      "id": "somma:taco:4:0299",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "manjuba com farinha de trigo frita manjuba, com farinha de trigo, frita"
+    },
+    {
+      "id": "somma:taco:4:0300",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "manjuba frita manjuba, frita"
+    },
+    {
+      "id": "somma:taco:4:0301",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "merluza file assado merluza, file, assado"
+    },
+    {
+      "id": "somma:taco:4:0302",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "merluza file cru merluza, file, cru"
+    },
+    {
+      "id": "somma:taco:4:0303",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "merluza file frito merluza, file, frito"
+    },
+    {
+      "id": "somma:taco:4:0304",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "pescada branca crua pescada, branca, crua"
+    },
+    {
+      "id": "somma:taco:4:0305",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "pescada branca frita pescada, branca, frita"
+    },
+    {
+      "id": "somma:taco:4:0306",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "pescada file com farinha de trigo frito pescada, file, com farinha de trigo, frito"
+    },
+    {
+      "id": "somma:taco:4:0307",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "pescada file cru pescada, file, cru"
+    },
+    {
+      "id": "somma:taco:4:0308",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "pescada file frito pescada, file, frito"
+    },
+    {
+      "id": "somma:taco:4:0309",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "pescada file molho escabeche pescada, file, molho escabeche"
+    },
+    {
+      "id": "somma:taco:4:0310",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "pescadinha crua pescadinha, crua"
+    },
+    {
+      "id": "somma:taco:4:0311",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "pintado assado pintado, assado"
+    },
+    {
+      "id": "somma:taco:4:0312",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "pintado cru pintado, cru"
+    },
+    {
+      "id": "somma:taco:4:0313",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "pintado grelhado pintado, grelhado"
+    },
+    {
+      "id": "somma:taco:4:0314",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "porquinho cru porquinho, cru"
+    },
+    {
+      "id": "somma:taco:4:0315",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "salmao file com pele fresco grelhado salmao, file, com pele, fresco, grelhado"
+    },
+    {
+      "id": "somma:taco:4:0316",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "salmao sem pele fresco cru salmao, sem pele, fresco, cru"
+    },
+    {
+      "id": "somma:taco:4:0317",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "salmao sem pele fresco grelhado salmao, sem pele, fresco, grelhado"
+    },
+    {
+      "id": "somma:taco:4:0318",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "sardinha assada sardinha, assada"
+    },
+    {
+      "id": "somma:taco:4:0319",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "sardinha conserva em oleo sardinha, conserva em oleo"
+    },
+    {
+      "id": "somma:taco:4:0320",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "sardinha frita sardinha, frita"
+    },
+    {
+      "id": "somma:taco:4:0321",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "sardinha inteira crua sardinha, inteira, crua"
+    },
+    {
+      "id": "somma:taco:4:0322",
+      "category": "pescados-e-frutos-do-mar",
+      "text": "tucunare file congelado cru tucunare, file, congelado, cru"
+    },
+    {
+      "id": "somma:taco:4:0323",
+      "category": "carnes-e-derivados",
+      "text": "apresuntado"
+    },
+    {
+      "id": "somma:taco:4:0324",
+      "category": "carnes-e-derivados",
+      "text": "caldo de carne tablete caldo de carne, tablete"
+    },
+    {
+      "id": "somma:taco:4:0325",
+      "category": "carnes-e-derivados",
+      "text": "caldo de galinha tablete caldo de galinha, tablete"
+    },
+    {
+      "id": "somma:taco:4:0326",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina acem moido cozido carne, bovina, acem, moido, cozido"
+    },
+    {
+      "id": "somma:taco:4:0327",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina acem moido cru carne, bovina, acem, moido, cru"
+    },
+    {
+      "id": "somma:taco:4:0328",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina acem sem gordura cozido carne, bovina, acem, sem gordura, cozido"
+    },
+    {
+      "id": "somma:taco:4:0329",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina acem sem gordura cru carne, bovina, acem, sem gordura, cru"
+    },
+    {
+      "id": "somma:taco:4:0330",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina almondegas cruas carne, bovina, almondegas, cruas"
+    },
+    {
+      "id": "somma:taco:4:0331",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina almondegas fritas carne, bovina, almondegas, fritas"
+    },
+    {
+      "id": "somma:taco:4:0332",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina bucho cozido carne, bovina, bucho, cozido"
+    },
+    {
+      "id": "somma:taco:4:0333",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina bucho cru carne, bovina, bucho, cru"
+    },
+    {
+      "id": "somma:taco:4:0334",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina capa de contrafile com gordura crua carne, bovina, capa de contra-file, com gordura, crua"
+    },
+    {
+      "id": "somma:taco:4:0335",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina capa de contrafile com gordura grelhada carne, bovina, capa de contra-file, com gordura, grelhada"
+    },
+    {
+      "id": "somma:taco:4:0336",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina capa de contrafile sem gordura crua carne, bovina, capa de contra-file, sem gordura, crua"
+    },
+    {
+      "id": "somma:taco:4:0337",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina capa de contrafile sem gordura grelhada carne, bovina, capa de contra-file, sem gordura, grelhada"
+    },
+    {
+      "id": "somma:taco:4:0338",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina charque cozido carne, bovina, charque, cozido"
+    },
+    {
+      "id": "somma:taco:4:0339",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina charque cru carne, bovina, charque, cru"
+    },
+    {
+      "id": "somma:taco:4:0340",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina contrafile a milanesa carne, bovina, contra-file, a milanesa"
+    },
+    {
+      "id": "somma:taco:4:0341",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina contrafile de costela cru carne, bovina, contra-file de costela, cru"
+    },
+    {
+      "id": "somma:taco:4:0342",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina contrafile de costela grelhado carne, bovina, contra-file de costela, grelhado"
+    },
+    {
+      "id": "somma:taco:4:0343",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina contrafile com gordura cru carne, bovina, contra-file, com gordura, cru"
+    },
+    {
+      "id": "somma:taco:4:0344",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina contrafile com gordura grelhado carne, bovina, contra-file, com gordura, grelhado"
+    },
+    {
+      "id": "somma:taco:4:0345",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina contrafile sem gordura cru carne, bovina, contra-file, sem gordura, cru"
+    },
+    {
+      "id": "somma:taco:4:0346",
+      "category": "carnes-e-derivados",
+      "text": "contrafile bovino sem gordura grelhado carne, bovina, contra-file, sem gordura, grelhado"
+    },
+    {
+      "id": "somma:taco:4:0347",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina costela assada carne, bovina, costela, assada"
+    },
+    {
+      "id": "somma:taco:4:0348",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina costela crua carne, bovina, costela, crua"
+    },
+    {
+      "id": "somma:taco:4:0349",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina coxao duro sem gordura cozido carne, bovina, coxao duro, sem gordura, cozido"
+    },
+    {
+      "id": "somma:taco:4:0350",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina coxao duro sem gordura cru carne, bovina, coxao duro, sem gordura, cru"
+    },
+    {
+      "id": "somma:taco:4:0351",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina coxao mole sem gordura cozido carne, bovina, coxao mole, sem gordura, cozido"
+    },
+    {
+      "id": "somma:taco:4:0352",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina coxao mole sem gordura cru carne, bovina, coxao mole, sem gordura, cru"
+    },
+    {
+      "id": "somma:taco:4:0353",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina cupim assado carne, bovina, cupim, assado"
+    },
+    {
+      "id": "somma:taco:4:0354",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina cupim cru carne, bovina, cupim, cru"
+    },
+    {
+      "id": "somma:taco:4:0355",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina figado cru carne, bovina, figado, cru"
+    },
+    {
+      "id": "somma:taco:4:0356",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina figado grelhado carne, bovina, figado, grelhado"
+    },
+    {
+      "id": "somma:taco:4:0357",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina file mignon sem gordura cru carne, bovina, file mingnon, sem gordura, cru"
+    },
+    {
+      "id": "somma:taco:4:0358",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina file mignon sem gordura grelhado carne, bovina, file mingnon, sem gordura, grelhado"
+    },
+    {
+      "id": "somma:taco:4:0359",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina flanco sem gordura cozido carne, bovina, flanco, sem gordura, cozido"
+    },
+    {
+      "id": "somma:taco:4:0360",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina flanco sem gordura cru carne, bovina, flanco, sem gordura, cru"
+    },
+    {
+      "id": "somma:taco:4:0361",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina fraldinha com gordura cozida carne, bovina, fraldinha, com gordura, cozida"
+    },
+    {
+      "id": "somma:taco:4:0362",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina fraldinha com gordura crua carne, bovina, fraldinha, com gordura, crua"
+    },
+    {
+      "id": "somma:taco:4:0363",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina lagarto cozido carne, bovina, lagarto, cozido"
+    },
+    {
+      "id": "somma:taco:4:0364",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina lagarto cru carne, bovina, lagarto, cru"
+    },
+    {
+      "id": "somma:taco:4:0365",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina lingua cozida carne, bovina, lingua, cozida"
+    },
+    {
+      "id": "somma:taco:4:0366",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina lingua crua carne, bovina, lingua, crua"
+    },
+    {
+      "id": "somma:taco:4:0367",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina maminha crua carne, bovina, maminha, crua"
+    },
+    {
+      "id": "somma:taco:4:0368",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina maminha grelhada carne, bovina, maminha, grelhada"
+    },
+    {
+      "id": "somma:taco:4:0369",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina miolo de alcatra sem gordura cru carne, bovina, miolo de alcatra, sem gordura, cru"
+    },
+    {
+      "id": "somma:taco:4:0370",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina miolo de alcatra sem gordura grelhado carne, bovina, miolo de alcatra, sem gordura, grelhado"
+    },
+    {
+      "id": "somma:taco:4:0371",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina musculo sem gordura cozido carne, bovina, musculo, sem gordura, cozido"
+    },
+    {
+      "id": "somma:taco:4:0372",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina musculo sem gordura cru carne, bovina, musculo, sem gordura, cru"
+    },
+    {
+      "id": "somma:taco:4:0373",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina paleta com gordura crua carne, bovina, paleta, com gordura, crua"
+    },
+    {
+      "id": "somma:taco:4:0374",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina paleta sem gordura cozida carne, bovina, paleta, sem gordura, cozida"
+    },
+    {
+      "id": "somma:taco:4:0375",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina paleta sem gordura crua carne, bovina, paleta, sem gordura, crua"
+    },
+    {
+      "id": "somma:taco:4:0376",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina patinho sem gordura cru carne, bovina, patinho, sem gordura, cru"
+    },
+    {
+      "id": "somma:taco:4:0377",
+      "category": "carnes-e-derivados",
+      "text": "patinho bovino sem gordura grelhado carne, bovina, patinho, sem gordura, grelhado"
+    },
+    {
+      "id": "somma:taco:4:0378",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina peito sem gordura cozido carne, bovina, peito, sem gordura, cozido"
+    },
+    {
+      "id": "somma:taco:4:0379",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina peito sem gordura cru carne, bovina, peito, sem gordura, cru"
+    },
+    {
+      "id": "somma:taco:4:0380",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina picanha com gordura crua carne, bovina, picanha, com gordura, crua"
+    },
+    {
+      "id": "somma:taco:4:0381",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina picanha com gordura grelhada carne, bovina, picanha, com gordura, grelhada"
+    },
+    {
+      "id": "somma:taco:4:0382",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina picanha sem gordura crua carne, bovina, picanha, sem gordura, crua"
+    },
+    {
+      "id": "somma:taco:4:0383",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina picanha sem gordura grelhada carne, bovina, picanha, sem gordura, grelhada"
+    },
+    {
+      "id": "somma:taco:4:0384",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina seca cozida carne, bovina, seca, cozida"
+    },
+    {
+      "id": "somma:taco:4:0385",
+      "category": "carnes-e-derivados",
+      "text": "carne bovina seca crua carne, bovina, seca, crua"
+    },
+    {
+      "id": "somma:taco:4:0386",
+      "category": "carnes-e-derivados",
+      "text": "coxinha de frango frita coxinha de frango, frita"
+    },
+    {
+      "id": "somma:taco:4:0387",
+      "category": "carnes-e-derivados",
+      "text": "croquete de carne cru croquete, de carne, cru"
+    },
+    {
+      "id": "somma:taco:4:0388",
+      "category": "carnes-e-derivados",
+      "text": "croquete de carne frito croquete, de carne, frito"
+    },
+    {
+      "id": "somma:taco:4:0389",
+      "category": "carnes-e-derivados",
+      "text": "empada de frango pre-cozida assada empada de frango, pre-cozida, assada"
+    },
+    {
+      "id": "somma:taco:4:0390",
+      "category": "carnes-e-derivados",
+      "text": "empada de frango pre-cozida empada, de frango, pre-cozida"
+    },
+    {
+      "id": "somma:taco:4:0391",
+      "category": "carnes-e-derivados",
+      "text": "frango asa com pele crua frango, asa, com pele, crua"
+    },
+    {
+      "id": "somma:taco:4:0392",
+      "category": "carnes-e-derivados",
+      "text": "frango caipira inteiro com pele cozido frango, caipira, inteiro, com pele, cozido"
+    },
+    {
+      "id": "somma:taco:4:0393",
+      "category": "carnes-e-derivados",
+      "text": "frango caipira inteiro sem pele cozido frango, caipira, inteiro, sem pele, cozido"
+    },
+    {
+      "id": "somma:taco:4:0394",
+      "category": "carnes-e-derivados",
+      "text": "frango coracao cru frango, coracao, cru"
+    },
+    {
+      "id": "somma:taco:4:0395",
+      "category": "carnes-e-derivados",
+      "text": "frango coracao grelhado frango, coracao, grelhado"
+    },
+    {
+      "id": "somma:taco:4:0396",
+      "category": "carnes-e-derivados",
+      "text": "frango coxa com pele assada frango, coxa, com pele, assada"
+    },
+    {
+      "id": "somma:taco:4:0397",
+      "category": "carnes-e-derivados",
+      "text": "frango coxa com pele crua frango, coxa, com pele, crua"
+    },
+    {
+      "id": "somma:taco:4:0398",
+      "category": "carnes-e-derivados",
+      "text": "frango coxa sem pele cozida frango, coxa, sem pele, cozida"
+    },
+    {
+      "id": "somma:taco:4:0399",
+      "category": "carnes-e-derivados",
+      "text": "frango coxa sem pele crua frango, coxa, sem pele, crua"
+    },
+    {
+      "id": "somma:taco:4:0400",
+      "category": "carnes-e-derivados",
+      "text": "frango figado cru frango, figado, cru"
+    },
+    {
+      "id": "somma:taco:4:0401",
+      "category": "carnes-e-derivados",
+      "text": "frango file a milanesa frango, file, a milanesa"
+    },
+    {
+      "id": "somma:taco:4:0402",
+      "category": "carnes-e-derivados",
+      "text": "frango inteiro com pele cru frango, inteiro, com pele, cru"
+    },
+    {
+      "id": "somma:taco:4:0403",
+      "category": "carnes-e-derivados",
+      "text": "frango inteiro sem pele assado frango, inteiro, sem pele, assado"
+    },
+    {
+      "id": "somma:taco:4:0404",
+      "category": "carnes-e-derivados",
+      "text": "frango inteiro sem pele cozido frango, inteiro, sem pele, cozido"
+    },
+    {
+      "id": "somma:taco:4:0405",
+      "category": "carnes-e-derivados",
+      "text": "frango inteiro sem pele cru frango, inteiro, sem pele, cru"
+    },
+    {
+      "id": "somma:taco:4:0406",
+      "category": "carnes-e-derivados",
+      "text": "frango peito com pele assado frango, peito, com pele, assado"
+    },
+    {
+      "id": "somma:taco:4:0407",
+      "category": "carnes-e-derivados",
+      "text": "frango peito com pele cru frango, peito, com pele, cru"
+    },
+    {
+      "id": "somma:taco:4:0408",
+      "category": "carnes-e-derivados",
+      "text": "frango peito sem pele cozido frango, peito, sem pele, cozido"
+    },
+    {
+      "id": "somma:taco:4:0409",
+      "category": "carnes-e-derivados",
+      "text": "frango peito sem pele cru frango, peito, sem pele, cru"
+    },
+    {
+      "id": "somma:taco:4:0410",
+      "category": "carnes-e-derivados",
+      "text": "peito de frango sem pele grelhado frango, peito, sem pele, grelhado"
+    },
+    {
+      "id": "somma:taco:4:0411",
+      "category": "carnes-e-derivados",
+      "text": "frango sobrecoxa com pele assada frango, sobrecoxa, com pele, assada"
+    },
+    {
+      "id": "somma:taco:4:0412",
+      "category": "carnes-e-derivados",
+      "text": "frango sobrecoxa com pele crua frango, sobrecoxa, com pele, crua"
+    },
+    {
+      "id": "somma:taco:4:0413",
+      "category": "carnes-e-derivados",
+      "text": "frango sobrecoxa sem pele assada frango, sobrecoxa, sem pele, assada"
+    },
+    {
+      "id": "somma:taco:4:0414",
+      "category": "carnes-e-derivados",
+      "text": "frango sobrecoxa sem pele crua frango, sobrecoxa, sem pele, crua"
+    },
+    {
+      "id": "somma:taco:4:0415",
+      "category": "carnes-e-derivados",
+      "text": "hamburguer bovino cru hamburguer, bovino, cru"
+    },
+    {
+      "id": "somma:taco:4:0416",
+      "category": "carnes-e-derivados",
+      "text": "hamburguer bovino frito hamburguer, bovino, frito"
+    },
+    {
+      "id": "somma:taco:4:0417",
+      "category": "carnes-e-derivados",
+      "text": "hamburguer bovino grelhado hamburguer, bovino, grelhado"
+    },
+    {
+      "id": "somma:taco:4:0418",
+      "category": "carnes-e-derivados",
+      "text": "linguica frango crua linguica, frango, crua"
+    },
+    {
+      "id": "somma:taco:4:0419",
+      "category": "carnes-e-derivados",
+      "text": "linguica frango frita linguica, frango, frita"
+    },
+    {
+      "id": "somma:taco:4:0420",
+      "category": "carnes-e-derivados",
+      "text": "linguica frango grelhada linguica, frango, grelhada"
+    },
+    {
+      "id": "somma:taco:4:0421",
+      "category": "carnes-e-derivados",
+      "text": "linguica porco crua linguica, porco, crua"
+    },
+    {
+      "id": "somma:taco:4:0422",
+      "category": "carnes-e-derivados",
+      "text": "linguica porco frita linguica, porco, frita"
+    },
+    {
+      "id": "somma:taco:4:0423",
+      "category": "carnes-e-derivados",
+      "text": "linguica porco grelhada linguica, porco, grelhada"
+    },
+    {
+      "id": "somma:taco:4:0424",
+      "category": "carnes-e-derivados",
+      "text": "mortadela"
+    },
+    {
+      "id": "somma:taco:4:0425",
+      "category": "carnes-e-derivados",
+      "text": "peru congelado assado peru, congelado, assado"
+    },
+    {
+      "id": "somma:taco:4:0426",
+      "category": "carnes-e-derivados",
+      "text": "peru congelado cru peru, congelado, cru"
+    },
+    {
+      "id": "somma:taco:4:0427",
+      "category": "carnes-e-derivados",
+      "text": "porco bisteca crua porco, bisteca, crua"
+    },
+    {
+      "id": "somma:taco:4:0428",
+      "category": "carnes-e-derivados",
+      "text": "porco bisteca frita porco, bisteca, frita"
+    },
+    {
+      "id": "somma:taco:4:0429",
+      "category": "carnes-e-derivados",
+      "text": "porco bisteca grelhada porco, bisteca, grelhada"
+    },
+    {
+      "id": "somma:taco:4:0430",
+      "category": "carnes-e-derivados",
+      "text": "porco costela assada porco, costela, assada"
+    },
+    {
+      "id": "somma:taco:4:0431",
+      "category": "carnes-e-derivados",
+      "text": "porco costela crua porco, costela, crua"
+    },
+    {
+      "id": "somma:taco:4:0432",
+      "category": "carnes-e-derivados",
+      "text": "porco lombo assado porco, lombo, assado"
+    },
+    {
+      "id": "somma:taco:4:0433",
+      "category": "carnes-e-derivados",
+      "text": "porco lombo cru porco, lombo, cru"
+    },
+    {
+      "id": "somma:taco:4:0434",
+      "category": "carnes-e-derivados",
+      "text": "porco orelha salgada crua porco, orelha, salgada, crua"
+    },
+    {
+      "id": "somma:taco:4:0435",
+      "category": "carnes-e-derivados",
+      "text": "porco pernil assado porco, pernil, assado"
+    },
+    {
+      "id": "somma:taco:4:0436",
+      "category": "carnes-e-derivados",
+      "text": "porco pernil cru porco, pernil, cru"
+    },
+    {
+      "id": "somma:taco:4:0437",
+      "category": "carnes-e-derivados",
+      "text": "porco rabo salgado cru porco, rabo, salgado, cru"
+    },
+    {
+      "id": "somma:taco:4:0438",
+      "category": "carnes-e-derivados",
+      "text": "presunto com capa de gordura presunto, com capa de gordura"
+    },
+    {
+      "id": "somma:taco:4:0439",
+      "category": "carnes-e-derivados",
+      "text": "presunto sem capa de gordura presunto, sem capa de gordura"
+    },
+    {
+      "id": "somma:taco:4:0440",
+      "category": "carnes-e-derivados",
+      "text": "quibe assado quibe, assado"
+    },
+    {
+      "id": "somma:taco:4:0441",
+      "category": "carnes-e-derivados",
+      "text": "quibe cru quibe, cru"
+    },
+    {
+      "id": "somma:taco:4:0442",
+      "category": "carnes-e-derivados",
+      "text": "quibe frito quibe, frito"
+    },
+    {
+      "id": "somma:taco:4:0443",
+      "category": "carnes-e-derivados",
+      "text": "salame"
+    },
+    {
+      "id": "somma:taco:4:0444",
+      "category": "carnes-e-derivados",
+      "text": "toucinho cru toucinho, cru"
+    },
+    {
+      "id": "somma:taco:4:0445",
+      "category": "carnes-e-derivados",
+      "text": "toucinho frito toucinho, frito"
+    },
+    {
+      "id": "somma:taco:4:0446",
+      "category": "leite-e-derivados",
+      "text": "bebida lactea pessego bebida lactea, pessego"
+    },
+    {
+      "id": "somma:taco:4:0447",
+      "category": "leite-e-derivados",
+      "text": "creme de leite"
+    },
+    {
+      "id": "somma:taco:4:0448",
+      "category": "leite-e-derivados",
+      "text": "iogurte natural iogurte, natural"
+    },
+    {
+      "id": "somma:taco:4:0449",
+      "category": "leite-e-derivados",
+      "text": "iogurte natural desnatado iogurte, natural, desnatado"
+    },
+    {
+      "id": "somma:taco:4:0450",
+      "category": "leite-e-derivados",
+      "text": "iogurte sabor abacaxi iogurte, sabor abacaxi"
+    },
+    {
+      "id": "somma:taco:4:0451",
+      "category": "leite-e-derivados",
+      "text": "iogurte sabor morango iogurte, sabor morango"
+    },
+    {
+      "id": "somma:taco:4:0452",
+      "category": "leite-e-derivados",
+      "text": "iogurte sabor pessego iogurte, sabor pessego"
+    },
+    {
+      "id": "somma:taco:4:0453",
+      "category": "leite-e-derivados",
+      "text": "leite condensado leite, condensado"
+    },
+    {
+      "id": "somma:taco:4:0454",
+      "category": "leite-e-derivados",
+      "text": "leite de cabra leite, de cabra"
+    },
+    {
+      "id": "somma:taco:4:0455",
+      "category": "leite-e-derivados",
+      "text": "leite de vaca achocolatado leite, de vaca, achocolatado"
+    },
+    {
+      "id": "somma:taco:4:0456",
+      "category": "leite-e-derivados",
+      "text": "leite de vaca desnatado em po leite, de vaca, desnatado, po"
+    },
+    {
+      "id": "somma:taco:4:0457",
+      "category": "leite-e-derivados",
+      "text": "leite de vaca desnatado uht leite, de vaca, desnatado, uht"
+    },
+    {
+      "id": "somma:taco:4:0458",
+      "category": "leite-e-derivados",
+      "text": "leite de vaca integral leite, de vaca, integral"
+    },
+    {
+      "id": "somma:taco:4:0459",
+      "category": "leite-e-derivados",
+      "text": "leite de vaca integral em po leite, de vaca, integral, po"
+    },
+    {
+      "id": "somma:taco:4:0460",
+      "category": "leite-e-derivados",
+      "text": "leite fermentado leite, fermentado"
+    },
+    {
+      "id": "somma:taco:4:0461",
+      "category": "leite-e-derivados",
+      "text": "queijo minas frescal queijo, minas, frescal"
+    },
+    {
+      "id": "somma:taco:4:0462",
+      "category": "leite-e-derivados",
+      "text": "queijo minas meia cura queijo, minas, meia cura"
+    },
+    {
+      "id": "somma:taco:4:0463",
+      "category": "leite-e-derivados",
+      "text": "queijo mozarela queijo, mozarela"
+    },
+    {
+      "id": "somma:taco:4:0464",
+      "category": "leite-e-derivados",
+      "text": "queijo parmesao queijo, parmesao"
+    },
+    {
+      "id": "somma:taco:4:0465",
+      "category": "leite-e-derivados",
+      "text": "queijo pasteurizado queijo, pasteurizado"
+    },
+    {
+      "id": "somma:taco:4:0466",
+      "category": "leite-e-derivados",
+      "text": "queijo petit suisse morango queijo, petit suisse, morango"
+    },
+    {
+      "id": "somma:taco:4:0467",
+      "category": "leite-e-derivados",
+      "text": "queijo prato queijo, prato"
+    },
+    {
+      "id": "somma:taco:4:0468",
+      "category": "leite-e-derivados",
+      "text": "queijo requeijao cremoso queijo, requeijao, cremoso"
+    },
+    {
+      "id": "somma:taco:4:0469",
+      "category": "leite-e-derivados",
+      "text": "queijo ricota queijo, ricota"
+    },
+    {
+      "id": "somma:taco:4:0470",
+      "category": "bebidas-alcoolicas-e-nao-alcoolicas",
+      "text": "bebida isotonica sabores variados bebida isotonica, sabores variados"
+    },
+    {
+      "id": "somma:taco:4:0471",
+      "category": "bebidas-alcoolicas-e-nao-alcoolicas",
+      "text": "cafe em infusao a 10% cafe, infusao 10%"
+    },
+    {
+      "id": "somma:taco:4:0472",
+      "category": "bebidas-alcoolicas-e-nao-alcoolicas",
+      "text": "cana aguardente 1 cana, aguardente 1"
+    },
+    {
+      "id": "somma:taco:4:0473",
+      "category": "bebidas-alcoolicas-e-nao-alcoolicas",
+      "text": "cana caldo de cana, caldo de"
+    },
+    {
+      "id": "somma:taco:4:0474",
+      "category": "bebidas-alcoolicas-e-nao-alcoolicas",
+      "text": "cerveja pilsen 2 cerveja, pilsen 2"
+    },
+    {
+      "id": "somma:taco:4:0475",
+      "category": "bebidas-alcoolicas-e-nao-alcoolicas",
+      "text": "cha erva-doce infusao 5% cha, erva-doce, infusao 5%"
+    },
+    {
+      "id": "somma:taco:4:0476",
+      "category": "bebidas-alcoolicas-e-nao-alcoolicas",
+      "text": "cha mate infusao 5% cha, mate, infusao 5%"
+    },
+    {
+      "id": "somma:taco:4:0477",
+      "category": "bebidas-alcoolicas-e-nao-alcoolicas",
+      "text": "cha preto infusao 5% cha, preto, infusao 5%"
+    },
+    {
+      "id": "somma:taco:4:0478",
+      "category": "bebidas-alcoolicas-e-nao-alcoolicas",
+      "text": "coco agua de coco, agua de"
+    },
+    {
+      "id": "somma:taco:4:0479",
+      "category": "bebidas-alcoolicas-e-nao-alcoolicas",
+      "text": "refrigerante tipo agua tonica refrigerante, tipo agua tonica"
+    },
+    {
+      "id": "somma:taco:4:0480",
+      "category": "bebidas-alcoolicas-e-nao-alcoolicas",
+      "text": "refrigerante tipo cola refrigerante, tipo cola"
+    },
+    {
+      "id": "somma:taco:4:0481",
+      "category": "bebidas-alcoolicas-e-nao-alcoolicas",
+      "text": "refrigerante tipo guarana refrigerante, tipo guarana"
+    },
+    {
+      "id": "somma:taco:4:0482",
+      "category": "bebidas-alcoolicas-e-nao-alcoolicas",
+      "text": "refrigerante tipo laranja refrigerante, tipo laranja"
+    },
+    {
+      "id": "somma:taco:4:0483",
+      "category": "bebidas-alcoolicas-e-nao-alcoolicas",
+      "text": "refrigerante tipo limao refrigerante, tipo limao"
+    },
+    {
+      "id": "somma:taco:4:0484",
+      "category": "ovos-e-derivados",
+      "text": "omelete de queijo omelete, de queijo"
+    },
+    {
+      "id": "somma:taco:4:0485",
+      "category": "ovos-e-derivados",
+      "text": "ovo de codorna inteiro cru ovo, de codorna, inteiro, cru"
+    },
+    {
+      "id": "somma:taco:4:0486",
+      "category": "ovos-e-derivados",
+      "text": "clara de ovo de galinha cozida por 10 minutos ovo, de galinha, clara, cozida/10minutos"
+    },
+    {
+      "id": "somma:taco:4:0487",
+      "category": "ovos-e-derivados",
+      "text": "gema de ovo de galinha cozida por 10 minutos ovo, de galinha, gema, cozida/10minutos"
+    },
+    {
+      "id": "somma:taco:4:0488",
+      "category": "ovos-e-derivados",
+      "text": "ovo de galinha inteiro cozido por 10 minutos ovo, de galinha, inteiro, cozido/10minutos"
+    },
+    {
+      "id": "somma:taco:4:0489",
+      "category": "ovos-e-derivados",
+      "text": "ovo de galinha inteiro cru ovo, de galinha, inteiro, cru"
+    },
+    {
+      "id": "somma:taco:4:0490",
+      "category": "ovos-e-derivados",
+      "text": "ovo de galinha inteiro frito ovo, de galinha, inteiro, frito"
+    },
+    {
+      "id": "somma:taco:4:0491",
+      "category": "produtos-acucarados",
+      "text": "achocolatado po achocolatado, po"
+    },
+    {
+      "id": "somma:taco:4:0492",
+      "category": "produtos-acucarados",
+      "text": "acucar cristal acucar, cristal"
+    },
+    {
+      "id": "somma:taco:4:0493",
+      "category": "produtos-acucarados",
+      "text": "acucar mascavo acucar, mascavo"
+    },
+    {
+      "id": "somma:taco:4:0494",
+      "category": "produtos-acucarados",
+      "text": "acucar refinado acucar, refinado"
+    },
+    {
+      "id": "somma:taco:4:0495",
+      "category": "produtos-acucarados",
+      "text": "chocolate ao leite chocolate, ao leite"
+    },
+    {
+      "id": "somma:taco:4:0496",
+      "category": "produtos-acucarados",
+      "text": "chocolate ao leite com castanha do para chocolate, ao leite, com castanha do para"
+    },
+    {
+      "id": "somma:taco:4:0497",
+      "category": "produtos-acucarados",
+      "text": "chocolate ao leite dietetico chocolate, ao leite, dietetico"
+    },
+    {
+      "id": "somma:taco:4:0498",
+      "category": "produtos-acucarados",
+      "text": "chocolate meio amargo chocolate, meio amargo"
+    },
+    {
+      "id": "somma:taco:4:0499",
+      "category": "produtos-acucarados",
+      "text": "cocada branca"
+    },
+    {
+      "id": "somma:taco:4:0500",
+      "category": "produtos-acucarados",
+      "text": "doce de abobora cremoso doce, de abobora, cremoso"
+    },
+    {
+      "id": "somma:taco:4:0501",
+      "category": "produtos-acucarados",
+      "text": "doce de leite cremoso doce, de leite, cremoso"
+    },
+    {
+      "id": "somma:taco:4:0502",
+      "category": "produtos-acucarados",
+      "text": "geleia mocoto natural geleia, mocoto, natural"
+    },
+    {
+      "id": "somma:taco:4:0503",
+      "category": "produtos-acucarados",
+      "text": "glicose de milho"
+    },
+    {
+      "id": "somma:taco:4:0504",
+      "category": "produtos-acucarados",
+      "text": "maria mole"
+    },
+    {
+      "id": "somma:taco:4:0505",
+      "category": "produtos-acucarados",
+      "text": "maria mole coco queimado maria mole, coco queimado"
+    },
+    {
+      "id": "somma:taco:4:0506",
+      "category": "produtos-acucarados",
+      "text": "marmelada"
+    },
+    {
+      "id": "somma:taco:4:0507",
+      "category": "produtos-acucarados",
+      "text": "mel de abelha mel, de abelha"
+    },
+    {
+      "id": "somma:taco:4:0508",
+      "category": "produtos-acucarados",
+      "text": "melado"
+    },
+    {
+      "id": "somma:taco:4:0509",
+      "category": "produtos-acucarados",
+      "text": "quindim"
+    },
+    {
+      "id": "somma:taco:4:0510",
+      "category": "produtos-acucarados",
+      "text": "rapadura"
+    },
+    {
+      "id": "somma:taco:4:0511",
+      "category": "miscelaneas",
+      "text": "cafe po torrado cafe, po, torrado"
+    },
+    {
+      "id": "somma:taco:4:0512",
+      "category": "miscelaneas",
+      "text": "capuccino po capuccino, po"
+    },
+    {
+      "id": "somma:taco:4:0513",
+      "category": "miscelaneas",
+      "text": "fermento em po quimico fermento em po, quimico"
+    },
+    {
+      "id": "somma:taco:4:0514",
+      "category": "miscelaneas",
+      "text": "fermento biologico levedura tablete fermento, biologico, levedura, tablete"
+    },
+    {
+      "id": "somma:taco:4:0515",
+      "category": "miscelaneas",
+      "text": "gelatina sabores variados po gelatina, sabores variados, po"
+    },
+    {
+      "id": "somma:taco:4:0516",
+      "category": "miscelaneas",
+      "text": "sal dietetico sal, dietetico"
+    },
+    {
+      "id": "somma:taco:4:0517",
+      "category": "miscelaneas",
+      "text": "sal grosso sal, grosso"
+    },
+    {
+      "id": "somma:taco:4:0518",
+      "category": "miscelaneas",
+      "text": "shoyu"
+    },
+    {
+      "id": "somma:taco:4:0519",
+      "category": "miscelaneas",
+      "text": "tempero a base de sal"
+    },
+    {
+      "id": "somma:taco:4:0520",
+      "category": "outros-alimentos-industrializados",
+      "text": "azeitona preta conserva azeitona, preta, conserva"
+    },
+    {
+      "id": "somma:taco:4:0521",
+      "category": "outros-alimentos-industrializados",
+      "text": "azeitona verde conserva azeitona, verde, conserva"
+    },
+    {
+      "id": "somma:taco:4:0522",
+      "category": "outros-alimentos-industrializados",
+      "text": "chantilly spray com gordura vegetal chantilly, spray, com gordura vegetal"
+    },
+    {
+      "id": "somma:taco:4:0523",
+      "category": "outros-alimentos-industrializados",
+      "text": "leite de coco leite, de coco"
+    },
+    {
+      "id": "somma:taco:4:0524",
+      "category": "outros-alimentos-industrializados",
+      "text": "maionese tradicional com ovos maionese, tradicional com ovos"
+    },
+    {
+      "id": "somma:taco:4:0525",
+      "category": "alimentos-preparados",
+      "text": "acaraje"
+    },
+    {
+      "id": "somma:taco:4:0526",
+      "category": "alimentos-preparados",
+      "text": "arroz carreteiro"
+    },
+    {
+      "id": "somma:taco:4:0527",
+      "category": "alimentos-preparados",
+      "text": "baiao de dois arroz e feijao-de-corda baiao de dois, arroz e feijao-de-corda"
+    },
+    {
+      "id": "somma:taco:4:0528",
+      "category": "alimentos-preparados",
+      "text": "barreado"
+    },
+    {
+      "id": "somma:taco:4:0529",
+      "category": "alimentos-preparados",
+      "text": "bife a cavalo com contra file bife a cavalo, com contra file"
+    },
+    {
+      "id": "somma:taco:4:0530",
+      "category": "alimentos-preparados",
+      "text": "bolinho de arroz"
+    },
+    {
+      "id": "somma:taco:4:0531",
+      "category": "alimentos-preparados",
+      "text": "camarao a baiana"
+    },
+    {
+      "id": "somma:taco:4:0532",
+      "category": "alimentos-preparados",
+      "text": "charuto de repolho charuto, de repolho"
+    },
+    {
+      "id": "somma:taco:4:0533",
+      "category": "alimentos-preparados",
+      "text": "cuscuz de milho cozido com sal cuscuz, de milho, cozido com sal"
+    },
+    {
+      "id": "somma:taco:4:0534",
+      "category": "alimentos-preparados",
+      "text": "cuscuz paulista cuscuz, paulista"
+    },
+    {
+      "id": "somma:taco:4:0535",
+      "category": "alimentos-preparados",
+      "text": "cuxa molho cuxa, molho"
+    },
+    {
+      "id": "somma:taco:4:0536",
+      "category": "alimentos-preparados",
+      "text": "dobradinha"
+    },
+    {
+      "id": "somma:taco:4:0537",
+      "category": "alimentos-preparados",
+      "text": "estrogonofe de carne"
+    },
+    {
+      "id": "somma:taco:4:0538",
+      "category": "alimentos-preparados",
+      "text": "estrogonofe de frango"
+    },
+    {
+      "id": "somma:taco:4:0539",
+      "category": "alimentos-preparados",
+      "text": "feijao tropeiro mineiro"
+    },
+    {
+      "id": "somma:taco:4:0540",
+      "category": "alimentos-preparados",
+      "text": "feijoada"
+    },
+    {
+      "id": "somma:taco:4:0541",
+      "category": "alimentos-preparados",
+      "text": "frango com acafrao frango, com acafrao"
+    },
+    {
+      "id": "somma:taco:4:0542",
+      "category": "alimentos-preparados",
+      "text": "macarrao molho bolognesa macarrao, molho bolognesa"
+    },
+    {
+      "id": "somma:taco:4:0543",
+      "category": "alimentos-preparados",
+      "text": "manicoba"
+    },
+    {
+      "id": "somma:taco:4:0544",
+      "category": "alimentos-preparados",
+      "text": "quibebe"
+    },
+    {
+      "id": "somma:taco:4:0545",
+      "category": "alimentos-preparados",
+      "text": "salada de legumes com maionese salada, de legumes, com maionese"
+    },
+    {
+      "id": "somma:taco:4:0546",
+      "category": "alimentos-preparados",
+      "text": "salada de legumes cozida no vapor salada, de legumes, cozida no vapor"
+    },
+    {
+      "id": "somma:taco:4:0547",
+      "category": "alimentos-preparados",
+      "text": "salpicao de frango salpicao, de frango"
+    },
+    {
+      "id": "somma:taco:4:0548",
+      "category": "alimentos-preparados",
+      "text": "sarapatel"
+    },
+    {
+      "id": "somma:taco:4:0549",
+      "category": "alimentos-preparados",
+      "text": "tabule"
+    },
+    {
+      "id": "somma:taco:4:0550",
+      "category": "alimentos-preparados",
+      "text": "tacaca"
+    },
+    {
+      "id": "somma:taco:4:0551",
+      "category": "alimentos-preparados",
+      "text": "tapioca com manteiga tapioca, com manteiga"
+    },
+    {
+      "id": "somma:taco:4:0552",
+      "category": "alimentos-preparados",
+      "text": "tucupi com pimenta-de-cheiro tucupi, com pimenta-de-cheiro"
+    },
+    {
+      "id": "somma:taco:4:0553",
+      "category": "alimentos-preparados",
+      "text": "vaca atolada"
+    },
+    {
+      "id": "somma:taco:4:0554",
+      "category": "alimentos-preparados",
+      "text": "vatapa"
+    },
+    {
+      "id": "somma:taco:4:0555",
+      "category": "alimentos-preparados",
+      "text": "virado a paulista"
+    },
+    {
+      "id": "somma:taco:4:0556",
+      "category": "alimentos-preparados",
+      "text": "yakisoba"
+    },
+    {
+      "id": "somma:taco:4:0557",
+      "category": "leguminosas-e-derivados",
+      "text": "amendoim grao cru amendoim, grao, cru"
+    },
+    {
+      "id": "somma:taco:4:0558",
+      "category": "leguminosas-e-derivados",
+      "text": "amendoim torrado salgado amendoim, torrado, salgado"
+    },
+    {
+      "id": "somma:taco:4:0559",
+      "category": "leguminosas-e-derivados",
+      "text": "ervilha em vagem ervilha, em vagem"
+    },
+    {
+      "id": "somma:taco:4:0560",
+      "category": "leguminosas-e-derivados",
+      "text": "ervilha enlatada drenada ervilha, enlatada, drenada"
+    },
+    {
+      "id": "somma:taco:4:0561",
+      "category": "leguminosas-e-derivados",
+      "text": "feijao carioca cozido feijao, carioca, cozido"
+    },
+    {
+      "id": "somma:taco:4:0562",
+      "category": "leguminosas-e-derivados",
+      "text": "feijao carioca cru feijao, carioca, cru"
+    },
+    {
+      "id": "somma:taco:4:0563",
+      "category": "leguminosas-e-derivados",
+      "text": "feijao fradinho cozido feijao, fradinho, cozido"
+    },
+    {
+      "id": "somma:taco:4:0564",
+      "category": "leguminosas-e-derivados",
+      "text": "feijao fradinho cru feijao, fradinho, cru"
+    },
+    {
+      "id": "somma:taco:4:0565",
+      "category": "leguminosas-e-derivados",
+      "text": "feijao jalo cozido feijao, jalo, cozido"
+    },
+    {
+      "id": "somma:taco:4:0566",
+      "category": "leguminosas-e-derivados",
+      "text": "feijao jalo cru feijao, jalo, cru"
+    },
+    {
+      "id": "somma:taco:4:0567",
+      "category": "leguminosas-e-derivados",
+      "text": "feijao preto cozido feijao, preto, cozido"
+    },
+    {
+      "id": "somma:taco:4:0568",
+      "category": "leguminosas-e-derivados",
+      "text": "feijao preto cru feijao, preto, cru"
+    },
+    {
+      "id": "somma:taco:4:0569",
+      "category": "leguminosas-e-derivados",
+      "text": "feijao rajado cozido feijao, rajado, cozido"
+    },
+    {
+      "id": "somma:taco:4:0570",
+      "category": "leguminosas-e-derivados",
+      "text": "feijao rajado cru feijao, rajado, cru"
+    },
+    {
+      "id": "somma:taco:4:0571",
+      "category": "leguminosas-e-derivados",
+      "text": "feijao rosinha cozido feijao, rosinha, cozido"
+    },
+    {
+      "id": "somma:taco:4:0572",
+      "category": "leguminosas-e-derivados",
+      "text": "feijao rosinha cru feijao, rosinha, cru"
+    },
+    {
+      "id": "somma:taco:4:0573",
+      "category": "leguminosas-e-derivados",
+      "text": "feijao roxo cozido feijao, roxo, cozido"
+    },
+    {
+      "id": "somma:taco:4:0574",
+      "category": "leguminosas-e-derivados",
+      "text": "feijao roxo cru feijao, roxo, cru"
+    },
+    {
+      "id": "somma:taco:4:0575",
+      "category": "leguminosas-e-derivados",
+      "text": "grao-de-bico cru grao-de-bico, cru"
+    },
+    {
+      "id": "somma:taco:4:0576",
+      "category": "leguminosas-e-derivados",
+      "text": "guandu cru guandu, cru"
+    },
+    {
+      "id": "somma:taco:4:0577",
+      "category": "leguminosas-e-derivados",
+      "text": "lentilha cozida lentilha, cozida"
+    },
+    {
+      "id": "somma:taco:4:0578",
+      "category": "leguminosas-e-derivados",
+      "text": "lentilha crua lentilha, crua"
+    },
+    {
+      "id": "somma:taco:4:0579",
+      "category": "leguminosas-e-derivados",
+      "text": "pacoca amendoim pacoca, amendoim"
+    },
+    {
+      "id": "somma:taco:4:0580",
+      "category": "leguminosas-e-derivados",
+      "text": "pe-de-moleque amendoim pe-de-moleque, amendoim"
+    },
+    {
+      "id": "somma:taco:4:0581",
+      "category": "leguminosas-e-derivados",
+      "text": "soja farinha soja, farinha"
+    },
+    {
+      "id": "somma:taco:4:0582",
+      "category": "leguminosas-e-derivados",
+      "text": "soja extrato soluvel natural fluido soja, extrato soluvel, natural, fluido"
+    },
+    {
+      "id": "somma:taco:4:0583",
+      "category": "leguminosas-e-derivados",
+      "text": "soja extrato soluvel po soja, extrato soluvel, po"
+    },
+    {
+      "id": "somma:taco:4:0584",
+      "category": "leguminosas-e-derivados",
+      "text": "soja queijo (tofu) soja, queijo (tofu)"
+    },
+    {
+      "id": "somma:taco:4:0585",
+      "category": "leguminosas-e-derivados",
+      "text": "tremoco cru tremoco, cru"
+    },
+    {
+      "id": "somma:taco:4:0586",
+      "category": "leguminosas-e-derivados",
+      "text": "tremoco em conserva tremoco, em conserva"
+    },
+    {
+      "id": "somma:taco:4:0587",
+      "category": "nozes-e-sementes",
+      "text": "amendoa torrada salgada amendoa, torrada, salgada"
+    },
+    {
+      "id": "somma:taco:4:0588",
+      "category": "nozes-e-sementes",
+      "text": "castanha-de-caju torrada salgada castanha-de-caju, torrada, salgada"
+    },
+    {
+      "id": "somma:taco:4:0589",
+      "category": "nozes-e-sementes",
+      "text": "castanha-do-brasil crua castanha-do-brasil, crua"
+    },
+    {
+      "id": "somma:taco:4:0590",
+      "category": "nozes-e-sementes",
+      "text": "coco cru coco, cru"
+    },
+    {
+      "id": "somma:taco:4:0591",
+      "category": "nozes-e-sementes",
+      "text": "coco verde cru coco, verde, cru"
+    },
+    {
+      "id": "somma:taco:4:0592",
+      "category": "nozes-e-sementes",
+      "text": "farinha de mesocarpo de babacu crua farinha, de mesocarpo de babacu, crua"
+    },
+    {
+      "id": "somma:taco:4:0593",
+      "category": "nozes-e-sementes",
+      "text": "gergelim semente gergelim, semente"
+    },
+    {
+      "id": "somma:taco:4:0594",
+      "category": "nozes-e-sementes",
+      "text": "linhaca semente linhaca, semente"
+    },
+    {
+      "id": "somma:taco:4:0595",
+      "category": "nozes-e-sementes",
+      "text": "pinhao cozido pinhao, cozido"
+    },
+    {
+      "id": "somma:taco:4:0596",
+      "category": "nozes-e-sementes",
+      "text": "pupunha cozida pupunha, cozida"
+    },
+    {
+      "id": "somma:taco:4:0597",
+      "category": "nozes-e-sementes",
+      "text": "noz crua noz, crua"
+    }
+  ]
+}

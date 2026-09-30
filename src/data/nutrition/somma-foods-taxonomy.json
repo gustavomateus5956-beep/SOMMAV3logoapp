@@ -1,0 +1,65 @@
+{
+  "version": "1.0.0",
+  "categories": [
+    {
+      "id": "cereais-e-derivados",
+      "label": "Cereais e derivados"
+    },
+    {
+      "id": "verduras-hortalicas-e-derivados",
+      "label": "Verduras, hortaliças e derivados"
+    },
+    {
+      "id": "frutas-e-derivados",
+      "label": "Frutas e derivados"
+    },
+    {
+      "id": "gorduras-e-oleos",
+      "label": "Gorduras e óleos"
+    },
+    {
+      "id": "pescados-e-frutos-do-mar",
+      "label": "Pescados e frutos do mar"
+    },
+    {
+      "id": "carnes-e-derivados",
+      "label": "Carnes e derivados"
+    },
+    {
+      "id": "leite-e-derivados",
+      "label": "Leite e derivados"
+    },
+    {
+      "id": "bebidas-alcoolicas-e-nao-alcoolicas",
+      "label": "Bebidas (alcoólicas e não alcoólicas)"
+    },
+    {
+      "id": "ovos-e-derivados",
+      "label": "Ovos e derivados"
+    },
+    {
+      "id": "produtos-acucarados",
+      "label": "Produtos açucarados"
+    },
+    {
+      "id": "miscelaneas",
+      "label": "Miscelâneas"
+    },
+    {
+      "id": "outros-alimentos-industrializados",
+      "label": "Outros alimentos industrializados"
+    },
+    {
+      "id": "alimentos-preparados",
+      "label": "Alimentos preparados"
+    },
+    {
+      "id": "leguminosas-e-derivados",
+      "label": "Leguminosas e derivados"
+    },
+    {
+      "id": "nozes-e-sementes",
+      "label": "Nozes e sementes"
+    }
+  ]
+}

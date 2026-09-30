@@ -1,3 +1,8 @@
+import { isSetCompleted, workoutMetrics, isPrimaryPr, primaryPerformance } from '../features/workout-engine/setMetrics';
+import { startWorkoutStructure, reconcileExercises, assertStructure, toCompletedExerciseLog, previousExerciseReference, type WorkoutStructure } from '../features/workout-engine/workoutStructure';
+import type { WorkoutBlock } from '../features/workout-engine/contracts';
+import { readActiveWorkout, writeActiveWorkout, clearActiveWorkout } from '../features/workout-engine/activeWorkoutStorage';
+import { toCompletedSetLog } from '../features/workout-engine/setAdapter';
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import { Routine, Exercise, WorkoutSessionRecord, CompletedExerciseLog, CompletedSetLog } from '../types';
 import { repositories } from '../data';
@@ -11,6 +16,7 @@ export interface ActiveWorkoutSession {
   workoutName: string;
   muscleGroups: string;
   exercises: Exercise[];
+  blocks: WorkoutBlock[];
   startedAt: Date;
   seconds: number;
   isTimerPaused: boolean;
@@ -38,6 +44,7 @@ export interface WorkoutContextType {
   minimizeWorkout: () => void;
   maximizeWorkout: () => void;
   updateExercises: (exercises: Exercise[] | ((prev: Exercise[]) => Exercise[])) => void;
+  updateWorkoutStructure: (action: (current: WorkoutStructure) => WorkoutStructure) => void;
   setWorkoutName: (name: string) => void;
   setRestSeconds: (
     seconds: number | null | ((prev: number | null) => number | null),
@@ -65,6 +72,20 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const { user, updateUser } = useUser();
   const [workoutStatus, setWorkoutStatus] = useState<WorkoutSessionStatus>('idle');
   const [activeSession, setActiveSession] = useState<ActiveWorkoutSession | null>(null);
+
+  const [sessionOwner, setSessionOwner] = useState<string | null>(null);
+  useEffect(() => {
+    const draft = user?.id ? readActiveWorkout(user.id) : null;
+    setActiveSession(draft?.session ?? null);
+    setWorkoutStatus(draft?.status ?? 'idle');
+    setSessionOwner(user?.id ?? null);
+  }, [user?.id]);
+  useEffect(() => {
+    if (!user?.id || sessionOwner !== user.id) return;
+    if (activeSession && (workoutStatus === 'active' || workoutStatus === 'minimized' || workoutStatus === 'completed')) {
+      writeActiveWorkout(user.id, activeSession, workoutStatus);
+    } else if (workoutStatus === 'idle') clearActiveWorkout(user.id);
+  }, [activeSession, workoutStatus, sessionOwner, user?.id]);
 
   // Interval reference for global ticking (works both when active and minimized)
   const timerRef = useRef<number | null>(null);
@@ -120,12 +141,12 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const exercises = activeSession?.exercises || [];
   const totalExercises = exercises.length;
   const completedExercises = exercises.filter(
-    (ex) => ex.sets.length > 0 && ex.sets.every((s) => s.completed)
+    (ex) => ex.sets.length > 0 && ex.sets.every(isSetCompleted)
   ).length;
 
   const totalSets = exercises.reduce((acc, ex) => acc + ex.sets.length, 0);
   const completedSets = exercises.reduce(
-    (acc, ex) => acc + ex.sets.filter((s) => s.completed).length,
+    (acc, ex) => acc + ex.sets.filter(isSetCompleted).length,
     0
   );
 
@@ -138,36 +159,23 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   // Start new workout
   const startWorkout = useCallback(async (routine: Routine | null) => {
-    let initialExercises: Exercise[] = [];
+    const initialStructure = startWorkoutStructure(routine);
+    let initialExercises = initialStructure.exercises;
 
     if (routine && routine.exercises && routine.exercises.length > 0) {
-      initialExercises = JSON.parse(JSON.stringify(routine.exercises)) as Exercise[];
-      // Enrich with previous performance if available
-      if (user?.id) {
-        await Promise.all(
-          initialExercises.map(async (ex) => {
-            try {
-              const past = await repositories.workout.getLastExercisePerformance(user.id, ex.name);
-              if (past && past.sets.length > 0) {
-                ex.sets.forEach((set, idx) => {
-                  const prevSet = past.sets[idx] || past.sets[past.sets.length - 1];
-                  if (prevSet) {
-                    set.prevWeight = prevSet.weight;
-                    set.prevReps = prevSet.reps;
-                    if (!set.weight || set.weight === 0) {
-                      set.weight = prevSet.weight;
-                    }
-                    if (!set.reps || set.reps === 0) {
-                      set.reps = prevSet.reps;
-                    }
-                  }
-                });
-              }
-            } catch (err) {
-              console.error(`Erro ao consultar performance anterior de "${ex.name}":`, err);
-            }
-          })
-        );
+
+      // References only: do not turn previous results into a new execution.
+      if (user?.id && !routine.fromHistory) {
+        try {
+          const history = await repositories.workout.getWorkoutHistory(user.id);
+          initialExercises.forEach(ex => {
+            const past = previousExerciseReference(ex, history);
+            ex.sets.forEach((set, index) => {
+              const previous = past?.sets[index];
+              if (previous) { set.prevWeight = primaryPerformance(previous)?.weightKg; set.prevReps = primaryPerformance(previous)?.reps; }
+            });
+          });
+        } catch (error) { console.error('Erro ao consultar referências anteriores:', error); }
       }
     } else {
       // Manual/free workout starts completely empty: no default exercises, no Supino, no mock
@@ -178,9 +186,10 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
     setActiveSession({
       routine,
-      workoutName: routine?.name || 'Treino Personalizado',
+      workoutName: routine?.name || 'Treino Vazio',
       muscleGroups,
       exercises: initialExercises,
+      blocks: initialStructure.blocks,
       startedAt: new Date(),
       seconds: 0,
       isTimerPaused: false,
@@ -216,12 +225,22 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
         const newExercises = typeof action === 'function' ? action(prev.exercises) : action;
         return {
           ...prev,
-          exercises: newExercises
+          ...reconcileExercises(prev, newExercises)
         };
       });
     },
     []
   );
+
+  const updateWorkoutStructure = useCallback((action: (current: WorkoutStructure) => WorkoutStructure) => {
+    setActiveSession(prev => {
+      if (!prev) return null;
+      const currentId = prev.exercises[prev.lastActiveExerciseIndex]?.exerciseInstanceId;
+      const next = action({ exercises: structuredClone(prev.exercises), blocks: structuredClone(prev.blocks) });
+      assertStructure(next);
+      return { ...prev, ...next, lastActiveExerciseIndex: Math.max(0, next.exercises.findIndex(ex => ex.exerciseInstanceId === currentId)) };
+    });
+  }, []);
 
   const setWorkoutName = useCallback((name: string) => {
     setActiveSession((prev) => (prev ? { ...prev, workoutName: name } : null));
@@ -331,7 +350,7 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
         if (!prev) return null;
         return {
           ...prev,
-          exercises: newExercises,
+          ...reconcileExercises(prev, newExercises),
           lastActiveExerciseIndex: exIndex,
           lastActiveSetIndex: setIndex,
           restSeconds: targetRest !== null ? targetRest : prev.restSeconds,
@@ -380,44 +399,16 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
     const durationMinutes = Math.max(1, Math.round(finalSeconds / 60));
     const now = new Date();
 
-    let sessionTotalVolume = 0;
-    let sessionCompletedSets = 0;
-    let detectedPrs = 0;
-
-    const completedExercisesLog: CompletedExerciseLog[] = activeSession.exercises.map((ex) => {
-      const mappedSets: CompletedSetLog[] = ex.sets.map((s) => {
-        const isPr = Boolean(s.prevWeight && s.weight > s.prevWeight && s.reps >= (s.prevReps || 0));
-        if (s.completed) {
-          sessionTotalVolume += s.weight * s.reps;
-          sessionCompletedSets += 1;
-          if (isPr) detectedPrs += 1;
-        }
-
-        return {
-          setNumber: s.setNumber,
-          type: s.type || 'working',
-          targetWeight: s.targetWeight,
-          targetReps: s.targetReps,
-          weight: s.weight,
-          reps: s.reps,
-          completed: s.completed,
-          prevWeight: s.prevWeight,
-          prevReps: s.prevReps,
-          isPr,
-          instruction: s.instruction
-        };
-      });
-
-      return {
-        exerciseId: ex.id,
-        exerciseName: ex.name,
-        muscleGroup: ex.muscleGroup,
-        professionalNote: ex.professionalNote,
-        sets: mappedSets
-      };
-    });
+    const metrics = workoutMetrics(activeSession.exercises);
+    const { volume: sessionTotalVolume, completedSets: sessionCompletedSets, prs: detectedPrs } = metrics;
+    const completedExercisesLog: CompletedExerciseLog[] = activeSession.exercises.map((ex) => ({
+      ...toCompletedExerciseLog(ex), sets: ex.sets.map(s => toCompletedSetLog(s, isPrimaryPr(s)))
+    }));
 
     const sessionRecord: WorkoutSessionRecord = {
+      workoutEngineVersion: 1, metricsVersion: 1,
+      totalPrescribedSets: metrics.prescribedSets, totalPerformedSegments: metrics.performedSegments, totalPerformedReps: metrics.performedReps,
+      blocks: structuredClone(activeSession.blocks),
       id: `workout-session-${Date.now()}`,
       userId: user?.id || 'user_lucas_default',
       routineId: activeSession.routine?.id,
@@ -482,6 +473,7 @@ export const WorkoutProvider: React.FC<{ children: React.ReactNode }> = ({ child
         minimizeWorkout,
         maximizeWorkout,
         updateExercises,
+        updateWorkoutStructure,
         setWorkoutName,
         setRestSeconds,
         adjustRestSeconds,

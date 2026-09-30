@@ -1,0 +1,124 @@
+{
+  "catalogVersion": "1.0.0",
+  "builtAt": "2026-09-28",
+  "basis": "100 g edible portion",
+  "sources": {
+    "taco": {
+      "processed": 597,
+      "included": 597
+    },
+    "pof": {
+      "included": 0,
+      "status": "excluded-pending-commercial-redistribution-clearance",
+      "auditedCompositionRows": 1971,
+      "auditedHouseholdMeasureRows": 11801
+    }
+  },
+  "total": 597,
+  "categoryCounts": {
+    "cereais-e-derivados": 63,
+    "verduras-hortalicas-e-derivados": 99,
+    "frutas-e-derivados": 96,
+    "gorduras-e-oleos": 14,
+    "pescados-e-frutos-do-mar": 50,
+    "carnes-e-derivados": 123,
+    "leite-e-derivados": 24,
+    "bebidas-alcoolicas-e-nao-alcoolicas": 14,
+    "ovos-e-derivados": 7,
+    "produtos-acucarados": 20,
+    "miscelaneas": 9,
+    "outros-alimentos-industrializados": 5,
+    "alimentos-preparados": 32,
+    "leguminosas-e-derivados": 30,
+    "nozes-e-sementes": 11
+  },
+  "nutrientCoverage": {
+    "calories": 591,
+    "protein": 576,
+    "fat": 560,
+    "carbohydrates": 578,
+    "fiber": 355,
+    "calcium": 579,
+    "iron": 554,
+    "sodium": 523,
+    "potassium": 582,
+    "saturatedFat": 417,
+    "magnesium": 577,
+    "manganese": 476,
+    "phosphorus": 576,
+    "copper": 532,
+    "zinc": 543,
+    "thiamin": 392,
+    "pyridoxine": 251,
+    "niacin": 281,
+    "riboflavin": 311,
+    "vitaminC": 208,
+    "cholesterol": 257,
+    "retinol": 126,
+    "retinolEquivalent": 176,
+    "retinolActivityEquivalent": 176
+  },
+  "withReference100gPortion": 597,
+  "withSourceServingPortion": 0,
+  "withHouseholdMeasures": 0,
+  "unknownStatuses": {
+    "notApplicable": 897,
+    "notAnalyzed": 1120,
+    "trace": 1869,
+    "underReview": 66,
+    "invalidSourceValue": 5
+  },
+  "duplicatesRemoved": 0,
+  "sameNormalizedNameGroups": [],
+  "sourceAnomalies": [
+    {
+      "id": "somma:taco:4:0288",
+      "nutrient": "carbohydrates",
+      "cell": "CMVCol taco3!I328",
+      "rawValue": -0.026666666666666172,
+      "action": "omitted; no guessed correction"
+    },
+    {
+      "id": "somma:taco:4:0322",
+      "nutrient": "carbohydrates",
+      "cell": "CMVCol taco3!I365",
+      "rawValue": -0.04500000000000792,
+      "action": "omitted; no guessed correction"
+    },
+    {
+      "id": "somma:taco:4:0337",
+      "nutrient": "carbohydrates",
+      "cell": "CMVCol taco3!I382",
+      "rawValue": -0.006666666666674814,
+      "action": "omitted; no guessed correction"
+    },
+    {
+      "id": "somma:taco:4:0373",
+      "nutrient": "pyridoxine",
+      "cell": "CMVCol taco3!AA424",
+      "rawValue": ",0,02",
+      "action": "omitted; no guessed correction"
+    },
+    {
+      "id": "somma:taco:4:0400",
+      "nutrient": "carbohydrates",
+      "cell": "CMVCol taco3!I451",
+      "rawValue": -0.02333333333333809,
+      "action": "omitted; no guessed correction"
+    },
+    {
+      "id": "somma:taco:4:0540",
+      "field": "name",
+      "cell": "CMVCol taco3!B620",
+      "rawValue": "L",
+      "correctedValue": "Feijoada",
+      "evidence": "Official TACO PDF page 63 (printed 60), record 540; AGtaco3 record 540 agrees",
+      "action": "documented correction from the official PDF; no inferred identity"
+    }
+  ],
+  "notImported": [
+    "POF composition and household measures: unresolved downstream rights",
+    "TACO amino acids and individual fatty acids: outside current model scope",
+    "transFat and sugars: no invented totals or borrowed values"
+  ]
+}
